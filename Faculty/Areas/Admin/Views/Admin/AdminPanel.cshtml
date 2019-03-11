@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "Admin panel";
+}
+
+<h2>Admin panel</h2>
+
+
+<h2>@Html.ActionLink("Courses", "DisplayCourses", "ManageCourses", new { Area = "Admin" }, null)</h2>
+<br />
+<h2>@Html.ActionLink("Users", "DisplayUsers", "Users", new { Area = "Admin" }, null)</h2>

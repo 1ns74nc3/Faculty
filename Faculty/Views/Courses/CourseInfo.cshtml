@@ -1,0 +1,46 @@
+﻿@model Faculty.Logic.Models.Course
+@{
+    ViewBag.Title = "CourseInfo";
+}
+
+<h2>Course Info</h2>
+
+<dl>
+    <dt>@Html.LabelFor(c => c.CourseName)</dt>
+    <dd>@Html.DisplayFor(c => c.CourseName)</dd>
+
+    <dt>@Html.LabelFor(c => c.CourseStatus)</dt>
+    <dd>@Html.DisplayFor(c => c.CourseStatus)</dd>
+
+    <dt>@Html.LabelFor(c => c.StartDate)</dt>
+    <dd>@Html.DisplayFor(c => c.StartDate)</dd>
+
+    <dt>@Html.LabelFor(c => c.EndDate)</dt>
+    <dd>@Html.DisplayFor(c => c.EndDate)</dd>
+
+    <dt>@Html.LabelFor(c => c.CourseDescription)</dt>
+    <dd>@if (Model.CourseDescription != null)
+        {
+            @Html.DisplayFor(c => c.CourseName)
+        }
+        else
+        {
+            <p>There's no description.</p>
+        }
+    </dd>
+    <dt>@Html.Label("Lector")</dt>
+    <dd>@ViewBag.Lector</dd>
+    @if (ViewBag.UserIsSignedToCourse)
+    {
+    <dd>
+        @Html.ActionLink("Leave course", "SignOrQuitCourse", new { id = Model.Id, userIsOnCourse = true });
+    </dd>
+    }
+    else
+    {
+    <dd>
+        @Html.ActionLink("Sign to the course", "SignOrQuitCourse", new { id = Model.Id, userIsOnCourse = false });
+    </dd>
+    }
+</dl>
+

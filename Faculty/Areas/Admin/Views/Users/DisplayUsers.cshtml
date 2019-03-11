@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.Title = "Users";
+}
+
+<h2>Users</h2>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>@Html.Label("Firstname")</th>
+            <th>@Html.Label("Lastname")</th>
+            <th>@Html.Label("Age")</th>
+            <th>@Html.Label("E-mail")</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>@item.FirstName</td>
+            <td>@item.LastName</td>
+            <td>@item.Age</td>
+            <td>@item.Email</td>
+            <td>@Html.ActionLink("Edit", "EditUser", new { id = item.Id })</td>
+            <td>@Html.ActionLink("Details", "Details", new { id = item.Id }) </td>
+        </tr>
+        }
+    </tbody>
+</table>
