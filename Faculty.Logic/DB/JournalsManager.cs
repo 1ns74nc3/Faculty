@@ -12,39 +12,47 @@ namespace Faculty.Logic.DB
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                Journal journal = new Journal(courseId, userId);
+                UsersManager coursesManager = new UsersManager();
+                var user = db.Users.SingleOrDefault(u => u.Id == userId);
+                Journal journal = new Journal(courseId);
                 db.Journals.Add(journal);
+                db.SaveChanges();
+                db.Journals.SingleOrDefault(j => j.Id == journal.Id).Users.Add(user);
                 db.SaveChanges();
             }
         }
 
-        //Get all related to course data 
-        public ICollection<object> GetMarksForUsers(int courseId)
+        public void DeleteJournalsWhenRemovingCourse(int courseId)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                UsersManager usersManager = new UsersManager();
                 var journals = db.Journals.Where(j => j.CourseId == courseId).ToList();
-                List<object> result = new List<object>();
-                if (journals.Any())
+                foreach (var item in journals)
                 {
-                    foreach (var item in journals)
-                    {
-                        var users = usersManager.GetSpecificUser(item.UserId);
-                        result.Add(new { users.FirstName, users.LastName, item.Mark, item.Id });
-                    }
+                    db.Journals.Remove(item);
                 }
+            }
+        }
+
+        //Get all related to course data 
+        public IList<ApplicationUser> GetMarksForUsers(int courseId)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var result = db.Users.Where(u => u.Courses.Select(c => c.Id).FirstOrDefault() == courseId)
+                    .Include( j => j.Journals)
+                    .ToList();
                 
                 return result;
             }
         }
 
         //Remove Mark for user in course
-        public void RemoveJournalForUser(int courseId, string userId)
+        public void RemoveJournalForUser(string userId)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var journal = db.Journals.SingleOrDefault(j => j.UserId == userId && j.UserId == userId);
+                var journal = db.Journals.Where(j=>j.Users.Select(u=>u.Id).FirstOrDefault() == userId).First();
                 db.Journals.Remove(journal);
                 db.SaveChanges();
             }

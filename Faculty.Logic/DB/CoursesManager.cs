@@ -45,13 +45,10 @@ namespace Faculty.Logic.DB
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
+                JournalsManager journalsManager = new JournalsManager();
                 var course = db.Courses.FirstOrDefault(c => c.Id.Equals(id));
+                journalsManager.DeleteJournalsWhenRemovingCourse(id);
                 db.Courses.Remove(course);
-                var journals = db.Journals.Where(j => j.CourseId == course.Id).ToList();
-                foreach (var item in journals)
-                {
-                    db.Journals.Remove(item);
-                }
                 db.SaveChanges();
             }
         }

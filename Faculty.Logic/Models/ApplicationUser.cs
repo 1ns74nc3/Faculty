@@ -34,8 +34,11 @@ namespace Faculty.Logic.Models
 
         public virtual ICollection<Course> Courses { get; set; }
 
+        public virtual ICollection<Journal> Journals { get; set; }
+
         public ApplicationUser()
         {
+            Journals = new HashSet<Journal>();
             Courses = new HashSet<Course>();
         }
     }

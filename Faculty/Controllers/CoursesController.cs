@@ -46,10 +46,11 @@ namespace Faculty.Controllers
             JournalsManager journalsManager = new JournalsManager();
             string currentUserId = User.Identity.GetUserId();
             ViewBag.RegistrationResult = "";
+            
             if (userIsOnCourse)
             {
                 ViewBag.RegistrationResult = coursesManager.RemoveUserFromCourse(id, currentUserId);
-                journalsManager.RemoveJournalForUser(id, currentUserId);
+                journalsManager.RemoveJournalForUser(currentUserId);
             }
             else
             {

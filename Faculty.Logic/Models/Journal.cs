@@ -12,18 +12,18 @@ namespace Faculty.Logic.Models
         [Required]
         public int CourseId { get; set; }
 
-        public string UserId { get; set; }
+        public virtual ICollection<ApplicationUser> Users { get; set; }
 
         public Journal()
         {
 
         }
 
-        public Journal(int courseId, string userId)
+        public Journal(int courseId)
         {
             Mark = 0;
             CourseId = courseId;
-            UserId = userId;
+            Users = new HashSet<ApplicationUser>();
         }
 
     }
