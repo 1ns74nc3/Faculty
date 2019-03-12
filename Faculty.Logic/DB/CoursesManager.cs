@@ -8,13 +8,14 @@ namespace Faculty.Logic.DB
     //Get, edit, delete data from Courses table
     public class CoursesManager
     {
+        //Add new course to database
         public void AddCourse(Course course)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 if (course != null)
                 {
-                    Course tempCourse = new Course(course.CourseName, course.StartDate, course.EndDate);
+                    Course tempCourse = new Course(course.CourseName, course.StartDate, course.EndDate, course.Theme);
                     tempCourse.CourseDescription = course.CourseDescription;
                     db.Courses.Add(tempCourse);
                     db.SaveChanges();
@@ -22,6 +23,7 @@ namespace Faculty.Logic.DB
             }
         }
 
+        //Sign user to specific course
         public string AddUserToCourse(int courseId, string userId)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -38,16 +40,23 @@ namespace Faculty.Logic.DB
             }
         }
 
+        //Delete course and all related journals from database
         public void DeleteCourse(int id)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 var course = db.Courses.FirstOrDefault(c => c.Id.Equals(id));
                 db.Courses.Remove(course);
+                var journals = db.Journals.Where(j => j.CourseId == course.Id).ToList();
+                foreach (var item in journals)
+                {
+                    db.Journals.Remove(item);
+                }
                 db.SaveChanges();
             }
         }
 
+        //Edit course in database
         public void EditCourse(Course course)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -58,8 +67,9 @@ namespace Faculty.Logic.DB
                 db.SaveChanges();
             }
         }
+        //End course
 
-
+        //Get list of all courses
         public ICollection<Course> GetCourses()
         {
             List<Course> courses = new List<Course>();
@@ -70,6 +80,7 @@ namespace Faculty.Logic.DB
             return courses;
         }
 
+        //Get information about Lector of the course
         public string GetLectorInfo(Course course)
         {
             if (course.LectorId != null && course.LectorId != "")
@@ -81,6 +92,7 @@ namespace Faculty.Logic.DB
             return "There's no lector for this course.";
         }
 
+        //Get specific course by Course ID
         public Course GetSpecificCourse(int id)
         {
             Course course = new Course();
@@ -91,6 +103,7 @@ namespace Faculty.Logic.DB
             return course;
         }
 
+        //Unsign user from course
         public string RemoveUserFromCourse(int courseId, string userId)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -107,6 +120,7 @@ namespace Faculty.Logic.DB
             }
         }
 
+        //Check if user is signed to course
         public bool UserIsSignedToCourse(int courseId, string userId)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())

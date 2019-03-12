@@ -10,11 +10,12 @@ namespace Faculty.Logic.DB
     //Get, edit, delete data from Identity Users table
     public class UsersManager
     {
+        //Edit course in database
         public void EditUser(ApplicationUser user, string role)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var userToChange = db.Users.Where(u => u.Id == user.Id).Include(u => u.Roles).FirstOrDefault();
+                var userToChange = db.Users.Where(u => u.Id == user.Id).FirstOrDefault();
                 db.Entry(userToChange).CurrentValues.SetValues(user);
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
                 userManager.RemoveFromRole(user.Id, userManager.GetRoles(user.Id).FirstOrDefault());
@@ -23,6 +24,7 @@ namespace Faculty.Logic.DB
             }
         }
 
+        //Get all courses for specific user
         public List<Course> GetCoursesForSpecificUser(string userId)
         {
             List<Course> courses = new List<Course>();
@@ -33,6 +35,7 @@ namespace Faculty.Logic.DB
             return courses;
         }
 
+        //Get all users
         public ICollection<ApplicationUser> GetUsers()
         {
             List<ApplicationUser> users = new List<ApplicationUser>();
@@ -43,6 +46,7 @@ namespace Faculty.Logic.DB
             return users;
         }
 
+        //Get specific user by User ID
         public ApplicationUser GetSpecificUser(string id)
         {
             ApplicationUser user = new ApplicationUser();
@@ -53,6 +57,7 @@ namespace Faculty.Logic.DB
             return user;
         }
 
+        //Get role for specific user by User ID
         public string GetUserRole(string id)
         {
             string result = null;
@@ -64,6 +69,7 @@ namespace Faculty.Logic.DB
             return result;
         }
 
+        //Get list of users with specific role
         public List<ApplicationUser> GetUsersWithSpecificRole(string role)
         {
             List<ApplicationUser> result = new List<ApplicationUser>();

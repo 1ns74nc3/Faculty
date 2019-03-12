@@ -7,18 +7,48 @@ namespace Faculty.Logic.DB
 {
     public class JournalsManager
     {
-        public ICollection<Journal> GetUsers()
+        //Adding db record to set users marks
+        public void AddJournalForUser(int courseId, string userId)
         {
-            List<Journal> users = new List<Journal>();
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                users = db.Journals
-                    .Include(j => j.Users)
-                    .Include(j => j.Courses)
-                    .OrderByDescending(j => j.Mark)
-                    .ToList();
+                Journal journal = new Journal(courseId, userId);
+                db.Journals.Add(journal);
+                db.SaveChanges();
             }
-            return users;
         }
+
+        //Get all related to course data 
+        public ICollection<object> GetMarksForUsers(int courseId)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                UsersManager usersManager = new UsersManager();
+                var journals = db.Journals.Where(j => j.CourseId == courseId).ToList();
+                List<object> result = new List<object>();
+                if (journals.Any())
+                {
+                    foreach (var item in journals)
+                    {
+                        var users = usersManager.GetSpecificUser(item.UserId);
+                        result.Add(new { users.FirstName, users.LastName, item.Mark, item.Id });
+                    }
+                }
+                
+                return result;
+            }
+        }
+
+        //Remove Mark for user in course
+        public void RemoveJournalForUser(int courseId, string userId)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var journal = db.Journals.SingleOrDefault(j => j.UserId == userId && j.UserId == userId);
+                db.Journals.Remove(journal);
+                db.SaveChanges();
+            }
+        }
+
     }
 }

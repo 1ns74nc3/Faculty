@@ -11,6 +11,7 @@
             <th>@Html.Label("Lastname")</th>
             <th>@Html.Label("Age")</th>
             <th>@Html.Label("E-mail")</th>
+            <th>@Html.Label("Role")</th>
             <th></th>
             <th></th>
         </tr>
@@ -23,6 +24,7 @@
             <td>@item.LastName</td>
             <td>@item.Age</td>
             <td>@item.Email</td>
+            <td>@item.Roles.Name</td>
             <td>@Html.ActionLink("Edit", "EditUser", new { id = item.Id })</td>
             <td>@Html.ActionLink("Details", "Details", new { id = item.Id }) </td>
         </tr>

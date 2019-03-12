@@ -18,8 +18,12 @@
     <dt>@Html.LabelFor(c => c.EndDate)</dt>
     <dd>@Html.DisplayFor(c => c.EndDate)</dd>
 
+    <dt>@Html.LabelFor(c => c.Theme)</dt>
+    <dd>@Html.DisplayFor(c => c.Theme)</dd>
+
     <dt>@Html.LabelFor(c => c.CourseDescription)</dt>
-    <dd>@if (Model.CourseDescription != null)
+    <dd>
+        @if (Model.CourseDescription != null)
         {
             @Html.DisplayFor(c => c.CourseName)
         }
@@ -27,20 +31,22 @@
         {
             <p>There's no description.</p>
         }
-    </dd>
-    <dt>@Html.Label("Lector")</dt>
-    <dd>@ViewBag.Lector</dd>
-    @if (ViewBag.UserIsSignedToCourse)
-    {
+</dd>
+<dt>@Html.Label("Lector")</dt>
+<dd>@ViewBag.Lector</dd>
+@if (ViewBag.UserIsSignedToCourse)
+{
     <dd>
         @Html.ActionLink("Leave course", "SignOrQuitCourse", new { id = Model.Id, userIsOnCourse = true });
     </dd>
-    }
-    else
-    {
+}
+else
+{
     <dd>
         @Html.ActionLink("Sign to the course", "SignOrQuitCourse", new { id = Model.Id, userIsOnCourse = false });
     </dd>
-    }
+}
 </dl>
-
+<dd>
+    @Html.ActionLink("Manage marks", "ManageJournal", new { id = Model.Id });
+</dd>

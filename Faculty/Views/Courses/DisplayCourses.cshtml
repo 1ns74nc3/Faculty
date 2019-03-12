@@ -11,7 +11,7 @@
             <th>@Html.Label("Start Date")</th>
             <th>@Html.Label("End Date")</th>
             <th>@Html.Label("Course Status")</th>
-            <th></th>
+            <th>@Html.Label("Theme")</th>
             <th></th>
         </tr>
     </thead>
@@ -23,6 +23,7 @@
             <td>@item.StartDate</td>
             <td>@item.EndDate</td>
             <td>@item.CourseStatus</td>
+            <td>@item.Theme</td>
             <td>@Html.ActionLink("Details", "CourseInfo", new { id = item.Id }, null) </td>
         </tr>
         }

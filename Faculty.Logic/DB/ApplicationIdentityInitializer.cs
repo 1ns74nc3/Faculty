@@ -36,9 +36,9 @@ namespace Faculty.Logic.DB
         protected override void Seed(ApplicationDbContext context)
         {
             var courses = new List<Course>{
-                new Course("Mathematics", new DateTime(2019,1,31), new DateTime(2019,5,31)), 
-                new Course("English", new DateTime(2019,2,1), new DateTime(2019,7,22)),
-                new Course("Physics", new DateTime(2019,1,10), new DateTime(2019,6,25))
+                new Course("Geometry", new DateTime(2019,1,31), new DateTime(2019,5,31), "Mathematics"), 
+                new Course("Grammar", new DateTime(2019,2,1), new DateTime(2019,7,22), "English"),
+                new Course("Space", new DateTime(2019,1,10), new DateTime(2019,6,25), "Physics")
             };
 
             courses.ForEach(course => context.Courses.Add(course));

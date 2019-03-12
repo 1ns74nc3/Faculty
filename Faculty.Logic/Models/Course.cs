@@ -17,6 +17,8 @@ namespace Faculty.Logic.Models
         [Display(Name = "End date")]
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
+        [Required]
+        public string Theme { get; set; }
 
         public enum Status
         {
@@ -36,21 +38,19 @@ namespace Faculty.Logic.Models
 
         public virtual ICollection<ApplicationUser> Users { get; set; }
 
-        public virtual ICollection<Journal> Journal { get; set; }
-
         public Course()
         {
-
+            Users = new HashSet<ApplicationUser>();
         }
 
-        public Course(string courseName, DateTime startDate, DateTime endDate)
+        public Course(string courseName, DateTime startDate, DateTime endDate, string theme)
         {
             CourseName = courseName;
             StartDate = startDate;
             EndDate = endDate;
             CourseStatus = SetStatus(startDate, endDate);
+            Theme = theme;
             Users = new HashSet<ApplicationUser>();
-            Journal = new HashSet<Journal>();
         }
 
         public Status SetStatus(DateTime startDate, DateTime endDate)

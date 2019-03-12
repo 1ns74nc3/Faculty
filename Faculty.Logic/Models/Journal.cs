@@ -9,15 +9,21 @@ namespace Faculty.Logic.Models
         [Range(0, 100)]
         public byte Mark { get; set; }
 
-        public ICollection<Course> Courses { get; set; }
+        [Required]
+        public int CourseId { get; set; }
 
-        public virtual ICollection<ApplicationUser> Users { get; set; }
+        public string UserId { get; set; }
 
         public Journal()
         {
+
+        }
+
+        public Journal(int courseId, string userId)
+        {
             Mark = 0;
-            Courses = new HashSet<Course>();
-            Users = new HashSet<ApplicationUser>();
+            CourseId = courseId;
+            UserId = userId;
         }
 
     }
