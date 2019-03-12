@@ -39,8 +39,8 @@ namespace Faculty.Logic.DB
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var result = db.Users.Where(u => u.Courses.Select(c => c.Id).FirstOrDefault() == courseId)
-                    .Include( j => j.Journals)
+                var result = db.Users.Where(u => u.Courses.FirstOrDefault(c => c.Id == courseId).Id == courseId)
+                    .Include(j => j.Journals)
                     .ToList();
                 
                 return result;
