@@ -3,15 +3,21 @@
     ViewBag.Title = "ManageUserMark";
 }
 
-<h2>Manage @Model.Users.First().Firstname @Model.Users.First().Lastname mark:</h2>
+<h2>Manage @Model.Users.First().FirstName @Model.Users.First().LastName mark:</h2>
 
 
-@using (Html.BeginForm("ManageUserMark", "Journal", new { courseId = ViewBag.CourseId }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("ManageUserMark", "Journal", new { courseId = ViewBag.CourseId, journalId = ViewBag.JournalId }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     <h4>Set mark:</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.Id, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DisplayFor(m => m.Id, new { @class = "form-control" })
+        </div>
+    </div>
     <div class="form-group">
         @Html.LabelFor(m => m.Mark, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">

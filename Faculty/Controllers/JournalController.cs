@@ -23,23 +23,35 @@ namespace Faculty.Controllers
         }
 
         // GET: Journal/ManageUserMark
-        public ActionResult ManageUserMark(int journalId, int courseId)
+        public ActionResult ManageUserMark(byte journalId, int courseId)
         {
             JournalsManager journalsManager = new JournalsManager();
             var journal = journalsManager.GetJournal(journalId);
             ViewBag.CourseId = courseId;
+            ViewBag.JournalId = journalId;
 
             return View(journal);
         }
 
         // POST: Journal/ManageUserMark
         [HttpPost]
-        public ActionResult ManageUserMark(Journal journal, int courseId)
+        public ActionResult ManageUserMark(Journal journal, int courseId, byte journalId)
         {
             JournalsManager journalsManager = new JournalsManager();
-            journalsManager.EditJournal(journal);
-
-            return RedirectToAction("CourseInfo","Courses", new { id = courseId});
+            journal.Id = journalId;
+            if (ModelState.IsValid)
+            {
+                journalsManager.EditJournal(journal);
+                return RedirectToAction("CourseInfo", "Courses", new { id = courseId });
+            }
+            else
+            {
+                ModelState.AddModelError("error", "You entered invalid data!" );
+                var defaultJournal = journalsManager.GetJournal(journal.Id);
+                ViewBag.CourseId = courseId;
+                ViewBag.JournalId = journalId;
+                return View(defaultJournal);
+            }          
         }
     }
 }

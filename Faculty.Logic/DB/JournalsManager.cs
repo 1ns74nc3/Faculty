@@ -38,8 +38,7 @@ namespace Faculty.Logic.DB
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var journalToChange = db.Journals.SingleOrDefault(j => j.Id == journal.Id);
-                db.Entry(journalToChange).CurrentValues.SetValues(journal);
+                db.Journals.SingleOrDefault(j => j.Id == journal.Id).Mark = journal.Mark;
                 db.SaveChanges();
             }
         }
