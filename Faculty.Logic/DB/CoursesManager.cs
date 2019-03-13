@@ -65,6 +65,16 @@ namespace Faculty.Logic.DB
             }
         }
         //End course
+        public void EndCourse(int courseId)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
+                course.CourseStatus = Course.Status.Ended;
+                db.Entry(course).CurrentValues.SetValues(course);
+                db.SaveChanges();
+            }
+        }
 
         //Get list of all courses
         public ICollection<Course> GetCourses()

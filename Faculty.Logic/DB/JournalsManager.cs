@@ -34,6 +34,25 @@ namespace Faculty.Logic.DB
             }
         }
 
+        public void EditJournal(Journal journal)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var journalToChange = db.Journals.SingleOrDefault(j => j.Id == journal.Id);
+                db.Entry(journalToChange).CurrentValues.SetValues(journal);
+                db.SaveChanges();
+            }
+        }
+
+        public Journal GetJournal(int journalId)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var result = db.Journals.Where(j => j.Id == journalId).Include("Users").SingleOrDefault();
+
+                return result;
+            }
+        }
         //Get all related to course data 
         public IList<ApplicationUser> GetMarksForUsers(int courseId)
         {

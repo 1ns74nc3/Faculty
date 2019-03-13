@@ -26,18 +26,6 @@ namespace Faculty.Controllers
             return View(courses);
         }
 
-        // GET: Courses/ManageJournal
-        [Authorize(Roles ="Lector, Admin")]
-        public ActionResult ManageJournal(int id)
-        {
-            JournalsManager journalsManager = new JournalsManager();
-            CoursesManager coursesManager = new CoursesManager();
-            var data = journalsManager.GetMarksForUsers(id);
-            ViewBag.CourseName = coursesManager.GetSpecificCourse(id).CourseName;
-
-            return View(data);
-        }
-
         // GET: Courses/SignToCourse
         [Authorize]
         public ActionResult SignOrQuitCourse(int id, bool userIsOnCourse)
