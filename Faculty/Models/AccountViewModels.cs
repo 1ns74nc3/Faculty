@@ -94,7 +94,7 @@ namespace Faculty.Models
         [Display(Name = "Age")]
         public int Age { get; set; }
 
-        [Display(Name = "Description")]
+        [Display(Name = "User information(optional)")]
         public string UserInformation { get; set; }
 
     }

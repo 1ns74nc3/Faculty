@@ -31,6 +31,7 @@ namespace Faculty.Logic.DB
                 {
                     db.Journals.Remove(item);
                 }
+                db.SaveChanges();
             }
         }
 
@@ -52,7 +53,20 @@ namespace Faculty.Logic.DB
                 return result;
             }
         }
-        //Get all related to course data 
+
+        public ICollection<Journal> GetAllJournals()
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var result = db.Journals
+                    .Include(j => j.Users)
+                    .ToList();
+                return result;
+            }
+        }
+
+
+        //Get all marks related to course and users 
         public IList<ApplicationUser> GetMarksForUsers(int courseId)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -70,9 +84,11 @@ namespace Faculty.Logic.DB
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var journal = db.Journals.Where(j=>j.Users.Select(u=>u.Id).FirstOrDefault() == userId).First();
-                db.Journals.Remove(journal);
-                db.SaveChanges();
+                var journal = db.Journals.Where(j=>j.Users.Select(u=>u.Id).FirstOrDefault() == userId).FirstOrDefault();
+                if (journal != null) { 
+                    db.Journals.Remove(journal);
+                    db.SaveChanges();
+                }
             }
         }
 

@@ -1,16 +1,16 @@
-﻿@model  IEnumerable<Faculty.Logic.Models.ApplicationUser>
+﻿@model  IEnumerable<Faculty.Models.JournalViewModel>
 @{
     ViewBag.Title = "ManageJournal";
 }
 
-<h2>Manage @ViewBag.Course.CourseName course Journal:</h2>
+<h2>Manage @Html.DisplayFor(modelItem => modelItem.First().CourseName) course Journal:</h2>
 
 <table class="table table-hover">
     <thead>
         <tr>
             <th>@Html.DisplayNameFor(model => model.FirstName)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
-            <th>@Html.DisplayNameFor(model => model.Journals.First().Mark)</th>
+            <th>@Html.DisplayNameFor(model => model.LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.Mark)</th>
             <th></th>
         </tr>
     </thead>
@@ -19,8 +19,8 @@
         <tr>
             <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
             <td>@Html.DisplayFor(modelItem => item.LastName)</td>
-            <td>@Html.DisplayFor(modelItem => item.Journals.First().Mark)</td>
-            <td>@Html.ActionLink("Change Mark", "ManageUserMark", new { journalId = item.Journals.First().Id, courseId = ViewBag.Course.Id }) </td>
+            <td>@Html.DisplayFor(modelItem => item.Mark)</td>
+            <td>@Html.ActionLink("Edit Mark", "ManageUserMark", new { journalId = item.Id, courseId = item.CourseId}) </td>
         </tr>
         }
     </tbody>

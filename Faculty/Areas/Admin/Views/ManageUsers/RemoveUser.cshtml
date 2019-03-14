@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "RemoveUser";
+}
+
+<h2>User @ViewBag.Username has been deleted!</h2>
+
+<script>
+    window.setTimeout(function () {
+        window.location.href = '/Admin/ManageUsers/DisplayUsers';
+    }, 4000);
+</script>

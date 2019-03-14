@@ -34,9 +34,9 @@ namespace Faculty.Logic.DB
                 {
                     course.Users.Add(user);
                     db.SaveChanges();
-                    return "User added to the course!";
+                    return "Congratulations! You signed to the course!";
                 }
-                return "User is already signed to the course!";
+                return "You already signed to this course!";
             }
         }
 

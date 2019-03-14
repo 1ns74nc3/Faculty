@@ -29,7 +29,7 @@ namespace Faculty.Logic.Models
         [Display(Name = "User status")]
         public bool UserIsBlocked { get; set; }
 
-        [Display(Name = "Information")]
+        [Display(Name = "Information(Optional)")]
         public string UserInformation { get; set; }
 
         public virtual ICollection<Course> Courses { get; set; }

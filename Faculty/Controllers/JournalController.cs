@@ -1,5 +1,6 @@
 ﻿using Faculty.Logic.DB;
 using Faculty.Logic.Models;
+using Faculty.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,18 +13,28 @@ namespace Faculty.Controllers
     public class JournalController : Controller
     {
         // GET: Journal/ManageJournal
-        public ActionResult ManageJournal(int id)
+        public ActionResult ManageJournal(int courseId)
         {
             JournalsManager journalsManager = new JournalsManager();
             CoursesManager coursesManager = new CoursesManager();
-            var data = journalsManager.GetMarksForUsers(id);
-            ViewBag.Course = coursesManager.GetSpecificCourse(id);
+            var journalsList = journalsManager.GetMarksForUsers(courseId);
+            var course = coursesManager.GetSpecificCourse(courseId);
+            List<JournalViewModel> journal = new List<JournalViewModel>();
+            if(journalsList != null)
+            {
+                foreach (var item in journalsList)
+                {
+                    journal.Add(new JournalViewModel(item.Journals.First().Id, item.FirstName, item.LastName, item.Journals.First().Mark,
+                        course.CourseName, courseId));
+                }
+            }
+            
 
-            return View(data);
+            return View(journal);
         }
 
         // GET: Journal/ManageUserMark
-        public ActionResult ManageUserMark(byte journalId, int courseId)
+        public ActionResult ManageUserMark(int journalId, int courseId)
         {
             JournalsManager journalsManager = new JournalsManager();
             var journal = journalsManager.GetJournal(journalId);
@@ -35,7 +46,7 @@ namespace Faculty.Controllers
 
         // POST: Journal/ManageUserMark
         [HttpPost]
-        public ActionResult ManageUserMark(Journal journal, int courseId, byte journalId)
+        public ActionResult ManageUserMark(Journal journal, int courseId, int journalId)
         {
             JournalsManager journalsManager = new JournalsManager();
             journal.Id = journalId;

@@ -191,19 +191,22 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ManageJournalsController.cs" />
     <Compile Include="Areas\Admin\Controllers\ManageCoursesController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JournalController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ManageUsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CourseViewModel.cs" />
+    <Compile Include="Models\JournalViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -227,10 +230,13 @@
     <Content Include="Areas\Admin\Views\Admin\AdminPanel.cshtml" />
     <Content Include="Areas\Admin\Views\ManageCourses\AddCourse.cshtml" />
     <Content Include="Areas\Admin\Views\ManageCourses\DeleteCourse.cshtml" />
-    <Content Include="Areas\Admin\Views\Users\EditUser.cshtml" />
+    <Content Include="Areas\Admin\Views\ManageUsers\EditUser.cshtml" />
     <Content Include="Areas\Admin\Views\ManageCourses\DisplayCourses.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\Error.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Areas\Admin\Views\ManageUsers\RemoveUser.cshtml" />
+    <Content Include="Areas\Admin\Views\ManageJournals\DisplayJournals.cshtml" />
+    <Content Include="Areas\Admin\Views\ManageJournals\EditMark.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -279,7 +285,7 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Courses\DisplayCourses.cshtml" />
-    <Content Include="Areas\Admin\Views\Users\DisplayUsers.cshtml" />
+    <Content Include="Areas\Admin\Views\ManageUsers\DisplayUsers.cshtml" />
     <Content Include="Views\Courses\CourseInfo.cshtml" />
     <Content Include="Views\Courses\SignOrQuitCourse.cshtml" />
     <Content Include="Views\Manage\UserCourses.cshtml" />
@@ -289,7 +295,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Views\Profile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
