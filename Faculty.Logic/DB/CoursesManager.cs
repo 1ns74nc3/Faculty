@@ -82,7 +82,7 @@ namespace Faculty.Logic.DB
             List<Course> courses = new List<Course>();
             using(ApplicationDbContext db = new ApplicationDbContext())
             {
-                courses = db.Courses.ToList();
+                courses = db.Courses.Include(u => u.Users).ToList();
             }
             return courses;
         }

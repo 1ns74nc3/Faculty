@@ -1,6 +1,8 @@
 ﻿using Faculty.Logic.DB;
 using Faculty.Logic.Models;
+using Faculty.Models;
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace Faculty.Areas.Admin.Controllers
@@ -47,7 +49,17 @@ namespace Faculty.Areas.Admin.Controllers
         public ActionResult DisplayCourses()
         {
             CoursesManager coursesManager = new CoursesManager();
-            var courses = coursesManager.GetCourses();
+            var coursesList = coursesManager.GetCourses();
+            List<CourseViewModel> courses = new List<CourseViewModel>();
+            if (coursesList != null)
+            {
+                foreach (var item in coursesList)
+                {
+                    courses.Add(new CourseViewModel(item.Id, item.CourseName, item.StartDate.ToShortDateString(), item.EndDate.ToShortDateString(),
+                        item.Theme, item.CourseStatus.ToString(), item.Users.Count));
+                }
+            }
+
             return View(courses);
         }
 

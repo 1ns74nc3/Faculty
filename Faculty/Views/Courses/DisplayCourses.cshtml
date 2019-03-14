@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<Faculty.Models.CourseViewModel>
+@{
     ViewBag.Title = "Courses";
 }
 
@@ -7,11 +8,12 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>@Html.Label("Course Name")</th>
-            <th>@Html.Label("Start Date")</th>
-            <th>@Html.Label("End Date")</th>
-            <th>@Html.Label("Course Status")</th>
-            <th>@Html.Label("Theme")</th>
+            <th>@Html.LabelFor(model => model.First().CourseName)</th>
+            <th>@Html.LabelFor(model => model.First().StartDate)</th>
+            <th>@Html.LabelFor(model => model.First().EndDate)</th>
+            <th>@Html.LabelFor(model => model.First().CourseStatus)</th>
+            <th>@Html.LabelFor(model => model.First().Theme)</th>
+            <th>@Html.LabelFor(model => model.First().StudentsCount)</th>
             <th></th>
         </tr>
     </thead>
@@ -19,15 +21,15 @@
         @foreach(var item in Model)
         {
         <tr>
-            <td>@item.CourseName</td>
-            <td>@item.StartDate</td>
-            <td>@item.EndDate</td>
-            <td>@item.CourseStatus</td>
-            <td>@item.Theme</td>
+            <td>@Html.DisplayFor(modelItem => item.CourseName)</td>
+            <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.CourseStatus)</td>
+            <td>@Html.DisplayFor(modelItem => item.Theme)</td>
+            <td>@Html.DisplayFor(modelItem => item.StudentsCount)</td>
             <td>@Html.ActionLink("Details", "CourseInfo", new { id = item.Id }, null) </td>
         </tr>
-        }
-        
+        } 
     </tbody>
 </table>
 

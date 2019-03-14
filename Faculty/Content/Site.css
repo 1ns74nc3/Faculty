@@ -22,3 +22,42 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.content div{
+    display:flex;
+}
+
+.content_container {
+    flex-direction: column;
+}
+
+.content_header{
+    flex-direction: column; 
+}
+
+.content_header div{
+   width:100%;
+}
+
+content_main {
+    flex-direction: row;
+}
+
+.content_main div {
+    width: 30%;
+}
+
+.content_footer {
+    flex-direction: row;
+}
+
+.content_footer div {
+    width: 30%;
+}
