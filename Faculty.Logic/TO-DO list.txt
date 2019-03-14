@@ -14,3 +14,7 @@
 
 14/03 
 Добавить вывод всех курсов пользователя
+
+<remove name="RoleManager" /> - web.config - fix db 26 error
+
+Fix account manager link in admin area
