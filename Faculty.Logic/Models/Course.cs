@@ -48,27 +48,34 @@ namespace Faculty.Logic.Models
             CourseName = courseName;
             StartDate = startDate;
             EndDate = endDate;
-            CourseStatus = SetStatus(startDate, endDate);
+            SetStatus();
             Theme = theme;
             Users = new HashSet<ApplicationUser>();
         }
 
-        public Status SetStatus(DateTime startDate, DateTime endDate)
+        public void SetStatus()
         {
-            Status result = Status.Unknown;
-            if (DateTime.Compare(startDate, DateTime.Now) > 0)
+            if (LectorId != null && LectorId != "")
             {
-                result = Status.Upcoming;
-            }
-            else if (DateTime.Compare(endDate, DateTime.Now) < 0)
-            {
-                result = Status.Ended;
+                CourseStatus = Status.Unknown;
+                if (DateTime.Compare(StartDate, DateTime.Now) > 0)
+                {
+                    CourseStatus = Status.Upcoming;
+                }
+                else if (DateTime.Compare(EndDate, DateTime.Now) < 0)
+                {
+                    CourseStatus = Status.Ended;
+                }
+                else
+                {
+                    CourseStatus = Status.Active;
+                }
             }
             else
             {
-                result = Status.Active;
+                CourseStatus = Status.Unknown;
             }
-            return result;
+            
         }
     }
 }

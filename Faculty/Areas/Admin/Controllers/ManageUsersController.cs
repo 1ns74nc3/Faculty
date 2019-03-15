@@ -11,6 +11,42 @@ namespace Faculty.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ManageUsersController : Controller
     {
+        // GET: Admin/ManageUsers/AddUser
+        public ActionResult AddUser()
+        {
+            ViewBag.Roles = new List<string>{ "Admin", "Lector", "Student" };
+            return View();
+        }
+
+        // POST: Admin/ManageUsers/AddUser
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddUser(RegisterViewModel user, string role)
+        {
+            if (ModelState.IsValid)
+            {
+                UsersManager usersManager = new UsersManager();
+                var newUser = new ApplicationUser
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Age = user.Age,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserInformation = user.UserInformation
+                };
+                usersManager.AddUser(newUser, user.Password, role);
+                return RedirectToAction("DisplayUsers");
+            }
+            else
+            {
+                ViewBag.Roles = new List<string> { "Admin", "Lector", "Student" };
+                return View();
+            }
+        }
+
+
+
         // GET: Admin/ManageUsers/DisplayUsers
         public ActionResult DisplayUsers()
         {
@@ -33,15 +69,18 @@ namespace Faculty.Areas.Admin.Controllers
         {
             UsersManager usersManager = new UsersManager();
             var user = usersManager.GetSpecificUser(userId);
-            ViewBag.CurrentRole = "Current role - "+ usersManager.GetUserRole(userId);
-            ViewBag.Roles = new List<string>{ "Admin", "Lector", "Student" };
+            ViewBag.Roles = usersManager.GetRolesListWithActiveRole(userId);
+            ViewBag.UserId = userId;
+
             return View(user);
         }
 
         // POST: Admin/ManageUsers/EditUser
         [HttpPost]
-        public ActionResult EditUser(ApplicationUser user, string role)
+        [ValidateAntiForgeryToken]
+        public ActionResult EditUser(ApplicationUser user, string role, string userId)
         {
+            user.Id = userId;
             if (ModelState.IsValid)
             {
                 UsersManager userManager = new UsersManager();

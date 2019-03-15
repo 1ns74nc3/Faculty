@@ -10,13 +10,30 @@ namespace Faculty.Logic.DB
     //Get, edit, delete data from Identity Users table
     public class UsersManager
     {
+        //Add new user
+        public void AddUser(ApplicationUser user, string password, string role)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+                userManager.Create(user, password);
+                userManager.AddToRole(user.Id, role);
+            }
+        }
+
         //Edit course in database
         public void EditUser(ApplicationUser user, string role)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var userToChange = db.Users.Where(u => u.Id == user.Id).FirstOrDefault();
-                db.Entry(userToChange).CurrentValues.SetValues(user);
+                var userToChange = db.Users.FirstOrDefault(u => u.Id == user.Id);
+                userToChange.UserName = user.UserName;
+                userToChange.Age = user.Age;
+                userToChange.Email = user.Email;
+                userToChange.FirstName = user.FirstName;
+                userToChange.LastName = user.LastName;
+                userToChange.UserInformation = user.UserInformation;
+                userToChange.UserIsBlocked = user.UserIsBlocked;
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
                 userManager.RemoveFromRole(user.Id, userManager.GetRoles(user.Id).SingleOrDefault());
                 userManager.AddToRole(user.Id, role);
@@ -33,6 +50,20 @@ namespace Faculty.Logic.DB
                 courses = db.Users.Where(u => u.Id == userId).Include(c => c.Courses).Select(item => item.Courses).ToList().First().ToList();
             }
             return courses;
+        }
+
+        //return list of users with Lector role, 1st element is null or current lector on the course
+        public IList<string> GetRolesListWithActiveRole(string userId)
+        {
+            var currentRole = GetUserRole(userId);
+            List<string> rolesList = new List<string> { "Admin", "Lector", "Student" };
+            List<string> roles = new List<string> { currentRole };
+            foreach (var item in rolesList)
+            {
+                if (!roles.Contains(item))
+                    roles.Add(item);
+            }
+            return roles;
         }
 
         //Get all users
@@ -58,35 +89,58 @@ namespace Faculty.Logic.DB
         }
 
         //Get role for specific user by User ID
-        public string GetUserRole(string id)
+        public string GetUserRole(string userId)
         {
             string result = null;
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-                result = userManager.GetRoles(id).SingleOrDefault();
+                result = userManager.GetRoles(userId).SingleOrDefault();
             }
             return result;
         }
 
         //Get list of users with specific role
-        public List<ApplicationUser> GetUsersWithSpecificRole(string role)
+        public List<ApplicationUser> GetLectorsForCourseEdit(string userId)
         {
             List<ApplicationUser> result = new List<ApplicationUser>();
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                var roleId = db.Roles.Where(r => r.Name == role).SingleOrDefault().Id;
-                result = db.Users.Where(u => u.Roles.Any(r => r.RoleId == roleId)).ToList();
+                if (userId != "" && userId != null)
+                {
+                    var currentUser = db.Users.SingleOrDefault(u => u.Id == userId);
+                    result.Add(currentUser);
+                }
+
+                var lectorsList = db.Users.Where(u => u.Roles.Any(r => r.RoleId == db.Roles.FirstOrDefault(role => role.Name == "Lector").Id)).ToList();
+                result.Add(null);
+                if (lectorsList.Any())
+                {
+                    foreach (var item in lectorsList)
+                    {
+                        if(!result.Contains(item))
+                            result.Add(item);
+                    }
+                }
+                
+
             }
             return result;
         }
 
+        //delete user, connected journals and if user was lector - remove this lector for courses and update course status to unknown
         public void RemoveUser(string userId)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 JournalsManager journalsManager = new JournalsManager();
                 var user = db.Users.SingleOrDefault(c => c.Id == userId);
+                var courses = db.Courses.Where(c => c.LectorId == userId).ToList();
+                foreach(var items in courses)
+                {
+                    items.LectorId = null;
+                    items.SetStatus();
+                }
                 journalsManager.RemoveJournalForUser(userId);
                 db.Users.Remove(user);
                 db.SaveChanges();

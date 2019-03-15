@@ -28,8 +28,8 @@
                 <td>@Html.DisplayFor(modelItem => item.CourseStatus)</td>
                 <td>@Html.DisplayFor(modelItem => item.Theme)</td>
                 <td>@Html.DisplayFor(modelItem => item.StudentsCount)</td>
-                <td>@Html.ActionLink("Edit", "EditCourse", new { Area = "Admin", id = item.Id }) </td>
-                <td>@Html.ActionLink("Delete", "DeleteCourse", new { Area = "Admin", id = item.Id }) </td>
+                <td>@Html.ActionLink("Edit", "EditCourse", new { Area = "Admin", courseId = item.Id }) </td>
+                <td>@Html.ActionLink("Delete", "DeleteCourse", new { Area = "Admin", courseId = item.Id }) </td>
             </tr>
         }
     </tbody>

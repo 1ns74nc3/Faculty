@@ -59,19 +59,14 @@ namespace Faculty.Logic.DB
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 var currentCourse = db.Courses.SingleOrDefault(c => c.Id == course.Id);
-                course.CourseStatus = currentCourse.CourseStatus;
-                db.Entry(currentCourse).CurrentValues.SetValues(course);
-                db.SaveChanges();
-            }
-        }
-        //End course
-        public void EndCourse(int courseId)
-        {
-            using (ApplicationDbContext db = new ApplicationDbContext())
-            {
-                var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
-                course.CourseStatus = Course.Status.Ended;
-                db.Entry(course).CurrentValues.SetValues(course);
+                currentCourse.CourseName = course.CourseName;
+                currentCourse.StartDate = course.StartDate;
+                currentCourse.EndDate = course.EndDate;
+                currentCourse.LectorId = course.LectorId;
+                currentCourse.Theme = course.Theme;
+                currentCourse.CourseDescription = course.CourseDescription;
+                currentCourse.SetStatus();
+                
                 db.SaveChanges();
             }
         }

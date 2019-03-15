@@ -10,13 +10,22 @@ namespace Faculty.Controllers
     public class CoursesController : Controller
     {
         // GET: Courses/CourseInfo
-        public ActionResult CourseInfo(int id)
+        public ActionResult CourseInfo(int courseId)
         {
             CoursesManager coursesManager = new CoursesManager();
-            var course = coursesManager.GetSpecificCourse(id);
+            var course = coursesManager.GetSpecificCourse(courseId);
             ViewBag.Lector = coursesManager.GetLectorInfo(course);
             string currentUserId = User.Identity.GetUserId();
-            ViewBag.UserIsSignedToCourse = coursesManager.UserIsSignedToCourse(id, currentUserId);
+            ViewBag.UserIsSignedToCourse = coursesManager.UserIsSignedToCourse(courseId, currentUserId);
+            ViewBag.UserIsLector = false;
+            ViewBag.CourseStatusEnded = false;
+
+            if(course.CourseStatus==Course.Status.Ended)
+                ViewBag.CourseStatusEnded = true;
+
+            if (course.LectorId == currentUserId)
+                ViewBag.UserIsLectorOfThisCourse = true;
+
             return View(course);
         }
 

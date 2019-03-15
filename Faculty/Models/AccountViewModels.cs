@@ -92,6 +92,7 @@ namespace Faculty.Models
 
         [Required]
         [Display(Name = "Age")]
+        [Range(0, 120)]
         public int Age { get; set; }
 
         [Display(Name = "User information(optional)")]

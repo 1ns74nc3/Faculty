@@ -49,6 +49,7 @@ namespace Faculty.Areas.Admin.Controllers
 
         // POST: Admin/ManageJournals/EditMark
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EditMark(Journal journal, int journalId)
         {
             JournalsManager journalsManager = new JournalsManager();

@@ -31,22 +31,27 @@
         {
             <p>There's no description.</p>
         }
-</dd>
-<dt>@Html.Label("Lector")</dt>
-<dd>@ViewBag.Lector</dd>
-@if (ViewBag.UserIsSignedToCourse)
-{
-    <dd>
-        @Html.ActionLink("Leave course", "SignOrQuitCourse", new { id = Model.Id, userIsOnCourse = true });
     </dd>
-}
-else
-{
-    <dd>
-        @Html.ActionLink("Sign to the course", "SignOrQuitCourse", new { id = Model.Id, userIsOnCourse = false });
-    </dd>
-}
+    <dt>@Html.Label("Lector")</dt>
+    <dd>@ViewBag.Lector</dd>
+    @if (ViewBag.UserIsSignedToCourse)
+    {
+        <dd>
+            @Html.ActionLink("Leave course", "SignOrQuitCourse", new { courseId = Model.Id, userIsOnCourse = true });
+        </dd>
+    }
+    else
+    {
+        <dd>
+            @Html.ActionLink("Sign to the course", "SignOrQuitCourse", new { courseId = Model.Id, userIsOnCourse = false });
+        </dd>
+    }
+
+    @if (ViewBag.UserIsLectorOfThisCourse == true && ViewBag.CourseStatusEnded == true)
+    {
+        <dd>
+            @Html.ActionLink("Manage marks", "ManageJournal", "Journal", new { courseId = Model.Id }, null);
+        </dd>
+    }
 </dl>
-<dd>
-    @Html.ActionLink("Manage marks", "ManageJournal", "Journal", new { courseId = Model.Id }, null);
-</dd>
+
