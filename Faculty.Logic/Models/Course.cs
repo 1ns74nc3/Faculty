@@ -55,7 +55,11 @@ namespace Faculty.Logic.Models
 
         public void SetStatus()
         {
-            if (LectorId != null && LectorId != "")
+            if (LectorId == "" || LectorId == null)
+            {
+                CourseStatus = Status.Unknown;
+            }
+            else
             {
                 CourseStatus = Status.Unknown;
                 if (DateTime.Compare(StartDate, DateTime.Now) > 0)
@@ -70,10 +74,6 @@ namespace Faculty.Logic.Models
                 {
                     CourseStatus = Status.Active;
                 }
-            }
-            else
-            {
-                CourseStatus = Status.Unknown;
             }
             
         }

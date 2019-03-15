@@ -65,6 +65,17 @@ namespace Faculty.Logic.DB
             }
         }
 
+        public ICollection<Journal> GetAllJournalsForUser(string userId)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var result = db.Journals.Where(j => j.Users.FirstOrDefault(user => user.Id == userId).Id == userId)
+                    .Include(j => j.Users)
+                    .ToList();
+                return result;
+            }
+        }
+
 
         //Get all marks related to course and users 
         public IList<ApplicationUser> GetMarksForUsers(int courseId)

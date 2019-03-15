@@ -7,7 +7,7 @@ using System.Data.Entity;
 
 namespace Faculty.Logic.DB
 {
-    public class ApplicationIdentityInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
+    public class ApplicationIdentityInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>
     {
         public void SeedRoles(RoleManager<IdentityRole> roleManager)
         {

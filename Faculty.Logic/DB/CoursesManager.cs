@@ -82,6 +82,17 @@ namespace Faculty.Logic.DB
             return courses;
         }
 
+        //Get list of all courses for specific lector
+        public ICollection<Course> GetCoursesForLector(string userId)
+        {
+            List<Course> courses = new List<Course>();
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                courses = db.Courses.Where(c => c.LectorId == userId).Include(u => u.Users).ToList();
+            }
+            return courses;
+        }
+
         //Get information about Lector of the course
         public string GetLectorInfo(Course course)
         {

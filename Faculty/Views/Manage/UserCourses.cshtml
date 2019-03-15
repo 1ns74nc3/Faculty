@@ -1,32 +1,39 @@
-﻿
+﻿@model  IEnumerable<Faculty.Models.JournalViewModel>
 @{
     ViewBag.Title = "UserCourses";
 }
 
-<h2>@ViewBag.User Courses</h2>
-
 @if (ViewBag.Courses)
 {
+    <h2>@Model.First().FirstName @Model.First().LastName Courses</h2>
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>@Html.Label("Course Name")</th>
-                <th>@Html.Label("Start Date")</th>
-                <th>@Html.Label("End Date")</th>
-                <th>@Html.Label("Course Status")</th>
+                <th>@Html.DisplayNameFor(model => model.CourseName)</th>
+                <th>@Html.DisplayNameFor(model => model.CourseTheme)</th>
+                <th>@Html.DisplayNameFor(model => model.Lector)</th>
+                <th>@Html.DisplayNameFor(model => model.CourseStatus)</th>
+                <th>@Html.DisplayNameFor(model => model.Mark)</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td>@item.CourseName</td>
-                <td>@item.StartDate</td>
-                <td>@item.EndDate</td>
-                <td>@item.CourseStatus</td>
-            </tr>
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.CourseName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CourseTheme)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Lector)</td>
+                    <td>@Html.DisplayFor(modelItem => item.CourseStatus)</td>
+                    @if (item.CourseStatus == "Ended")
+                    {
+                        <td>@Html.DisplayFor(modelItem => item.Mark)</td>
+                    }
+                    else
+                    {
+                        <td>Course is not ended!</td>
+                    }
+                </tr>
             }
-
         </tbody>
     </table>
 }

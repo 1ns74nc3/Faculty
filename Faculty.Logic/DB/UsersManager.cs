@@ -42,12 +42,12 @@ namespace Faculty.Logic.DB
         }
 
         //Get all courses for specific user
-        public List<Course> GetCoursesForSpecificUser(string userId)
+        public List<ApplicationUser> GetCoursesForSpecificUser(string userId)
         {
-            List<Course> courses = new List<Course>();
+            List<ApplicationUser> courses = new List<ApplicationUser>();
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                courses = db.Users.Where(u => u.Id == userId).Include(c => c.Courses).Select(item => item.Courses).ToList().First().ToList();
+                courses = db.Users.Where(u => u.Id == userId).Include(c => c.Courses).Include(j => j.Journals).ToList();
             }
             return courses;
         }

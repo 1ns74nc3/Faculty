@@ -28,12 +28,24 @@ namespace Faculty.Models
         [Display(Name = "Students Registered")]
         public int StudentsCount { get; set; }
 
+        public string Lector { get; set; }
+
         public CourseViewModel()
         {
 
         }
 
-        public CourseViewModel(int id, string courseName, string startDate, string endDate, string theme, string courseStatus, int studentsCount)
+        public CourseViewModel(int id, string courseName, string startDate, string endDate, string theme, string courseStatus, int studentsCount) { 
+            Id = id;
+            CourseName = courseName;
+            StartDate = startDate;
+            EndDate = endDate;
+            Theme = theme;
+            CourseStatus = courseStatus;
+            StudentsCount = studentsCount;
+        }
+
+        public CourseViewModel(int id, string courseName, string startDate, string endDate, string theme, string courseStatus, int studentsCount, string lector)
         {
             Id = id;
             CourseName = courseName;
@@ -42,6 +54,7 @@ namespace Faculty.Models
             Theme = theme;
             CourseStatus = courseStatus;
             StudentsCount = studentsCount;
+            Lector = lector;
         }
 
     }

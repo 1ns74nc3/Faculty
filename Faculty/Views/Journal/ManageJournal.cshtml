@@ -20,7 +20,7 @@
             <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
             <td>@Html.DisplayFor(modelItem => item.LastName)</td>
             <td>@Html.DisplayFor(modelItem => item.Mark)</td>
-            <td>@Html.ActionLink("Edit Mark", "ManageUserMark", new { journalId = item.Id, courseId = item.CourseId}) </td>
+            <td>@Html.ActionLink("Edit Mark", "ManageUserMark", new { journalId = item.JournalId, courseId = item.CourseId}) </td>
         </tr>
         }
     </tbody>

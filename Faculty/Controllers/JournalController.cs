@@ -18,6 +18,7 @@ namespace Faculty.Controllers
         {
             JournalsManager journalsManager = new JournalsManager();
             CoursesManager coursesManager = new CoursesManager();
+            UsersManager usersManager = new UsersManager();
             var journalsList = journalsManager.GetMarksForUsers(courseId);
             var course = coursesManager.GetSpecificCourse(courseId);
             List<JournalViewModel> journal = new List<JournalViewModel>();
@@ -32,8 +33,12 @@ namespace Faculty.Controllers
                 {
                     foreach (var item in journalsList)
                     {
-                        journal.Add(new JournalViewModel(item.Journals.First().Id, item.FirstName, item.LastName, item.Journals.First().Mark,
-                            course.CourseName, courseId));
+                        journal.Add(new JournalViewModel(
+                            item.Journals.First().Id,
+                            item.FirstName,
+                            item.LastName,
+                            item.Journals.First().Mark,
+                            course.CourseName));
                     }
                 }
 

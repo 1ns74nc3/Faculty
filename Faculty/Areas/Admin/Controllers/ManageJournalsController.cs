@@ -16,6 +16,7 @@ namespace Faculty.Areas.Admin.Controllers
         {
             JournalsManager journalsManager = new JournalsManager();
             CoursesManager coursesManager = new CoursesManager();
+            UsersManager usersManager = new UsersManager();
             var journalsList = journalsManager.GetAllJournals();
             List<JournalViewModel> journals = new List<JournalViewModel>();
 
@@ -23,17 +24,21 @@ namespace Faculty.Areas.Admin.Controllers
             {
                 foreach(var item in journalsList)
                 {
-                    var courseName = coursesManager.GetSpecificCourse(item.CourseId).CourseName;
+                    var course = coursesManager.GetSpecificCourse(item.CourseId);
+                    var lector = usersManager.GetSpecificUser(course.LectorId);
                     journals.Add(new JournalViewModel(
                         item.Id, 
                         item.Users.First().FirstName, 
                         item.Users.First().LastName, 
                         item.Mark,
-                        courseName
+                        course.CourseName,
+                        course.Theme,
+                        course.Id,
+                        string.Concat(lector.FirstName," ",lector.LastName)
                         ));
                 }
             }
-
+      
             return View(journals);
         }
 

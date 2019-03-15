@@ -11,7 +11,9 @@
             <th>@Html.DisplayNameFor(model => model.FirstName)</th>
             <th>@Html.DisplayNameFor(model => model.LastName)</th>
             <th>@Html.DisplayNameFor(model => model.Mark)</th>
-            <td>@Html.DisplayNameFor(model => model.CourseName)</td>
+            <th>@Html.DisplayNameFor(model => model.CourseName)</th>
+            <th>@Html.DisplayNameFor(model => model.CourseTheme)</th>
+            <th>@Html.DisplayNameFor(model => model.Lector)</th>
         </tr>
     </thead>
     <tbody>
@@ -22,7 +24,9 @@
                 <td>@Html.DisplayFor(modelItem => item.LastName)</td>
                 <td>@Html.DisplayFor(modelItem => item.Mark)</td>
                 <td>@Html.DisplayFor(modelItem => item.CourseName)</td>
-                <td>@Html.ActionLink("Change Mark", "EditMark", new { journalId = item.Id, courseId = item.CourseId}) </td>
+                <td>@Html.DisplayFor(modelItem => item.CourseTheme)</td>
+                <td>@Html.DisplayFor(modelItem => item.Lector)</td>
+                <td>@Html.ActionLink("Change Mark", "EditMark", new { journalId = item.JournalId, courseId = item.CourseId}) </td>
             </tr>
         }
     </tbody>

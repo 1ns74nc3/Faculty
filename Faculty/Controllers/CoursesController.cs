@@ -33,14 +33,19 @@ namespace Faculty.Controllers
         public ActionResult DisplayCourses()
         {
             CoursesManager coursesManager = new CoursesManager();
+            UsersManager usersManager = new UsersManager();
             var coursesList = coursesManager.GetCourses();
             List<CourseViewModel> courses = new List<CourseViewModel>();
             if (coursesList != null)
             {
                 foreach (var item in coursesList)
                 {
+                    var lectorData = usersManager.GetSpecificUser(item.LectorId);
+                    var lector = "None";
+                    if (lectorData != null)
+                        lector = string.Concat(lectorData.FirstName, " ", lectorData.LastName);
                     courses.Add(new CourseViewModel(item.Id, item.CourseName, item.StartDate.ToShortDateString(), item.EndDate.ToShortDateString(), 
-                        item.Theme, item.CourseStatus.ToString(), item.Users.Count));
+                        item.Theme, item.CourseStatus.ToString(), item.Users.Count, lector));
                 }
             }
             
@@ -50,7 +55,7 @@ namespace Faculty.Controllers
 
         // GET: Courses/SignToCourse
         [Authorize]
-        public ActionResult SignOrQuitCourse(int id, bool userIsOnCourse)
+        public ActionResult SignOrQuitCourse(int courseId, bool userIsOnCourse)
         {
             CoursesManager coursesManager = new CoursesManager();
             JournalsManager journalsManager = new JournalsManager();
@@ -59,13 +64,13 @@ namespace Faculty.Controllers
             
             if (userIsOnCourse)
             {
-                ViewBag.RegistrationResult = coursesManager.RemoveUserFromCourse(id, currentUserId);
+                ViewBag.RegistrationResult = coursesManager.RemoveUserFromCourse(courseId, currentUserId);
                 journalsManager.RemoveJournalForUser(currentUserId);
             }
             else
             {
-                ViewBag.RegistrationResult = coursesManager.AddUserToCourse(id, currentUserId);
-                journalsManager.AddJournalForUser(id, currentUserId);
+                ViewBag.RegistrationResult = coursesManager.AddUserToCourse(courseId, currentUserId);
+                journalsManager.AddJournalForUser(courseId, currentUserId);
             }
 
             return View();
