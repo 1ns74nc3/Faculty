@@ -117,26 +117,10 @@ namespace Faculty.Controllers
         {
             CoursesManager coursesManager = new CoursesManager();
             var coursesList = coursesManager.GetCoursesForLector(userId);
-            List<CourseViewModel> courses = new List<CourseViewModel>();
+            List<CourseViewModel> courses = CourseViewModel.GetCoursesList(coursesList, 2);
             ViewBag.Courses = true;
-            if (coursesList != null)
-            {
-                foreach (var item in coursesList)
-                {
-                    courses.Add(new CourseViewModel(
-                        item.Id,
-                        item.CourseName,
-                        item.StartDate.ToShortDateString(),
-                        item.EndDate.ToShortDateString(),
-                        item.Theme,
-                        item.CourseStatus.ToString(),
-                        item.Users.Count));
-                }
-            }
-            else
-            {
+            if (coursesList == null)
                 ViewBag.Courses = false;
-            }
 
             return View(courses);
         }
@@ -180,32 +164,7 @@ namespace Faculty.Controllers
             CoursesManager coursesManager = new CoursesManager();
             UsersManager usersManager = new UsersManager();
             var journalsList = journalsManager.GetAllJournalsForUser(userId);
-            List<JournalViewModel> journals = new List<JournalViewModel>();
-
-            if (journalsList != null)
-            {
-                foreach (var item in journalsList)
-                {
-                    var course = coursesManager.GetSpecificCourse(item.CourseId);
-                    var lectorData = usersManager.GetSpecificUser(course.LectorId);
-                    var lector = "None";
-                    if (lectorData != null)
-                        lector = string.Concat(lectorData.FirstName, " ", lectorData.LastName);
-                    journals.Add(new JournalViewModel(
-                        item.Id,
-                        item.Users.First().FirstName,
-                        item.Users.First().LastName,
-                        item.Mark,
-                        course.CourseName,
-                        course.Theme,
-                        course.Id,
-                        lector,
-                        course.CourseStatus.ToString()
-                        ));
-                }
-            }
-
-            ViewBag.Courses = journalsList.Any();
+            List<JournalViewModel> journals = JournalViewModel.GetJournalsList(journalsList, usersManager, coursesManager);
 
             return View(journals);
         }

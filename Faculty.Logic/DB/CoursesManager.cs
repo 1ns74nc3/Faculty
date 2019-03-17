@@ -1,4 +1,5 @@
 ﻿using Faculty.Logic.Models;
+using PagedList;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -37,6 +38,22 @@ namespace Faculty.Logic.DB
                     return "Congratulations! You signed to the course!";
                 }
                 return "You already signed to this course!";
+            }
+        }
+
+        public ICollection<Course> GetSortedCourses(string currentFilter, ICollection<Course> courses)
+        {
+            switch (currentFilter)
+            {
+                case "a-z":
+                    return courses.OrderBy(c => c.CourseName).ToList();
+                case "z-a":
+                    return courses.OrderByDescending(c => c.CourseName).ToList();
+                case "durationLowestToHighest":
+                    return courses.OrderBy(c => c.EndDate.Subtract(c.StartDate)).ToList();
+                case "durationHighestToLowest":
+                    return courses.OrderByDescending(c => c.EndDate.Subtract(c.StartDate)).ToList();
+                default: return courses;
             }
         }
 

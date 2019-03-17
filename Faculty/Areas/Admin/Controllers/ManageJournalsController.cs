@@ -18,26 +18,7 @@ namespace Faculty.Areas.Admin.Controllers
             CoursesManager coursesManager = new CoursesManager();
             UsersManager usersManager = new UsersManager();
             var journalsList = journalsManager.GetAllJournals();
-            List<JournalViewModel> journals = new List<JournalViewModel>();
-
-            if (journalsList != null)
-            {
-                foreach(var item in journalsList)
-                {
-                    var course = coursesManager.GetSpecificCourse(item.CourseId);
-                    var lector = usersManager.GetSpecificUser(course.LectorId);
-                    journals.Add(new JournalViewModel(
-                        item.Id, 
-                        item.Users.First().FirstName, 
-                        item.Users.First().LastName, 
-                        item.Mark,
-                        course.CourseName,
-                        course.Theme,
-                        course.Id,
-                        string.Concat(lector.FirstName," ",lector.LastName)
-                        ));
-                }
-            }
+            List<JournalViewModel> journals = JournalViewModel.GetJournalsList(journalsList, usersManager, coursesManager);
       
             return View(journals);
         }

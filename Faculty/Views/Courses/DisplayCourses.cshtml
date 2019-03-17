@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Faculty.Models.CourseViewModel>
+﻿@model PagedList.IPagedList<Faculty.Models.CourseViewModel>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Courses";
 }
@@ -8,29 +9,32 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.CourseName)</th>
-            <th>@Html.DisplayNameFor(model => model.StartDate)</th>
-            <th>@Html.DisplayNameFor(model => model.EndDate)</th>
-            <th>@Html.DisplayNameFor(model => model.CourseStatus)</th>
-            <th>@Html.DisplayNameFor(model => model.Theme)</th>
-            <th>@Html.DisplayNameFor(model => model.StudentsCount)</th>
-            <th>@Html.DisplayNameFor(model => model.Lector)</th>
+            <th>@Html.DisplayNameFor(model => model.First().CourseName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().StartDate)</th>
+            <th>@Html.DisplayNameFor(model => model.First().EndDate)</th>
+            <th>@Html.DisplayNameFor(model => model.First().CourseStatus)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Theme)</th>
+            <th>@Html.DisplayNameFor(model => model.First().StudentsCount)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Lector)</th>
         </tr>
     </thead>
     <tbody>
-        @foreach(var item in Model)
+        @foreach (var item in Model)
         {
-        <tr>
-            <td>@Html.DisplayFor(modelItem => item.CourseName)</td>
-            <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
-            <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
-            <td>@Html.DisplayFor(modelItem => item.CourseStatus)</td>
-            <td>@Html.DisplayFor(modelItem => item.Theme)</td>
-            <td>@Html.DisplayFor(modelItem => item.StudentsCount)</td>
-            <td>@Html.DisplayFor(modelItem => item.Lector)</td>
-            <td>@Html.ActionLink("Details", "CourseInfo", new { courseId = item.Id }, null) </td>
-        </tr>
-        } 
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.CourseName)</td>
+                <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.EndDate)</td>
+                <td>@Html.DisplayFor(modelItem => item.CourseStatus)</td>
+                <td>@Html.DisplayFor(modelItem => item.Theme)</td>
+                <td>@Html.DisplayFor(modelItem => item.StudentsCount)</td>
+                <td>@Html.DisplayFor(modelItem => item.Lector)</td>
+                <td>@Html.ActionLink("Details", "CourseInfo", new { courseId = item.Id }, null) </td>
+            </tr>
+        }
     </tbody>
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("DisplayCourses", new { page, currentFilter = ViewBag.CurrentFilter }))
 

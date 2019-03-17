@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Faculty.Logic.DB;
+using Faculty.Logic.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -57,5 +59,49 @@ namespace Faculty.Models
             Lector = lector;
         }
 
+        //return typed list to display it in View
+        public static List<CourseViewModel> GetCoursesList(ICollection<Course> coursesList, int constructorType)
+        {
+            UsersManager usersManager = new UsersManager();
+            List<CourseViewModel> courses = new List<CourseViewModel>();
+            switch (constructorType)
+            {
+                //Display courses for all users
+                case 1:
+                    foreach (var item in coursesList)
+                    {
+                        var lectorData = usersManager.GetSpecificUser(item.LectorId);
+                        var lector = "None";
+                        if (lectorData != null)
+                            lector = string.Concat(lectorData.FirstName, " ", lectorData.LastName);
+                        courses.Add(new CourseViewModel(
+                            item.Id, 
+                            item.CourseName, 
+                            item.StartDate.ToShortDateString(), 
+                            item.EndDate.ToShortDateString(),
+                            item.Theme, 
+                            item.CourseStatus.ToString(), 
+                            item.Users.Count, 
+                            lector));
+                    }
+                    break;
+                //Display courses for lector
+                case 2:
+                    foreach (var item in coursesList)
+                    {
+                        courses.Add(new CourseViewModel(
+                            item.Id,
+                            item.CourseName,
+                            item.StartDate.ToShortDateString(),
+                            item.EndDate.ToShortDateString(),
+                            item.Theme,
+                            item.CourseStatus.ToString(),
+                            item.Users.Count));
+                    }
+                    break;
+            }
+            
+            return courses;
+        }
     }
 }

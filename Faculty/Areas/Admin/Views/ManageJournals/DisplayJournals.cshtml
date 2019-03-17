@@ -14,6 +14,7 @@
             <th>@Html.DisplayNameFor(model => model.CourseName)</th>
             <th>@Html.DisplayNameFor(model => model.CourseTheme)</th>
             <th>@Html.DisplayNameFor(model => model.Lector)</th>
+            <th>@Html.DisplayNameFor(model => model.CourseStatus)</th>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +27,7 @@
                 <td>@Html.DisplayFor(modelItem => item.CourseName)</td>
                 <td>@Html.DisplayFor(modelItem => item.CourseTheme)</td>
                 <td>@Html.DisplayFor(modelItem => item.Lector)</td>
+                <td>@Html.DisplayFor(modelItem => item.CourseStatus)</td>
                 <td>@Html.ActionLink("Change Mark", "EditMark", new { journalId = item.JournalId, courseId = item.CourseId}) </td>
             </tr>
         }

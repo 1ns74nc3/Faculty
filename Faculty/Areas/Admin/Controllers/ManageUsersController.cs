@@ -52,15 +52,8 @@ namespace Faculty.Areas.Admin.Controllers
         {
             UsersManager usersManager = new UsersManager();
             var usersList = usersManager.GetUsers();
-            List<UserViewModel> users = new List<UserViewModel>();
-            if (usersList != null)
-            {
-                foreach (var item in usersList)
-                {
-                    users.Add(new UserViewModel(item.Id, item.FirstName, item.LastName, item.Age, item.Email, usersManager.GetUserRole(item.Id)));
-                }
-            }
-                
+            var users = UserViewModel.GetUsersList(usersList, usersManager);
+
             return View(users);
         }
 

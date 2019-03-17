@@ -3,7 +3,7 @@
     ViewBag.Title = "UserCourses";
 }
 
-@if (ViewBag.Courses)
+@if (Model.Any())
 {
     <h2>@Model.First().FirstName @Model.First().LastName Courses</h2>
     <table class="table table-hover">
@@ -39,7 +39,11 @@
 }
 else
 {
-
-    @Html.Label("You are not registered to any course!");
-
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>@Html.Label("You are not registered to any course!");</th>
+            </tr>
+        </thead>
+    </table>
 }

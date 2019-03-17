@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Faculty.Logic.DB;
+using Faculty.Logic.Models;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace Faculty.Models
 {
@@ -32,16 +36,7 @@ namespace Faculty.Models
 
         }
 
-        public JournalViewModel(int journalId, string firstName, string lastName, int mark, string courseName)
-        {
-            JournalId = journalId;
-            FirstName = firstName;
-            LastName = lastName;
-            Mark = mark;
-            CourseName = courseName;
-        }
-
-        public JournalViewModel(int journalId, string firstName, string lastName, int mark, string courseName, string courseTheme, int courseId, string lector)
+        public JournalViewModel(int journalId, string firstName, string lastName, int mark, string courseName, int courseId)
         {
             JournalId = journalId;
             FirstName = firstName;
@@ -49,8 +44,6 @@ namespace Faculty.Models
             Mark = mark;
             CourseName = courseName;
             CourseId = courseId;
-            CourseTheme = courseTheme;
-            Lector = lector;
         }
 
         public JournalViewModel(int journalId, string firstName, string lastName, int mark, string courseName, string courseTheme, int courseId, string lector, string courseStatus)
@@ -65,5 +58,49 @@ namespace Faculty.Models
             Lector = lector;
             CourseStatus = courseStatus;
         }
+
+        public static List<JournalViewModel> GetJournalsList(ICollection<ApplicationUser> users, Course course)
+        {
+            List<JournalViewModel> result = new List<JournalViewModel>();
+            foreach (var item in users)
+            {
+                result.Add(new JournalViewModel(
+                   item.Journals.First().Id,
+                   item.FirstName,
+                   item.LastName,
+                   item.Journals.First().Mark,
+                   course.CourseName,
+                   course.Id
+                   ));
+            }
+            return result;
+        }
+
+        public static List<JournalViewModel> GetJournalsList(ICollection<Journal> journals, UsersManager usersManager, CoursesManager coursesManager)
+        {
+            List<JournalViewModel> result = new List<JournalViewModel>();
+            foreach (var item in journals)
+            {
+                var course = coursesManager.GetSpecificCourse(item.CourseId);
+                var lectorData = usersManager.GetSpecificUser(course.LectorId);
+                var lector = "None";
+                if (lectorData != null)
+                    lector = string.Concat(lectorData.FirstName, " ", lectorData.LastName);
+                result.Add(new JournalViewModel(
+                    item.Id,
+                    item.Users.First().FirstName,
+                    item.Users.First().LastName,
+                    item.Mark,
+                    course.CourseName,
+                    course.Theme,
+                    course.Id,
+                    lector,
+                    course.CourseStatus.ToString()
+                    ));
+            }
+            return result;
+        }
+
+
     }
 }
