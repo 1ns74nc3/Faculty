@@ -297,6 +297,8 @@
     <Content Include="Views\Journal\ManageJournal.cshtml" />
     <Content Include="Views\Journal\ManageUserMark.cshtml" />
     <Content Include="Views\Manage\DisplayCoursesForLector.cshtml" />
+    <Content Include="Views\Shared\AccountBanned.cshtml" />
+    <Content Include="Views\Shared\AuthorizationError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

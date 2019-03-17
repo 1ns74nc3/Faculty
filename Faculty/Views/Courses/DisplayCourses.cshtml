@@ -8,16 +8,41 @@
 
 <table class="table table-hover">
     <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.First().CourseName)</th>
-            <th>@Html.DisplayNameFor(model => model.First().StartDate)</th>
-            <th>@Html.DisplayNameFor(model => model.First().EndDate)</th>
-            <th>@Html.DisplayNameFor(model => model.First().CourseStatus)</th>
-            <th>@Html.DisplayNameFor(model => model.First().Theme)</th>
-            <th>@Html.DisplayNameFor(model => model.First().StudentsCount)</th>
-            <th>@Html.DisplayNameFor(model => model.First().Lector)</th>
-        </tr>
-    </thead>
+        @using (Html.BeginForm("DisplayCourses", "Courses", new { currentFilter = ViewBag.CurrentFilter }, FormMethod.Post))
+        {
+            <tr>
+                <th>@Html.ActionLink("a-z", "DisplayCourses", new { currentFilter = "a-z" }, new { alt = "Course name - from a to z" })</th>
+                <th>@Html.ActionLink("Duration(L-H)", "DisplayCourses", new { currentFilter = "durationSTH" }, new { alt = "Course duration - Shortest to Highest" })</th>
+                <th></th>
+                <th>@Html.Label("Select Status")</th>
+                <th>@Html.Label("Select Theme")</th>
+                <th>@Html.ActionLink("Students(L-H)", "DisplayCourses", new { currentFilter = "studentsCountSTH" }, new { alt = "Students count - Highest to Shortest" })</th>
+                <th></th>
+                <th>@Html.Label("Select Lector")</th>
+                <th>@Html.ActionLink("Reset", "DisplayCourses", null, new { alt = "Reset filters" })</th>
+            </tr>
+            <tr>
+                <th>@Html.ActionLink("z-a", "DisplayCourses", new { currentFilter = "z-a" }, new { alt = "Course name - from z to a" })</th>
+                <th>@Html.ActionLink("Duration(H-L)", "DisplayCourses", new { currentFilter = "durationHTS" }, new { alt = "Course duration - Highest to Shortest" })</th>
+                <th></th>
+                <th>@Html.DropDownList("status", ViewBag.Status as SelectList, new { @class = "form-control" })</th>
+                <th>@Html.DropDownList("theme", ViewBag.Themes as SelectList, new { @class = "form-control" })</th>
+                <th>@Html.ActionLink("Students(H-L)", "DisplayCourses", new { currentFilter = "studentsCountHTS" }, new { alt = "Students count - Highest to Shortest" })</th>
+                <th></th>
+                <th>@Html.DropDownList("lector", ViewBag.Lectors as SelectList, new { @class = "form-control" })</th>
+                <th><input type="submit" value="Find" class="btn btn-default" /></th>
+            </tr>
+        }
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.First().CourseName)</th>
+                <th>@Html.DisplayNameFor(model => model.First().StartDate)</th>
+                <th>@Html.DisplayNameFor(model => model.First().EndDate)</th>
+                <th>@Html.DisplayNameFor(model => model.First().CourseStatus)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Theme)</th>
+                <th>@Html.DisplayNameFor(model => model.First().StudentsCount)</th>
+                <th>@Html.Label("Lector")</th>
+            </tr>
+        </thead>
     <tbody>
         @foreach (var item in Model)
         {

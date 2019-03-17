@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Faculty.Models;
 using Faculty.Logic.Models;
+using Faculty.Logic.DB;
 
 namespace Faculty.Controllers
 {

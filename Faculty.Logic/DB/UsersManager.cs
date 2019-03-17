@@ -41,6 +41,14 @@ namespace Faculty.Logic.DB
             }
         }
 
+        //public List<ApplicationUser> GetAllLectors(List<ApplicationUser> courses, ApplicationUser currentLector)
+        //{
+        //    using (ApplicationDbContext db = new ApplicationDbContext())
+        //    {
+
+        //    }
+        //}
+
         //Get all courses for specific user
         public List<ApplicationUser> GetCoursesForSpecificUser(string userId)
         {

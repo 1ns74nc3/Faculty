@@ -31,7 +31,7 @@ namespace Faculty.Controllers
 
                 return View(journals);
             }
-            return RedirectToRoute("Error");
+            return View("Error");
             
         }
 
@@ -53,7 +53,7 @@ namespace Faculty.Controllers
                 return View(journal);
             }
 
-            return RedirectToAction("Error");
+            return View("Error");
         }
 
         // POST: Journal/ManageUserMark
@@ -70,7 +70,7 @@ namespace Faculty.Controllers
             }
             else
             {
-                ModelState.AddModelError("error", "You entered invalid data!" );
+                ModelState.AddModelError("Error", "You entered invalid data!" );
                 var defaultJournal = journalsManager.GetJournal(journal.Id);
                 ViewBag.CourseId = currentcourseId;
                 ViewBag.JournalId = journalId;

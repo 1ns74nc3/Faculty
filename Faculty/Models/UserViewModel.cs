@@ -45,7 +45,14 @@ namespace Faculty.Models
             {
                 foreach (var item in usersList)
                 {
-                    users.Add(new UserViewModel(item.Id, item.FirstName, item.LastName, item.Age, item.Email, usersManager.GetUserRole(item.Id)));
+                    users.Add(new UserViewModel(
+                        item.Id, 
+                        item.FirstName, 
+                        item.LastName, 
+                        item.Age, 
+                        item.Email, 
+                        usersManager.GetUserRole(item.Id)
+                        ));
                 }
             }
             return users;

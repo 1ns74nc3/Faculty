@@ -9,6 +9,15 @@
 15/03
 
 Доделать блокировку юзера!!!
+UsersManager usersManager = new UsersManager();
+                    string currentUserId = User.Identity.GetUserId();
+                    bool userIsBlocked = usersManager.GetSpecificUser(currentUserId).UserIsBlocked;
+
+                    if (userIsBlocked)
+                    {
+                        AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                        return View("AccountBanned");
+                    }
 
 Сделать фильтрацию и вывод по страницам!!!
 

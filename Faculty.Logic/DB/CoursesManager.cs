@@ -41,18 +41,68 @@ namespace Faculty.Logic.DB
             }
         }
 
-        public ICollection<Course> GetSortedCourses(string currentFilter, ICollection<Course> courses)
+        //Get list of all themes
+        public List<string> GetAllThemes(string currentTheme)
         {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                List<string> result = new List<string> { currentTheme };
+                foreach(var item in db.Courses.Select(c => c.Theme).Distinct().ToList())
+                {
+                    if (!result.Contains(item))
+                    {
+                        result.Add(item);
+                    }
+                }
+                if (currentTheme != null && currentTheme != "")
+                {
+                    result.Add(null);
+                }
+                return result;
+            }
+        }
+
+        //Get sorted list of courses
+        public ICollection<Course> GetSortedCourses(string currentFilter, string status, string theme, ApplicationUser lector, ICollection<Course> courses)
+        {
+            if (status != null && status != "" && status != "All")
+            {
+                courses = courses.Where(c => c.CourseStatus.ToString() == theme).ToList();
+            }
+
+            if (theme != null && theme != "")
+            {
+                courses = courses.Where(c => c.Theme == theme).ToList();
+            }
+
+            //if (lector.FirstName != null && lector.LastName != null)
+            //{
+            //    string lectorId = null;
+            //    using (ApplicationDbContext db = new ApplicationDbContext())
+            //    {
+            //        lectorId = db.Users.Where(u => u.FirstName == lector.FirstName && u.LastName == lector.LastName).SingleOrDefault().Id;
+            //    }
+            //    courses = courses.Where(c => c.LectorId == lectorId).ToList();
+            //}
+
             switch (currentFilter)
             {
                 case "a-z":
                     return courses.OrderBy(c => c.CourseName).ToList();
                 case "z-a":
                     return courses.OrderByDescending(c => c.CourseName).ToList();
-                case "durationLowestToHighest":
+                //ShortestToHighest
+                case "durationSTH":
                     return courses.OrderBy(c => c.EndDate.Subtract(c.StartDate)).ToList();
-                case "durationHighestToLowest":
+                //HighestToShortest
+                case "durationHTS":
                     return courses.OrderByDescending(c => c.EndDate.Subtract(c.StartDate)).ToList();
+                //ShortestToHighest
+                case "studentsCountSTH":
+                    return courses.OrderByDescending(c => c.Users.Count).ToList();
+                //HighestToShortest
+                case "studentsCountHTS":
+                    return courses.OrderByDescending(c => c.Users.Count).ToList();
                 default: return courses;
             }
         }
@@ -144,7 +194,7 @@ namespace Faculty.Logic.DB
                 {
                     course.Users.Remove(user);
                     db.SaveChanges();
-                    return "User removed from the course!";
+                    return "You left the course!";
                 }
                 return "You are not registered to this course!";
             }
