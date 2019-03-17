@@ -63,7 +63,7 @@ namespace Faculty.Logic.DB
         }
 
         //Get sorted list of courses
-        public ICollection<Course> GetSortedCourses(string currentFilter, string status, string theme, ApplicationUser lector, ICollection<Course> courses)
+        public ICollection<Course> GetSortedCourses(string currentFilter, string status, string theme, string lector, ICollection<Course> courses)
         {
             if (status != null && status != "" && status != "All")
             {
@@ -75,15 +75,16 @@ namespace Faculty.Logic.DB
                 courses = courses.Where(c => c.Theme == theme).ToList();
             }
 
-            //if (lector.FirstName != null && lector.LastName != null)
-            //{
-            //    string lectorId = null;
-            //    using (ApplicationDbContext db = new ApplicationDbContext())
-            //    {
-            //        lectorId = db.Users.Where(u => u.FirstName == lector.FirstName && u.LastName == lector.LastName).SingleOrDefault().Id;
-            //    }
-            //    courses = courses.Where(c => c.LectorId == lectorId).ToList();
-            //}
+            if (lector!=null && lector!="")
+            {
+                string lectorId = null;
+                using (ApplicationDbContext db = new ApplicationDbContext())
+                {
+                    var users = db.Users.Where(u => u.Roles.Any(r => r.RoleId == db.Roles.FirstOrDefault(role => role.Name == "Lector").Id)).ToList();
+                    lectorId = users.Where(u => string.Concat(u.FirstName," ",u.LastName).Equals(lector)).FirstOrDefault().Id;
+                }
+                courses = courses.Where(c => c.LectorId == lectorId).ToList();
+            }
 
             switch (currentFilter)
             {

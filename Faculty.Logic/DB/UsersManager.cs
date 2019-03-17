@@ -41,13 +41,25 @@ namespace Faculty.Logic.DB
             }
         }
 
-        //public List<ApplicationUser> GetAllLectors(List<ApplicationUser> courses, ApplicationUser currentLector)
-        //{
-        //    using (ApplicationDbContext db = new ApplicationDbContext())
-        //    {
+        public List<string> GetAllLectors(List<string> courses, string currentLector)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                List<string> result = new List<string>();
+                result.Add(currentLector);
+                foreach (var item in courses)
+                {
+                    if (!result.Contains(item) && !item.Equals("None"))
+                    {
+                        result.Add(item);
+                    }
+                }
+                if (currentLector != null && currentLector != "")
+                    result.Add(null);
 
-        //    }
-        //}
+                return result;
+            }
+        }
 
         //Get all courses for specific user
         public List<ApplicationUser> GetCoursesForSpecificUser(string userId)

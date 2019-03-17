@@ -32,7 +32,7 @@ namespace Faculty.Controllers
         }
 
         // GET: Courses/DisplayCourses
-        public ActionResult DisplayCourses(string currentFilter, string status, string theme, ApplicationUser lector, int? page)
+        public ActionResult DisplayCourses(string currentFilter, string status, string theme, string lector, int? page)
         {
             ViewBag.CurrentFilter = currentFilter;
             CoursesManager coursesManager = new CoursesManager();
@@ -43,8 +43,9 @@ namespace Faculty.Controllers
                 coursesList = coursesManager.GetSortedCourses(currentFilter, status, theme, lector, coursesList);
                 var coursesPost = CourseViewModel.GetCoursesList(coursesList, 1);
                 ViewBag.Themes = new SelectList(coursesManager.GetAllThemes(theme));
-                ViewBag.Status = new SelectList(new List<string> { "Unknown", "Upcoming", "Active", "Ended" });
-                ViewBag.Lectors = null;
+                ViewBag.Status = new SelectList(new List<string> { "All", "Unknown", "Upcoming", "Active", "Ended" });
+                ViewBag.Lectors = new SelectList(usersManager.GetAllLectors(
+                    coursesPost.Select(c => c.Lector).ToList(), lector), lector);
 
                 int pageSizePost = 2;
                 int pageNumberPost = (page ?? 1);
@@ -54,7 +55,8 @@ namespace Faculty.Controllers
             var courses = CourseViewModel.GetCoursesList(coursesList, 1);
             ViewBag.Themes = new SelectList(coursesManager.GetAllThemes(theme));
             ViewBag.Status = new SelectList(new List<string> { "All" ,"Unknown", "Upcoming", "Active", "Ended" });
-            ViewBag.Lectors = null;
+            ViewBag.Lectors = new SelectList(usersManager.GetAllLectors(
+                    courses.Select(c => c.Lector).ToList(), lector), lector);
 
             int pageSize = 2;
             int pageNumber = (page ?? 1);
