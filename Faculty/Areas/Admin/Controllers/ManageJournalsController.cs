@@ -13,8 +13,9 @@ namespace Faculty.Areas.Admin.Controllers
     public class ManageJournalsController : Controller
     {
         // GET: Admin/ManageJournals/DisplayJournals
-        public ActionResult DisplayJournals(string userFirstNameFilter, string userLastNameFilter, int? page)
+        public ActionResult DisplayJournals(string userFirstNameFilter, string userLastNameFilter, int? page, string statusMessage)
         {
+            ViewBag.StatusMessage = statusMessage;
             JournalsManager journalsManager = new JournalsManager();
             CoursesManager coursesManager = new CoursesManager();
             UsersManager usersManager = new UsersManager();
@@ -58,7 +59,7 @@ namespace Faculty.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 journalsManager.EditJournal(journal);
-                return RedirectToAction("DisplayJournals");
+                return RedirectToAction("DisplayJournals", new { statusMessage = "You succesfully edited mark!" });
             }
             else
             {

@@ -37,7 +37,7 @@ namespace Faculty.Areas.Admin.Controllers
                     UserInformation = user.UserInformation
                 };
                 usersManager.AddUser(newUser, user.Password, role);
-                return RedirectToAction("DisplayUsers");
+                return RedirectToAction("DisplayUsers" , new { statusMessage = "You succesfully added new user!" });
             }
             else
             {
@@ -49,8 +49,9 @@ namespace Faculty.Areas.Admin.Controllers
 
 
         // GET: Admin/ManageUsers/DisplayUsers
-        public ActionResult DisplayUsers(string userFirstNameFilter, string userLastNameFilter, string roleFilter, int? page)
+        public ActionResult DisplayUsers(string userFirstNameFilter, string userLastNameFilter, string roleFilter, int? page, string statusMessage)
         {
+            ViewBag.StatusMessage = statusMessage;
             ViewBag.FirstNameFilter = userFirstNameFilter;
             ViewBag.LastNameFilter = userLastNameFilter;
             ViewBag.RoleFilter = roleFilter;
@@ -94,7 +95,7 @@ namespace Faculty.Areas.Admin.Controllers
             {
                 UsersManager userManager = new UsersManager();
                 userManager.EditUser(user, role);
-                return RedirectToAction("DisplayUsers");
+                return RedirectToAction("DisplayUsers", new { statusMessage = "You succesfully edited"+user.FirstName+" "+user.LastName+"user!" });
             }
             else
             {

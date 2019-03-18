@@ -15,8 +15,9 @@ namespace Faculty.Controllers
     public class JournalController : Controller
     {
         // GET: Journal/ManageJournal
-        public ActionResult ManageJournal(int courseId, string userFirstNameFilter, string userLastNameFilter, int? page)
+        public ActionResult ManageJournal(int courseId, string userFirstNameFilter, string userLastNameFilter, int? page, string statusMessage )
         {
+            ViewBag.StatusMessage = statusMessage;
             JournalsManager journalsManager = new JournalsManager();
             CoursesManager coursesManager = new CoursesManager();
             UsersManager usersManager = new UsersManager();
@@ -80,7 +81,7 @@ namespace Faculty.Controllers
             if (ModelState.IsValid)
             {
                 journalsManager.EditJournal(journal);
-                return RedirectToAction("ManageJournal", "Journal", new { courseId = currentcourseId });
+                return RedirectToAction("ManageJournal", "Journal", new { courseId = currentcourseId, statusMessage = "You succesfully edited mark!" });
             }
             else
             {

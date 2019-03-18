@@ -10,6 +10,7 @@ using Faculty.Models;
 using Faculty.Logic.DB;
 using System.Collections.Generic;
 using PagedList;
+using Faculty.Logic.Models;
 
 namespace Faculty.Controllers
 {
@@ -64,6 +65,7 @@ namespace Faculty.Controllers
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.ProfileEdited ? "You succesfully edited your account data!"
                 : "";
 
             var userId = User.Identity.GetUserId();
@@ -139,6 +141,35 @@ namespace Faculty.Controllers
 
 
             return View(courses.ToPagedList(pageNumber, pageSize));
+        }
+
+        // GET: /Manage/EditUserData
+        public ActionResult EditUserData(string userId)
+        {
+            UsersManager usersManager = new UsersManager();
+            var user = usersManager.GetSpecificUser(userId);
+            ViewBag.UserId = userId;
+
+            return View(user);
+        }
+
+        // POST: /Manage/EditUserData
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditUserData(ApplicationUser user, string role, string userId)
+        {
+            user.Id = userId;
+            if (ModelState.IsValid)
+            {
+                UsersManager userManager = new UsersManager();
+                userManager.EditUser(user, null);
+                return RedirectToAction("Index", new { Message = ManageMessageId.ProfileEdited });
+            }
+            else
+            {
+                ViewBag.UserId = userId;
+                return View(user);
+            }
         }
 
         //
@@ -261,6 +292,7 @@ namespace Faculty.Controllers
         {
             AddPhoneSuccess,
             ChangePasswordSuccess,
+            ProfileEdited,
             SetTwoFactorSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,

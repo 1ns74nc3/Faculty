@@ -1,10 +1,12 @@
 ﻿@model PagedList.IPagedList<Faculty.Models.CourseViewModel>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Courses";
+    ViewBag.Title = "Manage Courses";
 }
+<h1>@ViewBag.StatusMessage</h1>
 
 <h2>Courses</h2>
+
 @if (!Model.Any())
 {
     <h2>@Html.Label("There's no courses to display!")</h2>

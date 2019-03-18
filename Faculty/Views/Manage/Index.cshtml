@@ -16,7 +16,9 @@
     @Html.Label("Age");
     <p>@ViewBag.UserData.Age</p>
     <br />
-    @Html.ActionLink("View user courses", "DisplayUserCourses", new { userId = ViewBag.UserData.Id });
+    @Html.ActionLink("View user courses", "DisplayUserCourses", new { userId = ViewBag.UserData.Id })
+    <br />
+    @Html.ActionLink("Edit profile", "EditUserData", new { userId = ViewBag.UserData.Id })
     <br />
     @if (ViewBag.Lector == "Lector")
     {

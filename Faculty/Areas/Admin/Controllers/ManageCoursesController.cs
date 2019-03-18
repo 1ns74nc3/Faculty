@@ -33,7 +33,7 @@ namespace Faculty.Areas.Admin.Controllers
                     course.LectorId = lector;
                 }
                 coursesManager.AddCourse(course);
-                return RedirectToAction("DisplayCourses");
+                return RedirectToAction("DisplayCourses", new { statusMessage = "You succesfully edited " + course.CourseName + " course!" });
             }
             else
             {
@@ -45,8 +45,10 @@ namespace Faculty.Areas.Admin.Controllers
         }
 
         // GET: Admin/ManageCourses/DisplayCourses
-        public ActionResult DisplayCourses(string statusFilter, string themeFilter, string lectorFilter, string courseNameFilter, int? page)
+        public ActionResult DisplayCourses(string statusFilter, string themeFilter, string lectorFilter, string courseNameFilter, int? page, string statusMessage)
         {
+            ViewBag.StatusMessage = statusMessage;
+
             CoursesManager coursesManager = new CoursesManager();
             UsersManager usersManager = new UsersManager();
             ViewBag.CurrentStatusFilter = statusFilter;
@@ -112,7 +114,7 @@ namespace Faculty.Areas.Admin.Controllers
                     coursesManager.EditCourse(course);
                 }
 
-                return RedirectToAction("DisplayCourses");
+                return RedirectToAction("DisplayCourses", new { statusMessage = "You succesfully edited " + course.CourseName+" course!"});
             }
             else
             {

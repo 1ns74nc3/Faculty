@@ -35,8 +35,11 @@ namespace Faculty.Logic.DB
                 userToChange.UserInformation = user.UserInformation;
                 userToChange.UserIsBlocked = user.UserIsBlocked;
                 var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
-                userManager.RemoveFromRole(user.Id, userManager.GetRoles(user.Id).SingleOrDefault());
-                userManager.AddToRole(user.Id, role);
+                if (role != null)
+                {
+                    userManager.RemoveFromRole(user.Id, userManager.GetRoles(user.Id).SingleOrDefault());
+                    userManager.AddToRole(user.Id, role);
+                }
                 db.SaveChanges();
             }
         }
