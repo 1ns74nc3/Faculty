@@ -23,17 +23,17 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.StartDate, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
-                    @Html.Label("Date format = mm/dd/year(example: 1/31/2019)")
                     @Html.TextBoxFor(m => m.StartDate, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+                    @Html.Label("Date format = mm/dd/year(example: 1/31/2019)")
                 </div>
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.EndDate, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
-                    @Html.Label("Date format = mm/dd/year(example: 1/31/2019)")
                     @Html.TextBoxFor(m => m.EndDate, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger" })
+                    @Html.Label("If you will enter End date which is lower than Start date it will automatically set End date to 90 days from Start date ")
                 </div>
             </div>
             <div class="form-group">
