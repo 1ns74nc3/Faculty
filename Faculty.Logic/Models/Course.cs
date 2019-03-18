@@ -47,7 +47,14 @@ namespace Faculty.Logic.Models
         {
             CourseName = courseName;
             StartDate = startDate;
-            EndDate = endDate;
+            if (startDate > endDate)
+            {
+                EndDate = startDate.AddDays(90);
+            }
+            else
+            {
+                EndDate = endDate;
+            }
             SetStatus();
             Theme = theme;
             Users = new HashSet<ApplicationUser>();

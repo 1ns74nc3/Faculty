@@ -2,6 +2,7 @@
 using Faculty.Logic.Models;
 using Faculty.Models;
 using Microsoft.AspNet.Identity;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,22 +15,35 @@ namespace Faculty.Controllers
     public class JournalController : Controller
     {
         // GET: Journal/ManageJournal
-        public ActionResult ManageJournal(int courseId)
+        public ActionResult ManageJournal(int courseId, string userFirstNameFilter, string userLastNameFilter, int? page)
         {
             JournalsManager journalsManager = new JournalsManager();
             CoursesManager coursesManager = new CoursesManager();
+            UsersManager usersManager = new UsersManager();
+            ViewBag.FirstNameFilter = userFirstNameFilter;
+            ViewBag.LastNameFilter = userLastNameFilter;
+            ViewBag.CourseId = courseId;
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
             var journalsList = journalsManager.GetMarksForUsers(courseId);
             var course = coursesManager.GetSpecificCourse(courseId);
-            List<JournalViewModel> journals = new List<JournalViewModel>();
 
             var courseLectorId = course.LectorId;
             var currentUserId = User.Identity.GetUserId();
 
             if (courseLectorId == currentUserId && course.CourseStatus == Course.Status.Ended)
             {
-                journals = JournalViewModel.GetJournalsList(journalsList, course);
+                if (Request.HttpMethod == "POST")
+                {
+                    journalsList = usersManager.GetSortedUsersList(userFirstNameFilter, userLastNameFilter,null, journalsList);
+                    List<JournalViewModel> journalsPost = JournalViewModel.GetJournalsList(journalsList, course);
 
-                return View(journals);
+                    return View(journalsPost.ToPagedList(pageNumber, pageSize));
+                }
+                journalsList = usersManager.GetSortedUsersList(userFirstNameFilter, userLastNameFilter, null, journalsList);
+                List<JournalViewModel> journals = JournalViewModel.GetJournalsList(journalsList, course);
+
+                return View(journals.ToPagedList(pageNumber, pageSize));
             }
             return View("Error");
             

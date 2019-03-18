@@ -293,7 +293,7 @@
     <Content Include="Areas\Admin\Views\ManageUsers\DisplayUsers.cshtml" />
     <Content Include="Views\Courses\CourseInfo.cshtml" />
     <Content Include="Views\Courses\SignOrQuitCourse.cshtml" />
-    <Content Include="Views\Manage\UserCourses.cshtml" />
+    <Content Include="Views\Manage\DisplayUserCourses.cshtml" />
     <Content Include="Views\Journal\ManageJournal.cshtml" />
     <Content Include="Views\Journal\ManageUserMark.cshtml" />
     <Content Include="Views\Manage\DisplayCoursesForLector.cshtml" />

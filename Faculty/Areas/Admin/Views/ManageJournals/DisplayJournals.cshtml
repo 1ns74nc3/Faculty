@@ -1,20 +1,50 @@
-﻿@model  IEnumerable<Faculty.Models.JournalViewModel>
+﻿@using PagedList.Mvc;
+@model  PagedList.IPagedList<Faculty.Models.JournalViewModel>
 @{
     ViewBag.Title = "ManageJournal";
 }
 
 <h2>Journals editor:</h2>
 
+@if (!Model.Any())
+{
+    <h2>@Html.Label("There's no journals to display!")</h2>
+}
+
 <table class="table table-hover">
     <thead>
+        @using (Html.BeginForm("DisplayJournals", "ManageJournals", new { Area = "Admin" }, FormMethod.Post, null))
+        {
+            <tr>
+                <th>@Html.Label("Find user by first name")</th>
+                <th>@Html.Label("Find user by last name")</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>@Html.ActionLink("Reset", "DisplayJournals", null, new { alt = "Reset filters" })</th>
+            </tr>
+            <tr>
+                <th>@Html.TextBox("userFirstNameFilter")</th>
+                <th>@Html.TextBox("userLastNameFilter")</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th><input type="submit" value="Find" class="btn btn-default" /></th>
+            </tr>
+        }
         <tr>
-            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
-            <th>@Html.DisplayNameFor(model => model.LastName)</th>
-            <th>@Html.DisplayNameFor(model => model.Mark)</th>
-            <th>@Html.DisplayNameFor(model => model.CourseName)</th>
-            <th>@Html.DisplayNameFor(model => model.CourseTheme)</th>
-            <th>@Html.DisplayNameFor(model => model.Lector)</th>
-            <th>@Html.DisplayNameFor(model => model.CourseStatus)</th>
+            <th>@Html.DisplayNameFor(model => model.First().FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Mark)</th>
+            <th>@Html.DisplayNameFor(model => model.First().CourseName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().CourseTheme)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Lector)</th>
+            <th>@Html.DisplayNameFor(model => model.First().CourseStatus)</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -28,8 +58,17 @@
                 <td>@Html.DisplayFor(modelItem => item.CourseTheme)</td>
                 <td>@Html.DisplayFor(modelItem => item.Lector)</td>
                 <td>@Html.DisplayFor(modelItem => item.CourseStatus)</td>
-                <td>@Html.ActionLink("Change Mark", "EditMark", new { journalId = item.JournalId, courseId = item.CourseId}) </td>
+                <td>@Html.ActionLink("Change Mark", "EditMark", new { journalId = item.JournalId, courseId = item.CourseId }) </td>
             </tr>
         }
     </tbody>
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action(
+    "DisplayCourses",
+    new {
+        page,
+        userFirstNameFilter = ViewBag.FirstNameFilter,
+        userLastNameFilter = ViewBag.LastNameFilter
+    }))

@@ -1,27 +1,59 @@
-﻿@model  IEnumerable<Faculty.Models.JournalViewModel>
+﻿@using PagedList.Mvc;
+@model  PagedList.IPagedList<Faculty.Models.JournalViewModel>
 @{
     ViewBag.Title = "ManageJournal";
 }
 
 <h2>Manage @Html.DisplayFor(modelItem => modelItem.First().CourseName) course Journal:</h2>
 
+@if (!Model.Any())
+{
+    <h2>There's no journals to display!</h2>
+}
 <table class="table table-hover">
     <thead>
+        @using (Html.BeginForm("ManageJournal", "Journal", new { courseId = ViewBag.CourseId }, FormMethod.Post, null))
+        {
+            <tr>
+                <th>@Html.Label("Find user by first name")</th>
+                <th>@Html.Label("Find user by last name")</th>
+                <th></th>
+                <th>@Html.ActionLink("Reset", "ManageJournal", new { courseId = ViewBag.CourseId }, new { alt = "Reset filters" })</th>
+            </tr>
+            <tr>
+                <th>@Html.TextBox("userFirstNameFilter")</th>
+                <th>@Html.TextBox("userLastNameFilter")</th>
+                <th></th>
+                <th><input type="submit" value="Find" class="btn btn-default" /></th>
+            </tr>
+        }
         <tr>
-            <th>@Html.DisplayNameFor(model => model.FirstName)</th>
-            <th>@Html.DisplayNameFor(model => model.LastName)</th>
-            <th>@Html.DisplayNameFor(model => model.Mark)</th>
+            <th>@Html.DisplayNameFor(model => model.First().FirstName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().LastName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Mark)</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model) {
-        <tr>
-            <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
-            <td>@Html.DisplayFor(modelItem => item.LastName)</td>
-            <td>@Html.DisplayFor(modelItem => item.Mark)</td>
-            <td>@Html.ActionLink("Edit Mark", "ManageUserMark", new { journalId = item.JournalId, courseId = item.CourseId}) </td>
-        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Mark)</td>
+                <td>@Html.ActionLink("Edit Mark", "ManageUserMark", new { journalId = item.JournalId, courseId = item.CourseId }) </td>
+            </tr>
         }
     </tbody>
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action(
+    "ManageJournal",
+    new {
+        page,
+        userFirstNameFilter = ViewBag.FirstNameFilter,
+        userLastNameFilter = ViewBag.LastNameFilter,
+        courseId = ViewBag.CourseId
+    }))
+<br />

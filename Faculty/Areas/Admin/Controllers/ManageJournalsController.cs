@@ -1,6 +1,7 @@
 ﻿using Faculty.Logic.DB;
 using Faculty.Logic.Models;
 using Faculty.Models;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +13,29 @@ namespace Faculty.Areas.Admin.Controllers
     public class ManageJournalsController : Controller
     {
         // GET: Admin/ManageJournals/DisplayJournals
-        public ActionResult DisplayJournals()
+        public ActionResult DisplayJournals(string userFirstNameFilter, string userLastNameFilter, int? page)
         {
             JournalsManager journalsManager = new JournalsManager();
             CoursesManager coursesManager = new CoursesManager();
             UsersManager usersManager = new UsersManager();
+            ViewBag.FirstNameFilter = userFirstNameFilter;
+            ViewBag.LastNameFilter = userLastNameFilter;
+            
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+            
             var journalsList = journalsManager.GetAllJournals();
+            if (Request.HttpMethod == "POST")
+            {
+                journalsList = journalsManager.GetSortedJournalsList(userFirstNameFilter, userLastNameFilter, journalsList);
+                List<JournalViewModel> journalsPost = JournalViewModel.GetJournalsList(journalsList, usersManager, coursesManager);
+
+                return View(journalsPost.ToPagedList(pageNumber, pageSize));
+            }
+            journalsList = journalsManager.GetSortedJournalsList(userFirstNameFilter, userLastNameFilter, journalsList);
             List<JournalViewModel> journals = JournalViewModel.GetJournalsList(journalsList, usersManager, coursesManager);
-      
-            return View(journals);
+
+            return View(journals.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Admin/ManageJournals/EditMark

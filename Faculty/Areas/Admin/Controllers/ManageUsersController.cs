@@ -1,6 +1,7 @@
 ﻿using Faculty.Logic.DB;
 using Faculty.Logic.Models;
 using Faculty.Models;
+using PagedList;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -48,13 +49,28 @@ namespace Faculty.Areas.Admin.Controllers
 
 
         // GET: Admin/ManageUsers/DisplayUsers
-        public ActionResult DisplayUsers()
+        public ActionResult DisplayUsers(string userFirstNameFilter, string userLastNameFilter, string roleFilter, int? page)
         {
+            ViewBag.FirstNameFilter = userFirstNameFilter;
+            ViewBag.LastNameFilter = userLastNameFilter;
+            ViewBag.RoleFilter = roleFilter;
+            ViewBag.Roles = new SelectList(new List<string> { "All", "Admin", "Lector", "Student" });
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
             UsersManager usersManager = new UsersManager();
             var usersList = usersManager.GetUsers();
+            if (Request.HttpMethod == "POST")
+            {
+                usersList = usersManager.GetSortedUsersList(userFirstNameFilter, userLastNameFilter, roleFilter, usersList);
+                var usersPost = UserViewModel.GetUsersList(usersList, usersManager);
+
+                return View(usersPost.ToPagedList(pageNumber, pageSize));
+            }
+
+            usersList = usersManager.GetSortedUsersList(userFirstNameFilter, userLastNameFilter, roleFilter, usersList);
             var users = UserViewModel.GetUsersList(usersList, usersManager);
 
-            return View(users);
+            return View(users.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Admin/ManageUsers/EditUser

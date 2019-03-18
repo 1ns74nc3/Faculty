@@ -1,20 +1,51 @@
-﻿@model IEnumerable<Faculty.Models.CourseViewModel>
+﻿@model PagedList.IPagedList<Faculty.Models.CourseViewModel>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Courses";
 }
 
 <h2>Courses</h2>
-
+@if (!Model.Any())
+{
+    <h2>@Html.Label("There's no courses to display!")</h2>
+}
 <table class="table table-hover">
     <thead>
+        @using (Html.BeginForm("DisplayCourses", "ManageCourses", FormMethod.Post))
+        {
+            <tr>
+                <th>@Html.Label("Find course by course name")</th>
+                <th></th>
+                <th></th>
+                <th>@Html.Label("Select Status")</th>
+                <th>@Html.Label("Select Theme")</th>
+                <th></th>
+                <th>@Html.Label("Select Lector")</th>
+                <th></th>
+                <th>@Html.ActionLink("Reset", "DisplayCourses", null, new { alt = "Reset filters" })</th>
+            </tr>
+            <tr>
+                <th>@Html.TextBox("courseNameFilter")</th>
+                <th></th>
+                <th></th>
+                <th>@Html.DropDownList("statusFilter", ViewBag.Status as SelectList, new { @class = "form-control" })</th>
+                <th>@Html.DropDownList("themeFilter", ViewBag.Themes as SelectList, new { @class = "form-control" })</th>
+                <th></th>
+                <th>@Html.DropDownList("lectorFilter", ViewBag.Lectors as SelectList, new { @class = "form-control" })</th>
+                <th></th>
+                <th><input type="submit" value="Find" class="btn btn-default" /></th>
+            </tr>
+        }
         <tr>
-            <th>@Html.DisplayNameFor(model => model.CourseName)</th>
-            <th>@Html.DisplayNameFor(model => model.StartDate)</th>
-            <th>@Html.DisplayNameFor(model => model.EndDate)</th>
-            <th>@Html.DisplayNameFor(model => model.CourseStatus)</th>
-            <th>@Html.DisplayNameFor(model => model.Theme)</th>
-            <th>@Html.DisplayNameFor(model => model.StudentsCount)</th>
-            <th>@Html.DisplayNameFor(model => model.Lector)</th>
+            <th>@Html.DisplayNameFor(model => model.First().CourseName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().StartDate)</th>
+            <th>@Html.DisplayNameFor(model => model.First().EndDate)</th>
+            <th>@Html.DisplayNameFor(model => model.First().CourseStatus)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Theme)</th>
+            <th>@Html.DisplayNameFor(model => model.First().StudentsCount)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Lector)</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -34,5 +65,16 @@
         }
     </tbody>
 </table>
-
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action(
+    "DisplayCourses",
+    new {
+        page,
+        statusFilter = ViewBag.CurrentStatusFilter,
+        themeFilter = ViewBag.CurrentThemeFilter,
+        lectorFilter = ViewBag.CurrentLectorFilter,
+        courseNameFilter = ViewBag.CourseNameFilter
+    }))
+<br />
 <h2>@Html.ActionLink("Add new course", "AddCourse", new { Area = "Admin" }, null)</h2>

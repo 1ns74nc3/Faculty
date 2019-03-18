@@ -32,34 +32,32 @@ namespace Faculty.Controllers
         }
 
         // GET: Courses/DisplayCourses
-        public ActionResult DisplayCourses(string currentFilter, string status, string theme, string lector, int? page)
+        public ActionResult DisplayCourses(string currentFilter, string statusFilter, string themeFilter, string lectorFilter, int? page)
         {
-            ViewBag.CurrentFilter = currentFilter;
             CoursesManager coursesManager = new CoursesManager();
             UsersManager usersManager = new UsersManager();
+            ViewBag.CurrentFilter = currentFilter;
+            ViewBag.CurrentStatusFilter = statusFilter;
+            ViewBag.CurrentThemeFilter = themeFilter;
+            ViewBag.CurrentLectorFilter = lectorFilter;
+            ViewBag.Themes = new SelectList(coursesManager.GetAllThemes(themeFilter));
+            ViewBag.Status = new SelectList(new List<string> { "All", "Unknown", "Upcoming", "Active", "Ended" });
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
             var coursesList = coursesManager.GetCourses();
             if (Request.HttpMethod == "POST")
             {
-                coursesList = coursesManager.GetSortedCourses(currentFilter, status, theme, lector, coursesList);
+                coursesList = coursesManager.GetSortedCourses(currentFilter, statusFilter, themeFilter, lectorFilter, null, coursesList);
                 var coursesPost = CourseViewModel.GetCoursesList(coursesList, 1);
-                ViewBag.Themes = new SelectList(coursesManager.GetAllThemes(theme));
-                ViewBag.Status = new SelectList(new List<string> { "All", "Unknown", "Upcoming", "Active", "Ended" });
+                
                 ViewBag.Lectors = new SelectList(usersManager.GetAllLectors(
-                    coursesPost.Select(c => c.Lector).ToList(), lector), lector);
-
-                int pageSizePost = 2;
-                int pageNumberPost = (page ?? 1);
-                return View(coursesPost.ToPagedList(pageNumberPost, pageSizePost));
+                    coursesPost.Select(c => c.Lector).ToList(), lectorFilter), lectorFilter);
+                return View(coursesPost.ToPagedList(pageNumber, pageSize));
             }
-            coursesList = coursesManager.GetSortedCourses(currentFilter, status, theme, lector, coursesList);
+            coursesList = coursesManager.GetSortedCourses(currentFilter, statusFilter, themeFilter, lectorFilter, null, coursesList);
             var courses = CourseViewModel.GetCoursesList(coursesList, 1);
-            ViewBag.Themes = new SelectList(coursesManager.GetAllThemes(theme));
-            ViewBag.Status = new SelectList(new List<string> { "All" ,"Unknown", "Upcoming", "Active", "Ended" });
             ViewBag.Lectors = new SelectList(usersManager.GetAllLectors(
-                    courses.Select(c => c.Lector).ToList(), lector), lector);
-
-            int pageSize = 2;
-            int pageNumber = (page ?? 1);
+                    courses.Select(c => c.Lector).ToList(), lectorFilter), lectorFilter);
 
             return View(courses.ToPagedList(pageNumber, pageSize));
         }

@@ -9,6 +9,7 @@ using Microsoft.Owin.Security;
 using Faculty.Models;
 using Faculty.Logic.DB;
 using System.Collections.Generic;
+using PagedList;
 
 namespace Faculty.Controllers
 {
@@ -113,16 +114,31 @@ namespace Faculty.Controllers
 
         // GET: /Manage/DisplayCoursesForLector
         [Authorize(Roles = "Lector")]
-        public ActionResult DisplayCoursesForLector(string userId)
+        public ActionResult DisplayCoursesForLector(string userId, string statusFilter, string themeFilter, string courseNameFilter, int? page)
         {
             CoursesManager coursesManager = new CoursesManager();
+            ViewBag.UserId = userId;
+            ViewBag.CurrentStatusFilter = statusFilter;
+            ViewBag.CurrentThemeFilter = themeFilter;
+            ViewBag.CourseNameFilter = courseNameFilter;
+            ViewBag.Themes = new SelectList(coursesManager.GetAllThemes(themeFilter));
+            ViewBag.Status = new SelectList(new List<string> { "All", "Unknown", "Upcoming", "Active", "Ended" });
+            int pageSize = 1;
+            int pageNumber = (page ?? 1);
             var coursesList = coursesManager.GetCoursesForLector(userId);
-            List<CourseViewModel> courses = CourseViewModel.GetCoursesList(coursesList, 2);
-            ViewBag.Courses = true;
-            if (coursesList == null)
-                ViewBag.Courses = false;
+            if (Request.HttpMethod == "POST")
+            {
+                coursesList = coursesManager.GetSortedCourses(null, statusFilter, themeFilter, null, courseNameFilter, coursesList);
+                List<CourseViewModel> coursesPost = CourseViewModel.GetCoursesList(coursesList, 2);
 
-            return View(courses);
+                return View(coursesPost.ToPagedList(pageNumber, pageSize));
+            }
+
+            coursesList = coursesManager.GetSortedCourses(null, statusFilter, themeFilter, null, courseNameFilter, coursesList);
+            List<CourseViewModel> courses = CourseViewModel.GetCoursesList(coursesList, 2);
+
+
+            return View(courses.ToPagedList(pageNumber, pageSize));
         }
 
         //
@@ -158,15 +174,18 @@ namespace Faculty.Controllers
         }
 
         // GET: /Manage/UserCourses
-        public ActionResult UserCourses(string userId)
+        public ActionResult DisplayUserCourses(string userId, int? page)
         {
             JournalsManager journalsManager = new JournalsManager();
             CoursesManager coursesManager = new CoursesManager();
             UsersManager usersManager = new UsersManager();
             var journalsList = journalsManager.GetAllJournalsForUser(userId);
             List<JournalViewModel> journals = JournalViewModel.GetJournalsList(journalsList, usersManager, coursesManager);
+            ViewBag.UserId = userId;
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
 
-            return View(journals);
+            return View(journals.ToPagedList(pageNumber, pageSize));
         }
 
         protected override void Dispose(bool disposing)

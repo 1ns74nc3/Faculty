@@ -56,7 +56,6 @@ namespace Faculty.Logic.DB
                 }
                 if (currentLector != null && currentLector != "")
                     result.Add(null);
-
                 return result;
             }
         }
@@ -94,6 +93,34 @@ namespace Faculty.Logic.DB
             {
                 users = db.Users.Include(u => u.Roles).OrderBy(u => u.LastName).ToList();
             }
+            return users;
+        }
+
+        public ICollection<ApplicationUser> GetSortedUsersList(string firstName, string lastName, string role, ICollection<ApplicationUser> users)
+        {
+            if (firstName != null && firstName != "")
+            {
+                users = users
+                    .Where(u => u.FirstName.Length >= firstName.Length)
+                    .Where(u => u.FirstName.ToLower().Substring(0, firstName.Length) == firstName)
+                    .ToList();
+            }
+
+            if (lastName != null && lastName != "")
+            {
+                users = users
+                    .Where(u => u.LastName.Length >= lastName.Length)
+                    .Where(u => u.LastName.ToLower().Substring(0, lastName.Length) == lastName)
+                    .ToList();
+            }
+
+            if(role!=null && role != "" && role!="All")
+            {
+                users = users
+                    .Where(u => GetUserRole(u.Id) == role)
+                    .ToList();
+            }
+
             return users;
         }
 

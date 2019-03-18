@@ -78,7 +78,7 @@ namespace Faculty.Logic.DB
 
 
         //Get all marks related to course and users 
-        public IList<ApplicationUser> GetMarksForUsers(int courseId)
+        public ICollection<ApplicationUser> GetMarksForUsers(int courseId)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
@@ -88,6 +88,27 @@ namespace Faculty.Logic.DB
                 
                 return result;
             }
+        }
+
+        public ICollection<Journal> GetSortedJournalsList(string firstName, string lastName, ICollection<Journal> journals)
+        {
+            if (firstName != null && firstName != "")
+            {
+                journals = journals
+                    .Where(j => j.Users.First().FirstName.Length >= firstName.Length)
+                    .Where(j => j.Users.First().FirstName.ToLower().Substring(0, firstName.Length) == firstName)
+                    .ToList();
+            }
+
+            if (lastName != null && lastName != "")
+            {
+                journals = journals
+                   .Where(j => j.Users.First().LastName.Length >= lastName.Length)
+                   .Where(j => j.Users.First().LastName.ToLower().Substring(0, lastName.Length) == lastName)
+                   .ToList();
+            }
+
+            return journals;
         }
 
         //Remove Mark for user in course

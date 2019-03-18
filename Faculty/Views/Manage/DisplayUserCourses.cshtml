@@ -1,0 +1,48 @@
+﻿@using PagedList.Mvc;
+@model  PagedList.IPagedList<Faculty.Models.JournalViewModel>
+@{
+    ViewBag.Title = "Diplay User Courses";
+}
+<h2>@Model.First().FirstName @Model.First().LastName Courses</h2>
+@if (!Model.Any())
+{
+    <h2>@Html.Label("There's no courses to display!")</h2>
+}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.First().CourseName)</th>
+            <th>@Html.DisplayNameFor(model => model.First().CourseTheme)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Lector)</th>
+            <th>@Html.DisplayNameFor(model => model.First().CourseStatus)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Mark)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.CourseName)</td>
+                <td>@Html.DisplayFor(modelItem => item.CourseTheme)</td>
+                <td>@Html.DisplayFor(modelItem => item.Lector)</td>
+                <td>@Html.DisplayFor(modelItem => item.CourseStatus)</td>
+                @if (item.CourseStatus == "Ended")
+                {
+                    <td>@Html.DisplayFor(modelItem => item.Mark)</td>
+                }
+                else
+                {
+                    <td>Course is not ended!</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action(
+    "DisplayCourses",
+    new {
+        page,
+        userId = ViewBag.UserId
+    }))

@@ -63,16 +63,28 @@ namespace Faculty.Logic.DB
         }
 
         //Get sorted list of courses
-        public ICollection<Course> GetSortedCourses(string currentFilter, string status, string theme, string lector, ICollection<Course> courses)
+        public ICollection<Course> GetSortedCourses(string currentFilter, string status, string theme, string lector, string courseName, ICollection<Course> courses)
         {
             if (status != null && status != "" && status != "All")
             {
-                courses = courses.Where(c => c.CourseStatus.ToString() == theme).ToList();
+                courses = courses
+                    .Where(c => c.CourseStatus.ToString() == status)
+                    .ToList();
             }
 
             if (theme != null && theme != "")
             {
-                courses = courses.Where(c => c.Theme == theme).ToList();
+                courses = courses
+                    .Where(c => c.Theme == theme)
+                    .ToList();
+            }
+
+            if (courseName != null && courseName != "")
+            {
+                courses = courses
+                    .Where(c => c.CourseName.Length >= courseName.Length)
+                    .Where(c => c.CourseName.ToLower().Substring(0, courseName.Length) == courseName.ToLower())
+                    .ToList();
             }
 
             if (lector!=null && lector!="")
