@@ -112,7 +112,7 @@ namespace Faculty.Logic.DB
                     return courses.OrderByDescending(c => c.EndDate.Subtract(c.StartDate)).ToList();
                 //ShortestToHighest
                 case "studentsCountSTH":
-                    return courses.OrderByDescending(c => c.Users.Count).ToList();
+                    return courses.OrderBy(c => c.Users.Count).ToList();
                 //HighestToShortest
                 case "studentsCountHTS":
                     return courses.OrderByDescending(c => c.Users.Count).ToList();

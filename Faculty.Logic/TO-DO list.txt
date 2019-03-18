@@ -2,24 +2,6 @@
 <remove name="RoleManager" /> - web.config - fix db 26 error
 
 
-14/03 
-
-Добавить вывод "Access denied" авторизованому юзеру вместо предложения перелогиниться, добавить норм редирект на ошибку
-
-15/03
-
-Доделать блокировку юзера!!!
-UsersManager usersManager = new UsersManager();
-                    string currentUserId = User.Identity.GetUserId();
-                    bool userIsBlocked = usersManager.GetSpecificUser(currentUserId).UserIsBlocked;
-
-                    if (userIsBlocked)
-                    {
-                        AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-                        return View("AccountBanned");
-                    }
-
-
 17/03 
 
 

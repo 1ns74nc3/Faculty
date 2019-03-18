@@ -72,10 +72,16 @@ namespace Faculty.Controllers
                 return View(model);
             }
 
+            //If user is blocked - redirect to error page and dont let him login
+            UsersManager usersManager = new UsersManager();
+            if (usersManager.UserIsBlocked(model.UserName))
+                return View("AccountBanned");
+
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
 
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+            
             switch (result)
             {
                 case SignInStatus.Success:

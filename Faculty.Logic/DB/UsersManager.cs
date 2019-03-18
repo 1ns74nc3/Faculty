@@ -193,5 +193,14 @@ namespace Faculty.Logic.DB
                 db.SaveChanges();
             }
         }
+
+        public bool UserIsBlocked(string userName)
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                return db.Users.SingleOrDefault(u => u.UserName == userName).UserIsBlocked;
+            }
+        }
+
     }
 }
