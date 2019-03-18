@@ -101,6 +101,25 @@ namespace Faculty.Models
             return result;
         }
 
+        public static List<JournalViewModel> GerSortedJournalsList(string courseName, string courseStatus, List<JournalViewModel> journals)
+        {
+            if (courseName != null && courseName != "")
+            {
+                journals = journals
+                    .Where(c => c.CourseName.Length >= courseName.Length)
+                    .Where(c => c.CourseName.ToLower().Substring(0, courseName.Length) == courseName.ToLower())
+                    .ToList();
+            }
+            if (courseStatus != null && courseStatus != "" && courseStatus != "All")
+            {
+                journals = journals
+                    .Where(c => c.CourseStatus == courseStatus)
+                    .ToList();
+            }
+
+            return journals;
+        }
+
 
     }
 }

@@ -3,13 +3,33 @@
 @{
     ViewBag.Title = "Diplay User Courses";
 }
-<h2>@Model.First().FirstName @Model.First().LastName Courses</h2>
 @if (!Model.Any())
 {
     <h2>@Html.Label("There's no courses to display!")</h2>
 }
+else
+{
+    <h2>@Model.First().FirstName @Model.First().LastName Courses</h2>
+}
 <table class="table table-hover">
     <thead>
+        @using (Html.BeginForm("DisplayUserCourses", "Manage", new { userId = ViewBag.UserId }, FormMethod.Post))
+        {
+            <tr>
+                <th>@Html.Label("Find course by course name")</th>
+                <th></th>
+                <th></th>
+                <th>@Html.Label("Select Status")</th>
+                <th>@Html.ActionLink("Reset", "DisplayUserCourses", null, new { alt = "Reset filters" })</th>
+            </tr>
+            <tr>
+                <th>@Html.TextBox("courseNameFilter")</th>
+                <th></th>
+                <th></th>
+                <th>@Html.DropDownList("courseStatusFilter", ViewBag.Status as SelectList, new { @class = "form-control" })</th>
+                <th><input type="submit" value="Find" class="btn btn-default" /></th>
+            </tr>
+        }
         <tr>
             <th>@Html.DisplayNameFor(model => model.First().CourseName)</th>
             <th>@Html.DisplayNameFor(model => model.First().CourseTheme)</th>
@@ -44,5 +64,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
     "DisplayCourses",
     new {
         page,
-        userId = ViewBag.UserId
-    }))
+        userId = ViewBag.UserId,
+        courseNameFilter = ViewBag.CourseName,
+        courseStatusFilter = ViewBag.CourseStatus
+}))

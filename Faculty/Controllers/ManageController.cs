@@ -174,16 +174,34 @@ namespace Faculty.Controllers
         }
 
         // GET: /Manage/UserCourses
-        public ActionResult DisplayUserCourses(string userId, int? page)
+        public ActionResult DisplayUserCourses(string userId, string courseNameFilter, string courseStatusFilter, int? page)
         {
             JournalsManager journalsManager = new JournalsManager();
             CoursesManager coursesManager = new CoursesManager();
             UsersManager usersManager = new UsersManager();
-            var journalsList = journalsManager.GetAllJournalsForUser(userId);
-            List<JournalViewModel> journals = JournalViewModel.GetJournalsList(journalsList, usersManager, coursesManager);
             ViewBag.UserId = userId;
+            ViewBag.CourseName = courseNameFilter;
+            ViewBag.CourseStatus = courseStatusFilter;
+            ViewBag.Status = new SelectList(new List<string> { "All", "Unknown", "Upcoming", "Active", "Ended" });
             int pageSize = 5;
             int pageNumber = (page ?? 1);
+
+            var journalsList = journalsManager.GetAllJournalsForUser(userId);
+            if (Request.HttpMethod == "POST")
+            {
+                List<JournalViewModel> journalsPost = JournalViewModel.GerSortedJournalsList(
+                courseNameFilter,
+                courseStatusFilter,
+                JournalViewModel.GetJournalsList(journalsList, usersManager, coursesManager
+                ));
+                return View(journalsPost.ToPagedList(pageNumber, pageSize));
+            }
+            List<JournalViewModel> journals = JournalViewModel.GerSortedJournalsList(
+                courseNameFilter,
+                courseStatusFilter,
+                JournalViewModel.GetJournalsList(journalsList, usersManager, coursesManager
+                ));
+            
 
             return View(journals.ToPagedList(pageNumber, pageSize));
         }
