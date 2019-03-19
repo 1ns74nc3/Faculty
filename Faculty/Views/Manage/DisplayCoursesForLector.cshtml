@@ -6,7 +6,8 @@
 
 <h2>Display Courses For Lector</h2>
 
-@if (!Model.Any()) {
+@if (!Model.Any())
+{
     <h2>@Html.Label("There's no course to display!")</h2>
 }
 
@@ -61,8 +62,8 @@
         }
     </tbody>
 </table>
-    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-    @Html.PagedListPager(Model, page => Url.Action(
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action(
         "DisplayCoursesForLector",
         new {
             page,
@@ -71,5 +72,5 @@
             themeFilter = ViewBag.CurrentThemeFilter,
             courseNameFilter = ViewBag.CourseNameFilter
         }))
-    <br />
-
+<br />
+@Html.ActionLink("Back", "Index", null, new { @class = "custom-links whole-page" })

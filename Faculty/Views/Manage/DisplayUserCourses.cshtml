@@ -69,3 +69,5 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
         courseNameFilter = ViewBag.CourseName,
         courseStatusFilter = ViewBag.CourseStatus
 }))
+<br />
+@Html.ActionLink("Back", "Index", null, new { @class = "custom-links whole-page" })

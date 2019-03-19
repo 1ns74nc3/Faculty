@@ -79,7 +79,7 @@ namespace Faculty.Controllers
 
             var userId = User.Identity.GetUserId();
             var user = usersManager.GetSpecificUser(userId);
-            ViewBag.Lector = usersManager.GetUserRole(userId);
+            ViewBag.UserRole = usersManager.GetUserRole(userId);
 
             var model = new IndexViewModel
             {

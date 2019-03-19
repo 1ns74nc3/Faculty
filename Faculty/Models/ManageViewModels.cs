@@ -8,9 +8,12 @@ namespace Faculty.Models
     public class IndexViewModel
     {
         public string UserId { get; set; }
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
         public int Age { get; set; }
+        [Display(Name = "User Information")]
         public string UserInfo { get; set; }
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }

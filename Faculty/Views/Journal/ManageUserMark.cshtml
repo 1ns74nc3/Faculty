@@ -26,6 +26,7 @@
     </div>
 }
 
+@Html.ActionLink("Back", "ManageJournal", new { courseId = ViewBag.CourseId }, new { @class = "custom-links whole-page" })
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

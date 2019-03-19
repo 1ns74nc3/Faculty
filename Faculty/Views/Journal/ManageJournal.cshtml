@@ -59,3 +59,4 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
         courseId = ViewBag.CourseId
     }))
 <br />
+@Html.ActionLink("Back", "CourseInfo", "Courses", new { courseId = ViewBag.CourseId }, new { @class = "custom-links whole-page" })

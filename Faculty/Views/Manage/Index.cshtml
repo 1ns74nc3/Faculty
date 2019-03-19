@@ -3,43 +3,77 @@
     ViewBag.Title = "Manage";
 }
 
-<h2>@ViewBag.Title.</h2>
+<h2>Manage your account</h2>
 
-<p class="text-success">@ViewBag.StatusMessage</p>
-<div>
-    @Html.DisplayNameFor(u => u.FirstName);
-    @Html.DisplayFor(u => u.FirstName);
-    <br />
-    @Html.DisplayNameFor(u => u.LastName);
-    @Html.DisplayFor(u => u.LastName);
-    <br />
-    @Html.DisplayNameFor(u => u.Age);
-    @Html.DisplayFor(u => u.Age);
-    <br />
-    @Html.DisplayNameFor(u => u.UserInfo);
-    @Html.DisplayFor(u => u.UserInfo);
-    <br />
-    @Html.ActionLink("View user courses", "DisplayUserCourses", new { userId = Model.UserId })
-    <br />
-    @Html.ActionLink("Edit profile", "EditUserData", new { userId = Model.UserId })
-    <br />
-    @if (ViewBag.Lector == "Lector")
-    {
-        @Html.ActionLink("Manage courses", "DisplayCoursesForLector", new { userId = Model.UserId });
-    }
-    <dl class="dl-horizontal">
-        <dt>Password:</dt>
-        <dd>
-            [
-            @if (Model.HasPassword)
-            {
-                @Html.ActionLink("Change your password", "ChangePassword")
-            }
-            else
-            {
-                @Html.ActionLink("Create", "SetPassword")
-            }
-            ]
-        </dd>
-    </dl>
+<h2 class="text-success">@ViewBag.StatusMessage</h2>
+<hr />
+<div class="user-profile">
+    <div class="user-profile-container">
+        <div>
+            <h3>@Html.LabelFor(u => u.FirstName):</h3>
+            <p>
+                @Html.DisplayFor(u => u.FirstName)
+            </p>
+        </div>
+        <div>
+            <h3>@Html.LabelFor(u => u.LastName):</h3>
+            <p>
+                @Html.DisplayFor(u => u.LastName)
+            </p>
+        </div>
+        <div>
+            <h3>@Html.LabelFor(u => u.Age):</h3>
+            <p>
+                @Html.DisplayFor(u => u.Age)
+            </p>
+        </div>
+        <div>
+            <h3>@Html.LabelFor(u => u.UserInfo):</h3>
+            <p>
+                @if (Model.UserInfo != null)
+                {
+                    @Html.DisplayFor(u => u.UserInfo)
+                }
+                else
+                {
+                    <span>None</span>
+                }
+
+            </p>
+        </div>
+    </div>
+    <div class="user-profile-container">
+        <div>
+            <h3>@Html.ActionLink("View your courses", "DisplayUserCourses", new { userId = Model.UserId }, new { @class = "custom-links" })</h3>
+        </div>
+        <div>
+            <h3>@Html.ActionLink("Edit your profile", "EditUserData", new { userId = Model.UserId }, new { @class = "custom-links" })</h3>
+        </div>
+        <div>
+            <h3>
+                @if (Model.HasPassword)
+                {
+                    @Html.ActionLink("Change your password", "ChangePassword", null, new { @class = "custom-links" })
+                }
+                else
+                {
+                    @Html.ActionLink("Set password", "SetPassword", null, new { @class = "custom-links" })
+                }
+            </h3>
+        </div>
+        @if (ViewBag.UserRole == "Lector")
+        {
+            <h3>@Html.Label("Lector functions:", new { @class = "lector" })</h3>
+            <div>
+                <h3>@Html.ActionLink("Manage courses", "DisplayCoursesForLector", new { userId = Model.UserId }, new { @class = "custom-links" })</h3>
+            </div>
+        }
+        else if (ViewBag.UserRole == "Admin")
+        {
+            <h3>@Html.Label("Administrator functions:", new { @class = "admin" })</h3>
+            <div>
+                <h3>@Html.ActionLink("Admin Panel", "AdminPanel", "Admin", new { area = "Admin" }, new { @class = "custom-links" })</h3>
+            </div>
+        }
+    </div>
 </div>
