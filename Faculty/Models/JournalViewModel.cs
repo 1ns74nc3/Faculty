@@ -8,7 +8,7 @@ namespace Faculty.Models
 {
     public class JournalViewModel
     {
-        public int JournalId { get; set; }
+        public int? JournalId { get; set; }
 
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
@@ -29,14 +29,14 @@ namespace Faculty.Models
 
         public string Lector { get; set; }
 
-        public int CourseId { get; set; }
+        public int? CourseId { get; set; }
 
         public JournalViewModel()
         {
 
         }
 
-        public JournalViewModel(int journalId, string firstName, string lastName, int mark, string courseName, int courseId)
+        public JournalViewModel(int? journalId, string firstName, string lastName, int mark, string courseName, int? courseId)
         {
             JournalId = journalId;
             FirstName = firstName;
@@ -46,7 +46,7 @@ namespace Faculty.Models
             CourseId = courseId;
         }
 
-        public JournalViewModel(int journalId, string firstName, string lastName, int mark, string courseName, string courseTheme, int courseId, string lector, string courseStatus)
+        public JournalViewModel(int? journalId, string firstName, string lastName, int mark, string courseName, string courseTheme, int? courseId, string lector, string courseStatus)
         {
             JournalId = journalId;
             FirstName = firstName;

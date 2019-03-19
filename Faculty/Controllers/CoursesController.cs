@@ -11,10 +11,22 @@ namespace Faculty.Controllers
 {
     public class CoursesController : Controller
     {
-        // GET: Courses/CourseInfo
-        public ActionResult CourseInfo(int courseId)
+        private UsersManager usersManager;
+        private JournalsManager journalsManager;
+        private CoursesManager coursesManager;
+
+        public CoursesController()
         {
-            CoursesManager coursesManager = new CoursesManager();
+            usersManager = new UsersManager();
+            journalsManager = new JournalsManager();
+            coursesManager = new CoursesManager();
+        }
+
+        // GET: /Courses/CourseInfo
+        public ActionResult CourseInfo(int? courseId)
+        {
+            if (courseId == null)
+                return View("Error");
             var course = coursesManager.GetSpecificCourse(courseId);
             ViewBag.Lector = coursesManager.GetLectorInfo(course);
             string currentUserId = User.Identity.GetUserId();
@@ -31,11 +43,9 @@ namespace Faculty.Controllers
             return View(course);
         }
 
-        // GET: Courses/DisplayCourses
+        // GET: /Courses/DisplayCourses
         public ActionResult DisplayCourses(string currentFilter, string statusFilter, string themeFilter, string lectorFilter, int? page)
         {
-            CoursesManager coursesManager = new CoursesManager();
-            UsersManager usersManager = new UsersManager();
             ViewBag.CurrentFilter = currentFilter;
             ViewBag.CurrentStatusFilter = statusFilter;
             ViewBag.CurrentThemeFilter = themeFilter;
@@ -62,12 +72,12 @@ namespace Faculty.Controllers
             return View(courses.ToPagedList(pageNumber, pageSize));
         }
 
-        // GET: Courses/SignToCourse
+        // GET: /Courses/SignOrQuitCourse
         [Authorize]
-        public ActionResult SignOrQuitCourse(int courseId, bool userIsOnCourse)
+        public ActionResult SignOrQuitCourse(int? courseId, bool userIsOnCourse = false)
         {
-            CoursesManager coursesManager = new CoursesManager();
-            JournalsManager journalsManager = new JournalsManager();
+            if (courseId == null)
+                return View("Error");
             string currentUserId = User.Identity.GetUserId();
             ViewBag.RegistrationResult = "";
             

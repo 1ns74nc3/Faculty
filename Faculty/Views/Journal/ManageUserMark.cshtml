@@ -6,7 +6,7 @@
 <h2>Manage @Model.Users.First().FirstName @Model.Users.First().LastName mark:</h2>
 
 
-@using (Html.BeginForm("ManageUserMark", "Journal", new { currentcourseId = ViewBag.CourseId, journalId = ViewBag.JournalId }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("ManageUserMark", "Journal", new { courseId = ViewBag.CourseId, journalId = ViewBag.JournalId }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     <h4>Set mark:</h4>

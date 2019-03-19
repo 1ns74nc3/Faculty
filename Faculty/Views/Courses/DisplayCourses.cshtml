@@ -13,6 +13,7 @@
     <thead>
         @using (Html.BeginForm("DisplayCourses", "Courses", new { currentFilter = ViewBag.CurrentFilter }, FormMethod.Post))
         {
+            @Html.AntiForgeryToken()
             <tr>
                 <th>@Html.ActionLink("a-z", "DisplayCourses", new { currentFilter = "a-z", statusFilter = ViewBag.CurrentStatusFilter,
                    themeFilter = ViewBag.CurrentThemeFilter, lectorFilter = ViewBag.CurrentLectorFilter}, new { alt = "Course name - from a to z" })</th>

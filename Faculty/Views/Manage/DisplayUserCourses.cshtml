@@ -15,6 +15,7 @@ else
     <thead>
         @using (Html.BeginForm("DisplayUserCourses", "Manage", new { userId = ViewBag.UserId }, FormMethod.Post))
         {
+            @Html.AntiForgeryToken()
             <tr>
                 <th>@Html.Label("Find course by course name")</th>
                 <th></th>
@@ -23,7 +24,7 @@ else
                 <th>@Html.ActionLink("Reset", "DisplayUserCourses", null, new { alt = "Reset filters" })</th>
             </tr>
             <tr>
-                <th>@Html.TextBox("courseNameFilter")</th>
+                <th>@Html.TextBox("courseNameFilter", null, new { @class = "form-control" })</th>
                 <th></th>
                 <th></th>
                 <th>@Html.DropDownList("courseStatusFilter", ViewBag.Status as SelectList, new { @class = "form-control" })</th>

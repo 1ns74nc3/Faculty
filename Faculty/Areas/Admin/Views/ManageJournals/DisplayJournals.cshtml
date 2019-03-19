@@ -16,6 +16,7 @@
     <thead>
         @using (Html.BeginForm("DisplayJournals", "ManageJournals", new { Area = "Admin" }, FormMethod.Post, null))
         {
+            @Html.AntiForgeryToken()
             <tr>
                 <th>@Html.Label("Find user by first name")</th>
                 <th>@Html.Label("Find user by last name")</th>
@@ -27,8 +28,8 @@
                 <th>@Html.ActionLink("Reset", "DisplayJournals", null, new { alt = "Reset filters" })</th>
             </tr>
             <tr>
-                <th>@Html.TextBox("userFirstNameFilter")</th>
-                <th>@Html.TextBox("userLastNameFilter")</th>
+                <th>@Html.TextBox("userFirstNameFilter", null, new { @class = "form-control" })</th>
+                <th>@Html.TextBox("userLastNameFilter", null, new { @class = "form-control" })</th>
                 <th></th>
                 <th></th>
                 <th></th>

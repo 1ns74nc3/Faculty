@@ -9,6 +9,9 @@ namespace Faculty.Logic.DB
     //Get, edit, delete data from Courses table
     public class CoursesManager
     {
+        private UsersManager usersManager = new UsersManager();
+        private JournalsManager journalsManager = new JournalsManager();
+
         //Add new course to database
         public void AddCourse(Course course)
         {
@@ -25,19 +28,26 @@ namespace Faculty.Logic.DB
         }
 
         //Sign user to specific course
-        public string AddUserToCourse(int courseId, string userId)
+        public string AddUserToCourse(int? courseId, string userId)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            if (courseId != null)
             {
-                var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
-                var user = db.Users.SingleOrDefault(c => c.Id == userId);
-                if (!course.Users.Contains(user))
+                using (ApplicationDbContext db = new ApplicationDbContext())
                 {
-                    course.Users.Add(user);
-                    db.SaveChanges();
-                    return "Congratulations! You signed to the course!";
+                    var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
+                    var user = db.Users.SingleOrDefault(c => c.Id == userId);
+                    if (!course.Users.Contains(user))
+                    {
+                        course.Users.Add(user);
+                        db.SaveChanges();
+                        return "Congratulations! You signed to the course!";
+                    }
+                    return "You already signed to this course!";
                 }
-                return "You already signed to this course!";
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -121,16 +131,19 @@ namespace Faculty.Logic.DB
         }
 
         //Delete course and all related journals from database
-        public void DeleteCourse(int id)
+        public void DeleteCourse(int? courseId)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            if (courseId != null)
             {
-                JournalsManager journalsManager = new JournalsManager();
-                var course = db.Courses.FirstOrDefault(c => c.Id.Equals(id));
-                journalsManager.DeleteJournalsWhenRemovingCourse(id);
-                db.Courses.Remove(course);
-                db.SaveChanges();
+                using (ApplicationDbContext db = new ApplicationDbContext())
+                {
+                    var course = db.Courses.FirstOrDefault(c => c.Id.Equals(courseId));
+                    journalsManager.DeleteJournalsWhenRemovingCourse(courseId);
+                    db.Courses.Remove(course);
+                    db.SaveChanges();
+                }
             }
+
         }
 
         //Edit course in database
@@ -178,49 +191,69 @@ namespace Faculty.Logic.DB
         {
             if (course.LectorId != null && course.LectorId != "")
             {
-                UsersManager userManager = new UsersManager();
-                var lector = userManager.GetSpecificUser(course.LectorId);
+                var lector = usersManager.GetSpecificUser(course.LectorId);
                 return string.Concat(lector.FirstName, " ", lector.LastName);
             }
             return "There's no lector for this course.";
         }
 
         //Get specific course by Course ID
-        public Course GetSpecificCourse(int id)
+        public Course GetSpecificCourse(int? courseId)
         {
-            Course course = new Course();
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            if (courseId != null)
             {
-                course = db.Courses.ToList().Where(c => c.Id == id).FirstOrDefault();
+                Course course = new Course();
+                using (ApplicationDbContext db = new ApplicationDbContext())
+                {
+                    course = db.Courses.ToList().Where(c => c.Id == courseId).FirstOrDefault();
+                }
+                return course;
             }
-            return course;
+            else
+            {
+                return null;
+            }
         }
 
         //Unsign user from course
-        public string RemoveUserFromCourse(int courseId, string userId)
+        public string RemoveUserFromCourse(int? courseId, string userId)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            if (courseId != null)
             {
-                var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
-                var user = db.Users.SingleOrDefault(c => c.Id == userId);
-                if (course.Users.Contains(user))
+                using (ApplicationDbContext db = new ApplicationDbContext())
                 {
-                    course.Users.Remove(user);
-                    db.SaveChanges();
-                    return "You left the course!";
+                    var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
+                    var user = db.Users.SingleOrDefault(c => c.Id == userId);
+                    if (course.Users.Contains(user))
+                    {
+                        course.Users.Remove(user);
+                        db.SaveChanges();
+                        return "You left the course!";
+                    }
+                    return "You are not registered to this course!";
                 }
-                return "You are not registered to this course!";
+            }
+            else
+            {
+                return null;
             }
         }
 
         //Check if user is signed to course
-        public bool UserIsSignedToCourse(int courseId, string userId)
+        public bool UserIsSignedToCourse(int? courseId, string userId)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            if (courseId != null)
             {
-                var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
-                var user = db.Users.SingleOrDefault(c => c.Id == userId);
-                return course.Users.Contains(user);
+                using (ApplicationDbContext db = new ApplicationDbContext())
+                {
+                    var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
+                    var user = db.Users.SingleOrDefault(c => c.Id == userId);
+                    return course.Users.Contains(user);
+                }
+            }
+            else
+            {
+                return false;
             }
         }
     }

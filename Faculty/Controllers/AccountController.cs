@@ -16,15 +16,19 @@ namespace Faculty.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private UsersManager usersManager;
+
 
         public AccountController()
         {
+            usersManager = new UsersManager();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            usersManager = new UsersManager();
         }
 
         public ApplicationSignInManager SignInManager
@@ -73,7 +77,6 @@ namespace Faculty.Controllers
             }
 
             //If user is blocked - redirect to error page and dont let him login
-            UsersManager usersManager = new UsersManager();
             if (usersManager.UserIsBlocked(model.UserName))
                 return View("AccountBanned");
 

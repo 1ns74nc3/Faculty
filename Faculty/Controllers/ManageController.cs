@@ -19,15 +19,24 @@ namespace Faculty.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private UsersManager usersManager;
+        private JournalsManager journalsManager;
+        private CoursesManager coursesManager;
 
         public ManageController()
         {
+            usersManager = new UsersManager();
+            journalsManager = new JournalsManager();
+            coursesManager = new CoursesManager();
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            usersManager = new UsersManager();
+            journalsManager = new JournalsManager();
+            coursesManager = new CoursesManager();
         }
 
         public ApplicationSignInManager SignInManager
@@ -69,11 +78,16 @@ namespace Faculty.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-            UsersManager usersManager = new UsersManager();
-            ViewBag.UserData = usersManager.GetSpecificUser(userId);
+            var user = usersManager.GetSpecificUser(userId);
             ViewBag.Lector = usersManager.GetUserRole(userId);
+
             var model = new IndexViewModel
             {
+                UserId = userId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Age = user.Age,
+                UserInfo = user.UserInformation,
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
@@ -118,7 +132,8 @@ namespace Faculty.Controllers
         [Authorize(Roles = "Lector")]
         public ActionResult DisplayCoursesForLector(string userId, string statusFilter, string themeFilter, string courseNameFilter, int? page)
         {
-            CoursesManager coursesManager = new CoursesManager();
+            if (usersManager.GetUserRole(userId) != "Lector" || userId == null)
+                return View("Error");
             ViewBag.UserId = userId;
             ViewBag.CurrentStatusFilter = statusFilter;
             ViewBag.CurrentThemeFilter = themeFilter;
@@ -143,10 +158,43 @@ namespace Faculty.Controllers
             return View(courses.ToPagedList(pageNumber, pageSize));
         }
 
+        // GET: /Manage/DisplayUserCourses
+        public ActionResult DisplayUserCourses(string userId, string courseNameFilter, string courseStatusFilter, int? page)
+        {
+            if(userId == null)
+                return View("Error");
+            ViewBag.UserId = userId;
+            ViewBag.CourseName = courseNameFilter;
+            ViewBag.CourseStatus = courseStatusFilter;
+            ViewBag.Status = new SelectList(new List<string> { "All", "Unknown", "Upcoming", "Active", "Ended" });
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+
+            var journalsList = journalsManager.GetAllJournalsForUser(userId);
+            if (Request.HttpMethod == "POST")
+            {
+                List<JournalViewModel> journalsPost = JournalViewModel.GerSortedJournalsList(
+                courseNameFilter,
+                courseStatusFilter,
+                JournalViewModel.GetJournalsList(journalsList, usersManager, coursesManager
+                ));
+                return View(journalsPost.ToPagedList(pageNumber, pageSize));
+            }
+            List<JournalViewModel> journals = JournalViewModel.GerSortedJournalsList(
+                courseNameFilter,
+                courseStatusFilter,
+                JournalViewModel.GetJournalsList(journalsList, usersManager, coursesManager
+                ));
+
+
+            return View(journals.ToPagedList(pageNumber, pageSize));
+        }
+
         // GET: /Manage/EditUserData
         public ActionResult EditUserData(string userId)
         {
-            UsersManager usersManager = new UsersManager();
+            if (userId == null)
+                return View("Error");
             var user = usersManager.GetSpecificUser(userId);
             ViewBag.UserId = userId;
 
@@ -158,11 +206,12 @@ namespace Faculty.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditUserData(ApplicationUser user, string role, string userId)
         {
+            if (userId == null)
+                return View("Error");
             user.Id = userId;
             if (ModelState.IsValid)
             {
-                UsersManager userManager = new UsersManager();
-                userManager.EditUser(user, null);
+                usersManager.EditUser(user, null);
                 return RedirectToAction("Index", new { Message = ManageMessageId.ProfileEdited });
             }
             else
@@ -204,38 +253,7 @@ namespace Faculty.Controllers
             return View(model);
         }
 
-        // GET: /Manage/UserCourses
-        public ActionResult DisplayUserCourses(string userId, string courseNameFilter, string courseStatusFilter, int? page)
-        {
-            JournalsManager journalsManager = new JournalsManager();
-            CoursesManager coursesManager = new CoursesManager();
-            UsersManager usersManager = new UsersManager();
-            ViewBag.UserId = userId;
-            ViewBag.CourseName = courseNameFilter;
-            ViewBag.CourseStatus = courseStatusFilter;
-            ViewBag.Status = new SelectList(new List<string> { "All", "Unknown", "Upcoming", "Active", "Ended" });
-            int pageSize = 5;
-            int pageNumber = (page ?? 1);
-
-            var journalsList = journalsManager.GetAllJournalsForUser(userId);
-            if (Request.HttpMethod == "POST")
-            {
-                List<JournalViewModel> journalsPost = JournalViewModel.GerSortedJournalsList(
-                courseNameFilter,
-                courseStatusFilter,
-                JournalViewModel.GetJournalsList(journalsList, usersManager, coursesManager
-                ));
-                return View(journalsPost.ToPagedList(pageNumber, pageSize));
-            }
-            List<JournalViewModel> journals = JournalViewModel.GerSortedJournalsList(
-                courseNameFilter,
-                courseStatusFilter,
-                JournalViewModel.GetJournalsList(journalsList, usersManager, coursesManager
-                ));
-            
-
-            return View(journals.ToPagedList(pageNumber, pageSize));
-        }
+        
 
         protected override void Dispose(bool disposing)
         {

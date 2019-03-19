@@ -12,13 +12,21 @@ namespace Faculty.Areas.Admin.Controllers
 {
     public class ManageJournalsController : Controller
     {
-        // GET: Admin/ManageJournals/DisplayJournals
+        private UsersManager usersManager;
+        private JournalsManager journalsManager;
+        private CoursesManager coursesManager;
+
+        public ManageJournalsController()
+        {
+            journalsManager = new JournalsManager();
+            usersManager = new UsersManager();
+            coursesManager = new CoursesManager();
+        }
+
+        // GET: /Admin/ManageJournals/DisplayJournals
         public ActionResult DisplayJournals(string userFirstNameFilter, string userLastNameFilter, int? page, string statusMessage)
         {
             ViewBag.StatusMessage = statusMessage;
-            JournalsManager journalsManager = new JournalsManager();
-            CoursesManager coursesManager = new CoursesManager();
-            UsersManager usersManager = new UsersManager();
             ViewBag.FirstNameFilter = userFirstNameFilter;
             ViewBag.LastNameFilter = userLastNameFilter;
             
@@ -39,22 +47,24 @@ namespace Faculty.Areas.Admin.Controllers
             return View(journals.ToPagedList(pageNumber, pageSize));
         }
 
-        // GET: Admin/ManageJournals/EditMark
-        public ActionResult EditMark(int journalId)
+        // GET: /Admin/ManageJournals/EditMark
+        public ActionResult EditMark(int? journalId)
         {
-            JournalsManager journalsManager = new JournalsManager();
+            if (journalId == null)
+                return View("Error");
             var journal = journalsManager.GetJournal(journalId);
             ViewBag.JournalId = journalId;
 
             return View(journal);
         }
 
-        // POST: Admin/ManageJournals/EditMark
+        // POST: /Admin/ManageJournals/EditMark
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditMark(Journal journal, int journalId)
+        public ActionResult EditMark(Journal journal, int? journalId)
         {
-            JournalsManager journalsManager = new JournalsManager();
+            if (journalId == null)
+                return View("Error");
             journal.Id = journalId;
             if (ModelState.IsValid)
             {

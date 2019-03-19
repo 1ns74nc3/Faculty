@@ -12,21 +12,29 @@ namespace Faculty.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ManageUsersController : Controller
     {
-        // GET: Admin/ManageUsers/AddUser
+        private UsersManager usersManager;
+        private JournalsManager journalsManager;
+
+        public ManageUsersController()
+        {
+            usersManager = new UsersManager();
+            journalsManager = new JournalsManager();
+        }
+
+        // GET: /Admin/ManageUsers/AddUser
         public ActionResult AddUser()
         {
             ViewBag.Roles = new List<string>{ "Admin", "Lector", "Student" };
             return View();
         }
 
-        // POST: Admin/ManageUsers/AddUser
+        // POST: /Admin/ManageUsers/AddUser
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddUser(RegisterViewModel user, string role)
         {
             if (ModelState.IsValid)
             {
-                UsersManager usersManager = new UsersManager();
                 var newUser = new ApplicationUser
                 {
                     UserName = user.UserName,
@@ -48,7 +56,7 @@ namespace Faculty.Areas.Admin.Controllers
 
 
 
-        // GET: Admin/ManageUsers/DisplayUsers
+        // GET: /Admin/ManageUsers/DisplayUsers
         public ActionResult DisplayUsers(string userFirstNameFilter, string userLastNameFilter, string roleFilter, int? page, string statusMessage)
         {
             ViewBag.StatusMessage = statusMessage;
@@ -58,7 +66,6 @@ namespace Faculty.Areas.Admin.Controllers
             ViewBag.Roles = new SelectList(new List<string> { "All", "Admin", "Lector", "Student" });
             int pageSize = 5;
             int pageNumber = (page ?? 1);
-            UsersManager usersManager = new UsersManager();
             var usersList = usersManager.GetUsers();
             if (Request.HttpMethod == "POST")
             {
@@ -74,10 +81,11 @@ namespace Faculty.Areas.Admin.Controllers
             return View(users.ToPagedList(pageNumber, pageSize));
         }
 
-        // GET: Admin/ManageUsers/EditUser
+        // GET: /Admin/ManageUsers/EditUser
         public ActionResult EditUser(string userId)
         {
-            UsersManager usersManager = new UsersManager();
+            if (userId == null)
+                return View("Error");
             var user = usersManager.GetSpecificUser(userId);
             ViewBag.Roles = usersManager.GetRolesListWithActiveRole(userId);
             ViewBag.UserId = userId;
@@ -85,32 +93,32 @@ namespace Faculty.Areas.Admin.Controllers
             return View(user);
         }
 
-        // POST: Admin/ManageUsers/EditUser
+        // POST: /Admin/ManageUsers/EditUser
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult EditUser(ApplicationUser user, string role, string userId)
         {
+            if (userId == null)
+                return View("Error");
             user.Id = userId;
             if (ModelState.IsValid)
             {
-                UsersManager userManager = new UsersManager();
-                userManager.EditUser(user, role);
+                usersManager.EditUser(user, role);
                 return RedirectToAction("DisplayUsers", new { statusMessage = "You succesfully edited"+user.FirstName+" "+user.LastName+"user!" });
             }
             else
             {
-                UsersManager usersManager = new UsersManager();
                 ViewBag.CurrentRole = "Current role - " + usersManager.GetUserRole(user.Id);
                 ViewBag.Roles = new List<string> { "Admin", "Lector", "Student" };
                 return View(user);
             }
         }
 
-        // GET: Admin/ManageUsers/RemoveUser
+        // GET: /Admin/ManageUsers/RemoveUser
         public ActionResult RemoveUser(string userId)
         {
-            JournalsManager journalsManager = new JournalsManager();
-            UsersManager usersManager = new UsersManager();
+            if (userId == null)
+                return View("Error");
             ViewBag.Username = usersManager.GetSpecificUser(userId).UserName;
             journalsManager.RemoveJournalForUser(userId);
             usersManager.RemoveUser(userId);

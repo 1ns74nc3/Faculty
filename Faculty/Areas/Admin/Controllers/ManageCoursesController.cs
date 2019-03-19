@@ -12,22 +12,30 @@ namespace Faculty.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ManageCoursesController : Controller
     {
-        // GET: Admin/ManageCourses/AddCourse
+        private UsersManager usersManager;
+        private CoursesManager coursesManager;
+
+        public ManageCoursesController()
+        {
+            usersManager = new UsersManager();
+            coursesManager = new CoursesManager();
+        }
+
+        // GET: /Admin/ManageCourses/AddCourse
         public ActionResult AddCourse()
         {
-            UsersManager usersManager = new UsersManager();
+
             ViewBag.LectorsList = new SelectList(usersManager.GetLectorsForCourseEdit(null), "Id", "LastName");
             return View();
         }
 
-        // POST: Admin/ManageCourses/AddCourse
+        // POST: /Admin/ManageCourses/AddCourse
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddCourse(Course course, string lector)
         {
             if (ModelState.IsValid)
             {
-                CoursesManager coursesManager = new CoursesManager();
                 if (lector != null)
                 {
                     course.LectorId = lector;
@@ -38,19 +46,15 @@ namespace Faculty.Areas.Admin.Controllers
             else
             {
                 ModelState.AddModelError("error", "You entered invalid data!" );
-                UsersManager usersManager = new UsersManager();
                 ViewBag.LectorsList = new SelectList(usersManager.GetLectorsForCourseEdit(null), "Id", "LastName");
                 return View();
             }
         }
 
-        // GET: Admin/ManageCourses/DisplayCourses
+        // GET: /Admin/ManageCourses/DisplayCourses
         public ActionResult DisplayCourses(string statusFilter, string themeFilter, string lectorFilter, string courseNameFilter, int? page, string statusMessage)
         {
             ViewBag.StatusMessage = statusMessage;
-
-            CoursesManager coursesManager = new CoursesManager();
-            UsersManager usersManager = new UsersManager();
             ViewBag.CurrentStatusFilter = statusFilter;
             ViewBag.CurrentThemeFilter = themeFilter;
             ViewBag.CurrentLectorFilter = lectorFilter;
@@ -79,35 +83,41 @@ namespace Faculty.Areas.Admin.Controllers
             return View(courses.ToPagedList(pageNumber, pageSize));
         }
 
-        // GET: Admin/ManageCourses/DeleteCourse
-        public ActionResult DeleteCourse(int courseId)
+        // GET: /Admin/ManageCourses/DeleteCourse
+        public ActionResult DeleteCourse(int? courseId)
         {
-            CoursesManager coursesManager = new CoursesManager();
+            if(courseId == null)
+                return View("Error");
+
             ViewBag.Course = coursesManager.GetSpecificCourse(courseId).CourseName;
             coursesManager.DeleteCourse(courseId);
             return View();
+            
         }
 
-        // GET: Admin/ManageCourses/EditCourse
-        public ActionResult EditCourse(int courseId)
+        // GET: /Admin/ManageCourses/EditCourse
+        public ActionResult EditCourse(int? courseId)
         {
-            CoursesManager coursesManager = new CoursesManager();
+            if (courseId == null)
+                return View("Error");
+
             var course = coursesManager.GetSpecificCourse(courseId);
-            UsersManager usersManager = new UsersManager();
             ViewBag.CurrentLector = coursesManager.GetLectorInfo(course);
             ViewBag.LectorsList = new SelectList(usersManager.GetLectorsForCourseEdit(course.LectorId), "Id", "LastName");
             return View(course);
         }
 
-        // POST: Admin/ManageCourses/EditCourse
+        // POST: /Admin/ManageCourses/EditCourse
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditCourse(Course course, string lector, int courseId)
+        public ActionResult EditCourse(Course course, string lector, int? courseId)
         {
+            if (courseId == null)
+                return View("Error");
+
             course.Id = courseId;
             if (ModelState.IsValid)
             {
-                CoursesManager coursesManager = new CoursesManager();
                 if (lector != null)
                 {
                     course.LectorId = lector;
@@ -119,8 +129,6 @@ namespace Faculty.Areas.Admin.Controllers
             else
             {
                 ModelState.AddModelError("error", "You entered invalid data!" );
-                CoursesManager coursesManager = new CoursesManager();
-                UsersManager usersManager = new UsersManager();
                 ViewBag.CurrentLector = coursesManager.GetLectorInfo(course);
                 ViewBag.LectorsList = new SelectList(usersManager.GetLectorsForCourseEdit(course.LectorId), "Id", "LastName");
                 return View(course);

@@ -7,22 +7,25 @@
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div>
-    @Html.Label("First Name");
-    <p>@ViewBag.UserData.FirstName</p>
+    @Html.DisplayNameFor(u => u.FirstName);
+    @Html.DisplayFor(u => u.FirstName);
     <br />
-    @Html.Label("Last Name");
-    <p>@ViewBag.UserData.LastName</p>
+    @Html.DisplayNameFor(u => u.LastName);
+    @Html.DisplayFor(u => u.LastName);
     <br />
-    @Html.Label("Age");
-    <p>@ViewBag.UserData.Age</p>
+    @Html.DisplayNameFor(u => u.Age);
+    @Html.DisplayFor(u => u.Age);
     <br />
-    @Html.ActionLink("View user courses", "DisplayUserCourses", new { userId = ViewBag.UserData.Id })
+    @Html.DisplayNameFor(u => u.UserInfo);
+    @Html.DisplayFor(u => u.UserInfo);
     <br />
-    @Html.ActionLink("Edit profile", "EditUserData", new { userId = ViewBag.UserData.Id })
+    @Html.ActionLink("View user courses", "DisplayUserCourses", new { userId = Model.UserId })
+    <br />
+    @Html.ActionLink("Edit profile", "EditUserData", new { userId = Model.UserId })
     <br />
     @if (ViewBag.Lector == "Lector")
     {
-        @Html.ActionLink("Manage courses", "DisplayCoursesForLector", new { userId = ViewBag.UserData.Id });
+        @Html.ActionLink("Manage courses", "DisplayCoursesForLector", new { userId = Model.UserId });
     }
     <dl class="dl-horizontal">
         <dt>Password:</dt>

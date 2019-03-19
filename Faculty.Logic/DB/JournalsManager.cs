@@ -7,31 +7,37 @@ namespace Faculty.Logic.DB
 {
     public class JournalsManager
     {
+       
         //Adding db record to set users marks
-        public void AddJournalForUser(int courseId, string userId)
+        public void AddJournalForUser(int? courseId, string userId)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            if (courseId != null)
             {
-                UsersManager coursesManager = new UsersManager();
-                var user = db.Users.SingleOrDefault(u => u.Id == userId);
-                Journal journal = new Journal(courseId);
-                db.Journals.Add(journal);
-                db.SaveChanges();
-                db.Journals.SingleOrDefault(j => j.Id == journal.Id).Users.Add(user);
-                db.SaveChanges();
+                using (ApplicationDbContext db = new ApplicationDbContext())
+                {
+                    var user = db.Users.SingleOrDefault(u => u.Id == userId);
+                    Journal journal = new Journal(courseId);
+                    db.Journals.Add(journal);
+                    db.SaveChanges();
+                    db.Journals.SingleOrDefault(j => j.Id == journal.Id).Users.Add(user);
+                    db.SaveChanges();
+                }
             }
         }
 
-        public void DeleteJournalsWhenRemovingCourse(int courseId)
+        public void DeleteJournalsWhenRemovingCourse(int? courseId)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            if (courseId != null)
             {
-                var journals = db.Journals.Where(j => j.CourseId == courseId).ToList();
-                foreach (var item in journals)
+                using (ApplicationDbContext db = new ApplicationDbContext())
                 {
-                    db.Journals.Remove(item);
+                    var journals = db.Journals.Where(j => j.CourseId == courseId).ToList();
+                    foreach (var item in journals)
+                    {
+                        db.Journals.Remove(item);
+                    }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
             }
         }
 
@@ -44,13 +50,20 @@ namespace Faculty.Logic.DB
             }
         }
 
-        public Journal GetJournal(int journalId)
+        public Journal GetJournal(int? journalId)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            if (journalId != null)
             {
-                var result = db.Journals.Where(j => j.Id == journalId).Include("Users").SingleOrDefault();
+                using (ApplicationDbContext db = new ApplicationDbContext())
+                {
+                    var result = db.Journals.Where(j => j.Id == journalId).Include("Users").SingleOrDefault();
 
-                return result;
+                    return result;
+                }
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -78,15 +91,22 @@ namespace Faculty.Logic.DB
 
 
         //Get all marks related to course and users 
-        public ICollection<ApplicationUser> GetMarksForUsers(int courseId)
+        public ICollection<ApplicationUser> GetMarksForUsers(int? courseId)
         {
-            using (ApplicationDbContext db = new ApplicationDbContext())
+            if (courseId != null)
             {
-                var result = db.Users.Where(u => u.Courses.FirstOrDefault(c => c.Id == courseId).Id == courseId)
-                    .Include(j => j.Journals)
-                    .ToList();
-                
-                return result;
+                using (ApplicationDbContext db = new ApplicationDbContext())
+                {
+                    var result = db.Users.Where(u => u.Courses.FirstOrDefault(c => c.Id == courseId).Id == courseId)
+                        .Include(j => j.Journals)
+                        .ToList();
+
+                    return result;
+                }
+            }
+            else
+            {
+                return null;
             }
         }
 

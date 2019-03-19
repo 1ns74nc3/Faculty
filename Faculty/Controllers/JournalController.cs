@@ -14,13 +14,23 @@ namespace Faculty.Controllers
     [Authorize(Roles = "Lector")]
     public class JournalController : Controller
     {
-        // GET: Journal/ManageJournal
-        public ActionResult ManageJournal(int courseId, string userFirstNameFilter, string userLastNameFilter, int? page, string statusMessage )
+        private UsersManager usersManager;
+        private JournalsManager journalsManager;
+        private CoursesManager coursesManager;
+
+        public JournalController()
         {
+            usersManager = new UsersManager();
+            journalsManager = new JournalsManager();
+            coursesManager = new CoursesManager();
+        }
+
+        // GET: /Journal/ManageJournal
+        public ActionResult ManageJournal(int? courseId, string userFirstNameFilter, string userLastNameFilter, int? page, string statusMessage )
+        {
+            if (courseId == null)
+                return View("Error");
             ViewBag.StatusMessage = statusMessage;
-            JournalsManager journalsManager = new JournalsManager();
-            CoursesManager coursesManager = new CoursesManager();
-            UsersManager usersManager = new UsersManager();
             ViewBag.FirstNameFilter = userFirstNameFilter;
             ViewBag.LastNameFilter = userLastNameFilter;
             ViewBag.CourseId = courseId;
@@ -50,14 +60,12 @@ namespace Faculty.Controllers
             
         }
 
-        // GET: Journal/ManageUserMark
-        public ActionResult ManageUserMark(int journalId, int courseId)
+        // GET: /Journal/ManageUserMark
+        public ActionResult ManageUserMark(int? journalId, int? courseId)
         {
-            CoursesManager coursesManager = new CoursesManager();
-            UsersManager usersManager = new UsersManager();
+            if (courseId == null || journalId == null)
+                return View("Error");
             var course = coursesManager.GetSpecificCourse(courseId);
-            
-            JournalsManager journalsManager = new JournalsManager();
             var journal = journalsManager.GetJournal(journalId);
 
             var currentUserId = User.Identity.GetUserId();
@@ -74,20 +82,21 @@ namespace Faculty.Controllers
         // POST: Journal/ManageUserMark
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ManageUserMark(Journal journal, int currentcourseId, int journalId)
+        public ActionResult ManageUserMark(Journal journal, int? courseId, int? journalId)
         {
-            JournalsManager journalsManager = new JournalsManager();
+            if (courseId == null || journalId == null)
+                return View("Error");
             journal.Id = journalId;
             if (ModelState.IsValid)
             {
                 journalsManager.EditJournal(journal);
-                return RedirectToAction("ManageJournal", "Journal", new { courseId = currentcourseId, statusMessage = "You succesfully edited mark!" });
+                return RedirectToAction("ManageJournal", "Journal", new { courseId = courseId, statusMessage = "You succesfully edited mark!" });
             }
             else
             {
                 ModelState.AddModelError("Error", "You entered invalid data!" );
                 var defaultJournal = journalsManager.GetJournal(journal.Id);
-                ViewBag.CourseId = currentcourseId;
+                ViewBag.CourseId = courseId;
                 ViewBag.JournalId = journalId;
                 return View(defaultJournal);
             }          

@@ -15,6 +15,7 @@
     <thead>
         @using (Html.BeginForm("DisplayCourses", "ManageCourses", FormMethod.Post))
         {
+            @Html.AntiForgeryToken()
             <tr>
                 <th>@Html.Label("Find course by course name")</th>
                 <th></th>
@@ -27,7 +28,7 @@
                 <th>@Html.ActionLink("Reset", "DisplayCourses", null, new { alt = "Reset filters" })</th>
             </tr>
             <tr>
-                <th>@Html.TextBox("courseNameFilter")</th>
+                <th>@Html.TextBox("courseNameFilter", null, new { @class = "form-control" })</th>
                 <th></th>
                 <th></th>
                 <th>@Html.DropDownList("statusFilter", ViewBag.Status as SelectList, new { @class = "form-control" })</th>

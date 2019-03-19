@@ -10,6 +10,8 @@ namespace Faculty.Logic.DB
     //Get, edit, delete data from Identity Users table
     public class UsersManager
     {
+        private JournalsManager journalsManager = new JournalsManager();
+
         //Add new user
         public void AddUser(ApplicationUser user, string password, string role)
         {
@@ -183,7 +185,6 @@ namespace Faculty.Logic.DB
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                JournalsManager journalsManager = new JournalsManager();
                 var user = db.Users.SingleOrDefault(c => c.Id == userId);
                 var courses = db.Courses.Where(c => c.LectorId == userId).ToList();
                 foreach(var items in courses)
