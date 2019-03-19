@@ -90,7 +90,19 @@ content_main {
     color: red;
 }
 
-.custom-links {
+.admin-panel{
+    background-color:red;
+}
+
+.admin-header-links {
+    color: white !important;
+}
+
+.admin-header-links:hover {
+    color: lightgray !important;
+}
+
+.custom-links:link {
     border: 2px solid grey;
     padding: 10px;
     border-radius: 5px;

@@ -69,10 +69,11 @@
                 </div>
             </div>
         }
-        @Html.ActionLink("Back", "DisplayCourses", new { Area = "Admin" }, null);
     </div>
 </div>
-
+<br />
+<br />
+@Html.ActionLink("Back", "DisplayCourses", new { Area = "Admin" }, new { @class = "custom-links whole-page" });
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

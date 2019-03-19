@@ -71,5 +71,5 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
         roleFilter = ViewBag.RoleFilter
     }))
 <br />
-
-<h2>@Html.ActionLink("Add new user", "AddUser", new { Area = "Admin" }, null)</h2>
+<br />
+<h4>@Html.ActionLink("Add new user", "AddUser", new { Area = "Admin" }, new { @class = "custom-links whole-page" })</h4>

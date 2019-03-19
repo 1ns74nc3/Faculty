@@ -5,53 +5,79 @@
 
 <h2>Course Info</h2>
 
-<dl>
-    <dt>@Html.LabelFor(c => c.CourseName)</dt>
-    <dd>@Html.DisplayFor(c => c.CourseName)</dd>
-
-    <dt>@Html.LabelFor(c => c.CourseStatus)</dt>
-    <dd>@Html.DisplayFor(c => c.CourseStatus)</dd>
-
-    <dt>@Html.LabelFor(c => c.StartDate)</dt>
-    <dd>@Html.DisplayFor(c => c.StartDate)</dd>
-
-    <dt>@Html.LabelFor(c => c.EndDate)</dt>
-    <dd>@Html.DisplayFor(c => c.EndDate)</dd>
-
-    <dt>@Html.LabelFor(c => c.Theme)</dt>
-    <dd>@Html.DisplayFor(c => c.Theme)</dd>
-
-    <dt>@Html.LabelFor(c => c.CourseDescription)</dt>
-    <dd>
-        @if (Model.CourseDescription != null)
+<div class="user-profile">
+    <div class="user-profile-container">
+        <div>
+            <h3>@Html.LabelFor(c => c.CourseName):</h3>
+            <p>
+                @Html.DisplayFor(c => c.CourseName)
+            </p>
+        </div>
+        <div>
+            <h3>@Html.LabelFor(c => c.CourseStatus):</h3>
+            <p>
+                @Html.DisplayFor(c => c.CourseStatus)
+            </p>
+        </div>
+        <div>
+            <h3>@Html.LabelFor(c => c.StartDate):</h3>
+            <p>
+                @Html.DisplayFor(c => c.StartDate)
+            </p>
+        </div>
+        <div>
+            <h3>@Html.LabelFor(c => c.EndDate):</h3>
+            <p>
+                @Html.DisplayFor(c => c.EndDate)
+            </p>
+        </div>
+        <div>
+            <h3>@Html.LabelFor(c => c.Theme):</h3>
+            <p>
+                @Html.DisplayFor(c => c.Theme)
+            </p>
+        </div>
+    </div>
+    <div class="user-profile-container">
+        <div>
+            <h3>@Html.LabelFor(c => c.CourseDescription):</h3>
+            @if (Model.CourseDescription != null)
+            {
+                <p>@Html.DisplayFor(c => c.CourseDescription)</p>
+            }
+            else
+            {
+                <p>There's no description.</p>
+            }
+        </div>
+        <div>
+            <h3>@Html.Label("Course Lector"):</h3>
+            <p>
+                @ViewBag.Lector
+            </p>
+        </div>
+        <div>
+            @if (ViewBag.UserIsSignedToCourse)
+            {
+                <<h3>>
+                    @Html.ActionLink("Leave course", "SignOrQuitCourse", new { courseId = Model.Id, userIsOnCourse = true }, new { @class = "custom-links"})
+                </h3>
+            }
+            else
+            {
+                <h3>
+                    @Html.ActionLink("Sign to the course", "SignOrQuitCourse", new { courseId = Model.Id, userIsOnCourse = false }, new { @class = "custom-links" })
+                </h3>
+            }
+        </div>
+        @if (ViewBag.UserIsLectorOfThisCourse == true && ViewBag.CourseStatusEnded == true)
         {
-            @Html.DisplayFor(c => c.CourseName)
+        <div>
+            <h3>
+                @Html.ActionLink("Manage marks", "ManageJournal", "Journal", new { courseId = Model.Id }, null)
+            </h3>
+        </div>
         }
-        else
-        {
-            <p>There's no description.</p>
-        }
-    </dd>
-    <dt>@Html.Label("Lector")</dt>
-    <dd>@ViewBag.Lector</dd>
-    @if (ViewBag.UserIsSignedToCourse)
-    {
-        <dd>
-            @Html.ActionLink("Leave course", "SignOrQuitCourse", new { courseId = Model.Id, userIsOnCourse = true });
-        </dd>
-    }
-    else
-    {
-        <dd>
-            @Html.ActionLink("Sign to the course", "SignOrQuitCourse", new { courseId = Model.Id, userIsOnCourse = false });
-        </dd>
-    }
-
-    @if (ViewBag.UserIsLectorOfThisCourse == true && ViewBag.CourseStatusEnded == true)
-    {
-        <dd>
-            @Html.ActionLink("Manage marks", "ManageJournal", "Journal", new { courseId = Model.Id }, null);
-        </dd>
-    }
-</dl>
+    </div>
+</div>
 

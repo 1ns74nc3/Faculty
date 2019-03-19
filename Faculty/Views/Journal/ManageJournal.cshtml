@@ -5,11 +5,13 @@
 }
 <h1>@ViewBag.StatusMessage</h1>
 
-<h2>Manage @Html.DisplayFor(modelItem => modelItem.First().CourseName) course Journal:</h2>
-
 @if (!Model.Any())
 {
     <h2>There's no journals to display!</h2>
+}
+else
+{
+    <h2>Manage journal for @Html.DisplayFor(modelItem => modelItem.First().CourseName) course:</h2>
 }
 <table class="table table-hover">
     <thead>

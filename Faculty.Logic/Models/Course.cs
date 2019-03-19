@@ -7,7 +7,7 @@ namespace Faculty.Logic.Models
     public class Course : ModelsBase
     {
         [Required]
-        [Display(Name = "Course")]
+        [Display(Name = "Course Name")]
         public string CourseName { get; set; }
         [Required]
         [Display(Name = "Start date")]
@@ -30,10 +30,10 @@ namespace Faculty.Logic.Models
             Ended = 3
         }
 
-        [Display(Name = "Status")]
+        [Display(Name = "Course Status")]
         public Status CourseStatus { get; set; }
 
-        [Display(Name = "Description")]
+        [Display(Name = "Course Description")]
         public string CourseDescription { get; set; }
 
         public string LectorId { get; set; }

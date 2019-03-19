@@ -137,7 +137,7 @@ namespace Faculty.Logic.DB
             {
                 using (ApplicationDbContext db = new ApplicationDbContext())
                 {
-                    var course = db.Courses.FirstOrDefault(c => c.Id.Equals(courseId));
+                    var course = db.Courses.FirstOrDefault(c => c.Id == courseId);
                     journalsManager.DeleteJournalsWhenRemovingCourse(courseId);
                     db.Courses.Remove(course);
                     db.SaveChanges();

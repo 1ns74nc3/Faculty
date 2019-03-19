@@ -3,88 +3,86 @@
     ViewBag.Title = "EditUser";
 }
 
-<h2>Edit user - @Model.UserName:</h2>
-<div class="row">
-    <div class="col-md-8">
-        @using (Html.BeginForm("EditUser", "ManageUsers", new { Area = "Admin", userId = ViewBag.UserId }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-        {
-            @Html.AntiForgeryToken()
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.Age, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.Age, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Age, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.UserInformation, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.UserInformation, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.UserInformation, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(m => m.UserIsBlocked, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @if (Model.UserIsBlocked)
-                    {
-                        <p>Blocked: @Html.RadioButton("UserIsBlocked", true, true)</p>
-                        <p>Unblocked: @Html.RadioButton("UserIsBlocked", false)</p>
-                    }
-                    else
-                    {
-                        <p>Blocked: @Html.RadioButton("UserIsBlocked", true)</p>
-                        <p>Unblocked: @Html.RadioButton("UserIsBlocked", false, true)</p>
-                    }
-                </div>
-            </div>
-            <div class="form-group">
-                @Html.Label("Role", new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.DropDownList("role", new SelectList(ViewBag.Roles), new { @class = "form-control" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" />
-                </div>
-            </div>
-        }
-        @Html.ActionLink("Back", "DisplayUsers", new { Area = "Admin" }, null);
+<h2>Edit user:</h2>
+@using (Html.BeginForm("EditUser", "ManageUsers", new { Area = "Admin", userId = ViewBag.UserId }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Username - @Model.UserName.</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+        </div>
     </div>
-</div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Age, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Age, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Age, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.UserInformation, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.UserInformation, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.UserInformation, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.UserIsBlocked, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @if (Model.UserIsBlocked)
+            {
+                <p>Blocked: @Html.RadioButton("UserIsBlocked", true, true)</p>
+                <p>Unblocked: @Html.RadioButton("UserIsBlocked", false)</p>
+            }
+            else
+            {
+                <p>Blocked: @Html.RadioButton("UserIsBlocked", true)</p>
+                <p>Unblocked: @Html.RadioButton("UserIsBlocked", false, true)</p>
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.Label("Role", new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.DropDownList("role", new SelectList(ViewBag.Roles), new { @class = "form-control" })
+        </div>
+    </div>
 
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+}
+<br />
+<br />
+@Html.ActionLink("Back", "DisplayUsers", new { Area = "Admin" }, new { @class = "custom-links whole-page" });
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

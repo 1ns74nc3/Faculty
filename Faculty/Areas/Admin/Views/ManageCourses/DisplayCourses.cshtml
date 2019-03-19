@@ -80,4 +80,4 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
         courseNameFilter = ViewBag.CourseNameFilter
     }))
 <br />
-<h2>@Html.ActionLink("Add new course", "AddCourse", new { Area = "Admin" }, null)</h2>
+<h4>@Html.ActionLink("Add new course", "AddCourse", new { Area = "Admin" }, new { @class = "custom-links whole-page" })</h4>

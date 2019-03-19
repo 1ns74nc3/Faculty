@@ -52,7 +52,7 @@ namespace Faculty.Controllers
             ViewBag.CurrentLectorFilter = lectorFilter;
             ViewBag.Themes = new SelectList(coursesManager.GetAllThemes(themeFilter));
             ViewBag.Status = new SelectList(new List<string> { "All", "Unknown", "Upcoming", "Active", "Ended" });
-            int pageSize = 2;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             var coursesList = coursesManager.GetCourses();
             if (Request.HttpMethod == "POST")
