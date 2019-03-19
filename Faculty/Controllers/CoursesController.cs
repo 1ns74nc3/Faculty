@@ -39,6 +39,8 @@ namespace Faculty.Controllers
 
             if (course.LectorId == currentUserId)
                 ViewBag.UserIsLectorOfThisCourse = true;
+            else
+                ViewBag.UserIsLectorOfThisCourse = false;
 
             return View(course);
         }

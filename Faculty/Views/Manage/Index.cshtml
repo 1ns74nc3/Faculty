@@ -10,25 +10,28 @@
 <div class="user-profile">
     <div class="user-profile-container">
         <div>
-            <h3>@Html.LabelFor(u => u.FirstName):</h3>
+            <img src="~/Content/user.svg" alt="Our courses" width="150" />
+        </div>
+        <div>
+            <h4>@Html.LabelFor(u => u.FirstName):</h4>
             <p>
                 @Html.DisplayFor(u => u.FirstName)
             </p>
         </div>
         <div>
-            <h3>@Html.LabelFor(u => u.LastName):</h3>
+            <h4>@Html.LabelFor(u => u.LastName):</h4>
             <p>
                 @Html.DisplayFor(u => u.LastName)
             </p>
         </div>
         <div>
-            <h3>@Html.LabelFor(u => u.Age):</h3>
+            <h4>@Html.LabelFor(u => u.Age):</h4>
             <p>
                 @Html.DisplayFor(u => u.Age)
             </p>
         </div>
         <div>
-            <h3>@Html.LabelFor(u => u.UserInfo):</h3>
+            <h4>@Html.LabelFor(u => u.UserInfo):</h4>
             <p>
                 @if (Model.UserInfo != null)
                 {

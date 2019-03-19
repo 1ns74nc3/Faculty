@@ -219,8 +219,15 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\courses1.png" />
+    <Content Include="Content\courses2.jpg" />
+    <Content Include="Content\courses3.png" />
+    <Content Include="Content\courses4.png" />
+    <Content Include="Content\courses5.png" />
+    <Content Include="Content\journal.jpg" />
     <Content Include="Content\logo.png" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\user.svg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />

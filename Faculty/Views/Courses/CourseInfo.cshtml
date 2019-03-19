@@ -3,14 +3,22 @@
     ViewBag.Title = "CourseInfo";
 }
 
-<h2>Course Info</h2>
 
-<div class="user-profile">
-    <div class="user-profile-container">
+<div class="course-profile">
+    <div class="course-profile-container">
+        <div>
+            <img src="~/Content/courses5.png" alt="course" width="200" />
+        </div>
         <div>
             <h3>@Html.LabelFor(c => c.CourseName):</h3>
             <p>
                 @Html.DisplayFor(c => c.CourseName)
+            </p>
+        </div>
+        <div>
+            <h3>@Html.LabelFor(c => c.Theme):</h3>
+            <p>
+                @Html.DisplayFor(c => c.Theme)
             </p>
         </div>
         <div>
@@ -20,25 +28,13 @@
             </p>
         </div>
         <div>
-            <h3>@Html.LabelFor(c => c.StartDate):</h3>
+            <h3>@Html.Label("Course Lector"):</h3>
             <p>
-                @Html.DisplayFor(c => c.StartDate)
-            </p>
-        </div>
-        <div>
-            <h3>@Html.LabelFor(c => c.EndDate):</h3>
-            <p>
-                @Html.DisplayFor(c => c.EndDate)
-            </p>
-        </div>
-        <div>
-            <h3>@Html.LabelFor(c => c.Theme):</h3>
-            <p>
-                @Html.DisplayFor(c => c.Theme)
+                @ViewBag.Lector
             </p>
         </div>
     </div>
-    <div class="user-profile-container">
+    <div class="course-profile-container">
         <div>
             <h3>@Html.LabelFor(c => c.CourseDescription):</h3>
             @if (Model.CourseDescription != null)
@@ -50,33 +46,33 @@
                 <p>There's no description.</p>
             }
         </div>
-        <div>
-            <h3>@Html.Label("Course Lector"):</h3>
-            <p>
-                @ViewBag.Lector
-            </p>
-        </div>
-        <div>
-            @if (ViewBag.UserIsSignedToCourse)
-            {
-                <<h3>>
-                    @Html.ActionLink("Leave course", "SignOrQuitCourse", new { courseId = Model.Id, userIsOnCourse = true }, new { @class = "custom-links"})
-                </h3>
-            }
-            else
-            {
-                <h3>
-                    @Html.ActionLink("Sign to the course", "SignOrQuitCourse", new { courseId = Model.Id, userIsOnCourse = false }, new { @class = "custom-links" })
-                </h3>
-            }
-        </div>
+        
+    </div>
+     <div class="course-profile-container">
+         @if (!ViewBag.UserIsLectorOfThisCourse)
+         {
+         <div>
+             @if (ViewBag.UserIsSignedToCourse)
+             {
+                 <h3>
+                     @Html.ActionLink("Leave course", "SignOrQuitCourse", new { courseId = Model.Id, userIsOnCourse = true }, new { @class = "custom-links" })
+                 </h3>
+             }
+             else
+             {
+                 <h3>
+                     @Html.ActionLink("Sign to the course", "SignOrQuitCourse", new { courseId = Model.Id, userIsOnCourse = false }, new { @class = "custom-links" })
+                 </h3>
+             }
+         </div>
+         }
         @if (ViewBag.UserIsLectorOfThisCourse == true && ViewBag.CourseStatusEnded == true)
         {
-        <div>
-            <h3>
-                @Html.ActionLink("Manage marks", "ManageJournal", "Journal", new { courseId = Model.Id }, null)
-            </h3>
-        </div>
+            <div>
+                <h3>
+                    @Html.ActionLink("Manage marks", "ManageJournal", "Journal", new { courseId = Model.Id }, new { @class = "custom-links" })
+                </h3>
+            </div>
         }
     </div>
 </div>

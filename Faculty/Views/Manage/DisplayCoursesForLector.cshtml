@@ -8,7 +8,7 @@
 
 @if (!Model.Any())
 {
-    <h2>@Html.Label("There's no course to display!")</h2>
+    <h2>@Html.Label("There's no course to display!", new { @class="text-danger"})</h2>
 }
 
 <table class="table table-hover">

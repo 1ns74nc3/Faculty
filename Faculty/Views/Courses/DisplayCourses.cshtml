@@ -3,11 +3,10 @@
 @{
     ViewBag.Title = "Courses";
 }
-
-<h2>Courses</h2>
+<img src="~/Content/courses1.png" alt="Our courses" width="200"/>
 @if (!Model.Any())
 {
-    <h2>@Html.Label("There's no courses to display!")</h2>
+    <h2>@Html.Label("There's no courses to display!", new { @class = "text-danger" })</h2>
 }
 <table class="table table-hover">
     <thead>
@@ -15,28 +14,120 @@
         {
             @Html.AntiForgeryToken()
             <tr>
-                <th>@Html.ActionLink("a-z", "DisplayCourses", new { currentFilter = "a-z", statusFilter = ViewBag.CurrentStatusFilter,
-                   themeFilter = ViewBag.CurrentThemeFilter, lectorFilter = ViewBag.CurrentLectorFilter}, new { alt = "Course name - from a to z" })</th>
-                <th>@Html.ActionLink("Duration(L-H)", "DisplayCourses", new { currentFilter = "durationSTH", statusFilter = ViewBag.CurrentStatusFilter,
-                   themeFilter = ViewBag.CurrentThemeFilter, lectorFilter = ViewBag.CurrentLectorFilter }, new { alt = "Course duration - Shortest to Highest" })</th>
+                @if (ViewBag.CurrentFilter == "a-z"){
+                    <th>@Html.ActionLink("a-z", "DisplayCourses",
+                   new { currentFilter = "a-z",
+                       statusFilter = ViewBag.CurrentStatusFilter,
+                       themeFilter = ViewBag.CurrentThemeFilter,
+                       lectorFilter = ViewBag.CurrentLectorFilter},
+                   new { alt = "Course name - from a to z", @class= "active-filter" })</th>
+                }
+                else {
+                    <th>@Html.ActionLink("a-z", "DisplayCourses",
+                   new { currentFilter = "a-z",
+                       statusFilter = ViewBag.CurrentStatusFilter,
+                       themeFilter = ViewBag.CurrentThemeFilter,
+                       lectorFilter = ViewBag.CurrentLectorFilter},
+                   new { alt = "Course name - from a to z" })</th>
+                }
+                 @if (ViewBag.CurrentFilter == "durationSTH")
+                 {
+                     <th>@Html.ActionLink("Duration(S-H)", "DisplayCourses",
+                               new{currentFilter = "durationSTH",
+                                   statusFilter = ViewBag.CurrentStatusFilter,
+                                   themeFilter = ViewBag.CurrentThemeFilter,
+                                   lectorFilter = ViewBag.CurrentLectorFilter},
+                               new { alt = "Course duration - Shortest to Highest", @class = "active-filter" })</th>
+                
+                 }
+                 else
+                 {
+                     <th>@Html.ActionLink("Duration(S-H)", "DisplayCourses",
+                               new{currentFilter = "durationSTH",
+                                   statusFilter = ViewBag.CurrentStatusFilter,
+                                   themeFilter = ViewBag.CurrentThemeFilter,
+                                   lectorFilter = ViewBag.CurrentLectorFilter},
+                               new { alt = "Course duration - Shortest to Highest"})</th>
+                 }
                 <th></th>
                 <th>@Html.Label("Select Status")</th>
                 <th>@Html.Label("Select Theme")</th>
-                <th>@Html.ActionLink("Students(L-H)", "DisplayCourses", new { currentFilter = "studentsCountSTH", statusFilter = ViewBag.CurrentStatusFilter,
-                   themeFilter = ViewBag.CurrentThemeFilter, lectorFilter = ViewBag.CurrentLectorFilter}, new { alt = "Students count - Highest to Shortest" })</th>
+                 @if (ViewBag.CurrentFilter == "studentsCountSTH")
+                 {
+                     <th>@Html.ActionLink("Students(S-H)", "DisplayCourses",
+                               new { currentFilter = "studentsCountSTH",
+                                   statusFilter = ViewBag.CurrentStatusFilter,
+                                   themeFilter = ViewBag.CurrentThemeFilter,
+                                   lectorFilter = ViewBag.CurrentLectorFilter},
+                               new { alt = "Students count - Shortest to Highest", @class = "active-filter" })</th>
+                 }
+                 else {
+                     <th>@Html.ActionLink("Students(S-H)", "DisplayCourses",
+                               new { currentFilter = "studentsCountSTH",
+                                   statusFilter = ViewBag.CurrentStatusFilter,
+                                   themeFilter = ViewBag.CurrentThemeFilter,
+                                   lectorFilter = ViewBag.CurrentLectorFilter},
+                               new { alt = "Students count - Shortest to Highest" })</th>
+                 }
                 <th>@Html.Label("Select Lector")</th>
                 <th>@Html.ActionLink("Reset", "DisplayCourses", null, new { alt = "Reset filters" })</th>
             </tr>
             <tr>
-                <th>@Html.ActionLink("z-a", "DisplayCourses", new { currentFilter = "z-a", statusFilter = ViewBag.CurrentStatusFilter,
-                   themeFilter = ViewBag.CurrentThemeFilter, lectorFilter = ViewBag.CurrentLectorFilter }, new { alt = "Course name - from z to a" })</th>
-                <th>@Html.ActionLink("Duration(H-L)", "DisplayCourses", new { currentFilter = "durationHTS", statusFilter = ViewBag.CurrentStatusFilter,
-                   themeFilter = ViewBag.CurrentThemeFilter, lectorFilter = ViewBag.CurrentLectorFilter }, new { alt = "Course duration - Highest to Shortest" })</th>
+                @if (ViewBag.CurrentFilter == "z-a"){
+                    <th>@Html.ActionLink("z-a", "DisplayCourses",
+                   new { currentFilter = "z-a",
+                       statusFilter = ViewBag.CurrentStatusFilter,
+                       themeFilter = ViewBag.CurrentThemeFilter,
+                       lectorFilter = ViewBag.CurrentLectorFilter},
+                   new { alt = "Course name - from z to a", @class= "active-filter" })</th>
+                }
+                else {
+                    <th>@Html.ActionLink("z-a", "DisplayCourses",
+                   new { currentFilter = "z-a",
+                       statusFilter = ViewBag.CurrentStatusFilter,
+                       themeFilter = ViewBag.CurrentThemeFilter,
+                       lectorFilter = ViewBag.CurrentLectorFilter},
+                   new { alt = "Course name - from z to a" })</th>
+                }
+                 @if (ViewBag.CurrentFilter == "durationHTS")
+                 {
+                     <th>@Html.ActionLink("Duration(H-S)", "DisplayCourses",
+                               new{currentFilter = "durationHTS",
+                                   statusFilter = ViewBag.CurrentStatusFilter,
+                                   themeFilter = ViewBag.CurrentThemeFilter,
+                                   lectorFilter = ViewBag.CurrentLectorFilter},
+                               new { alt = "Course duration - Highest to Shortest", @class = "active-filter" })</th>
+                
+                 }
+                 else
+                 {
+                     <th>@Html.ActionLink("Duration(H-S)", "DisplayCourses",
+                               new{currentFilter = "durationHTS",
+                                   statusFilter = ViewBag.CurrentStatusFilter,
+                                   themeFilter = ViewBag.CurrentThemeFilter,
+                                   lectorFilter = ViewBag.CurrentLectorFilter},
+                               new { alt = "Course duration - Highest to Shortest" })</th>
+                 }
                 <th></th>
                 <th>@Html.DropDownList("statusFilter", ViewBag.Status as SelectList, new { @class = "form-control" })</th>
                 <th>@Html.DropDownList("themeFilter", ViewBag.Themes as SelectList, new { @class = "form-control" })</th>
-                <th>@Html.ActionLink("Students(H-L)", "DisplayCourses", new { currentFilter = "studentsCountHTS", statusFilter = ViewBag.CurrentStatusFilter,
-                   themeFilter = ViewBag.CurrentThemeFilter, lectorFilter = ViewBag.CurrentLectorFilter }, new { alt = "Students count - Highest to Shortest" })</th>
+                 @if (ViewBag.CurrentFilter == "studentsCountHTS")
+                 {
+                     <th>@Html.ActionLink("Students(H-L)", "DisplayCourses",
+                               new { currentFilter = "studentsCountHTS",
+                                   statusFilter = ViewBag.CurrentStatusFilter,
+                                   themeFilter = ViewBag.CurrentThemeFilter,
+                                   lectorFilter = ViewBag.CurrentLectorFilter},
+                               new { alt = "Students count - Highest to Shortest", @class = "active-filter" })</th>
+                 }
+                 else {
+                      <th>@Html.ActionLink("Students(H-L)", "DisplayCourses",
+                               new { currentFilter = "studentsCountHTS",
+                                   statusFilter = ViewBag.CurrentStatusFilter,
+                                   themeFilter = ViewBag.CurrentThemeFilter,
+                                   lectorFilter = ViewBag.CurrentLectorFilter }, 
+                               new { alt = "Students count - Highest to Shortest" })</th>
+                 }
                 <th>@Html.DropDownList("lectorFilter", ViewBag.Lectors as SelectList, new { @class = "form-control" })</th>
                 <th><input type="submit" value="Find" class="btn btn-default" /></th>
             </tr>
