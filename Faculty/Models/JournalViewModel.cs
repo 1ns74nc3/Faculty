@@ -101,6 +101,7 @@ namespace Faculty.Models
             return result;
         }
 
+        //get sorted viewmodel list based on filters
         public static List<JournalViewModel> GerSortedJournalsList(string courseName, string courseStatus, List<JournalViewModel> journals)
         {
             if (courseName != null && courseName != "")

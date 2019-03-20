@@ -23,5 +23,6 @@ namespace Faculty.Logic.DB
 
         public IDbSet<Course> Courses { get; set; }
         public IDbSet<Journal> Journals { get; set; }
+        public IDbSet<Log> Logs { get; set; }
     }
 }

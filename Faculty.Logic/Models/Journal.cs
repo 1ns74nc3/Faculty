@@ -19,6 +19,7 @@ namespace Faculty.Logic.Models
 
         }
 
+        //create journal with default mark value and connected course
         public Journal(int? courseId)
         {
             Mark = 0;

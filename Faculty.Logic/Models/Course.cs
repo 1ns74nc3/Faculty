@@ -45,6 +45,7 @@ namespace Faculty.Logic.Models
             Users = new HashSet<ApplicationUser>();
         }
 
+        //create course and set status based on entered data
         public Course(string courseName, DateTime startDate, DateTime endDate, string theme)
         {
             CourseName = courseName;
@@ -62,6 +63,7 @@ namespace Faculty.Logic.Models
             Users = new HashSet<ApplicationUser>();
         }
 
+        //set course status
         public void SetStatus()
         {
             if (LectorId == "" || LectorId == null)
