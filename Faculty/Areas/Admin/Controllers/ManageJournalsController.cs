@@ -23,6 +23,7 @@ namespace Faculty.Areas.Admin.Controllers
             coursesManager = new CoursesManager();
         }
 
+        //Display all journals
         // GET: /Admin/ManageJournals/DisplayJournals
         public ActionResult DisplayJournals(string userFirstNameFilter, string userLastNameFilter, int? page, string statusMessage)
         {
@@ -47,12 +48,14 @@ namespace Faculty.Areas.Admin.Controllers
             return View(journals.ToPagedList(pageNumber, pageSize));
         }
 
+        //Edit specific mark
         // GET: /Admin/ManageJournals/EditMark
         public ActionResult EditMark(int? journalId)
         {
             if (journalId == null)
                 return View("Error");
             var journal = journalsManager.GetJournal(journalId);
+            ViewBag.CourseId = journal.CourseId;
             ViewBag.JournalId = journalId;
 
             return View(journal);
@@ -61,7 +64,7 @@ namespace Faculty.Areas.Admin.Controllers
         // POST: /Admin/ManageJournals/EditMark
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditMark(Journal journal, int? journalId)
+        public ActionResult EditMark(Journal journal, int? journalId, int? courseId)
         {
             if (journalId == null)
                 return View("Error");
@@ -75,7 +78,9 @@ namespace Faculty.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("error", "You entered invalid data!");
                 var defaultJournal = journalsManager.GetJournal(journal.Id);
+                ViewBag.CourseId = journal.CourseId;
                 ViewBag.JournalId = journalId;
+
 
                 return View(defaultJournal);
             }

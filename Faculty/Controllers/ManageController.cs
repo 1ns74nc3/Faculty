@@ -63,7 +63,7 @@ namespace Faculty.Controllers
             }
         }
 
-        //
+        //Display user data and links to see user courses, lectors functions, admin functions, edit account
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
@@ -128,6 +128,7 @@ namespace Faculty.Controllers
             return View(model);
         }
 
+        //Display courses for Lector where he's signed as Lector
         // GET: /Manage/DisplayCoursesForLector
         [Authorize(Roles = "Lector")]
         public ActionResult DisplayCoursesForLector(string userId, string statusFilter, string themeFilter, string courseNameFilter, int? page)
@@ -158,6 +159,7 @@ namespace Faculty.Controllers
             return View(courses.ToPagedList(pageNumber, pageSize));
         }
 
+        //Display all courses where user is signed
         // GET: /Manage/DisplayUserCourses
         public ActionResult DisplayUserCourses(string userId, string courseNameFilter, string courseStatusFilter, int? page)
         {
@@ -190,6 +192,7 @@ namespace Faculty.Controllers
             return View(journals.ToPagedList(pageNumber, pageSize));
         }
 
+        //Edit user data
         // GET: /Manage/EditUserData
         public ActionResult EditUserData(string userId)
         {

@@ -5,13 +5,14 @@ using System.Linq;
 
 namespace Faculty.Logic.DB
 {
+    //Managing journals
     public class JournalsManager
     {
        
-        //Adding db record to set users marks
+        //Adding journal for user when signing to the course
         public void AddJournalForUser(int? courseId, string userId)
         {
-            if (courseId != null)
+            if (courseId != null && userId !=null)
             {
                 using (ApplicationDbContext db = new ApplicationDbContext())
                 {
@@ -25,6 +26,7 @@ namespace Faculty.Logic.DB
             }
         }
 
+        //Delete all journals connected to the course when course was removed by admin
         public void DeleteJournalsWhenRemovingCourse(int? courseId)
         {
             if (courseId != null)
@@ -41,6 +43,7 @@ namespace Faculty.Logic.DB
             }
         }
 
+        //Edit Mark in journal
         public void EditJournal(Journal journal)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -50,6 +53,7 @@ namespace Faculty.Logic.DB
             }
         }
 
+        //Get specific journal by ID
         public Journal GetJournal(int? journalId)
         {
             if (journalId != null)
@@ -67,6 +71,7 @@ namespace Faculty.Logic.DB
             }
         }
 
+        //Get list of all Journals
         public ICollection<Journal> GetAllJournals()
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -110,6 +115,7 @@ namespace Faculty.Logic.DB
             }
         }
 
+        //Sort journals using filters
         public ICollection<Journal> GetSortedJournalsList(string firstName, string lastName, ICollection<Journal> journals)
         {
             if (firstName != null && firstName != "")

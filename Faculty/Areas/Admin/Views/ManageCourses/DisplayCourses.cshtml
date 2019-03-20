@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Manage Courses";
 }
-<h1>@ViewBag.StatusMessage</h1>
+<h1 class="text-success">@ViewBag.StatusMessage</h1>
 
 <h2>Courses</h2>
 
@@ -17,7 +17,7 @@
         {
             @Html.AntiForgeryToken()
             <tr>
-                <th>@Html.Label("Find course by course name")</th>
+                <th>@Html.Label("Search by course name")</th>
                 <th></th>
                 <th></th>
                 <th>@Html.Label("Select Status")</th>

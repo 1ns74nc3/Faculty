@@ -11,11 +11,9 @@ namespace Faculty.Logic.Models
         public string CourseName { get; set; }
         [Required]
         [Display(Name = "Start date")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
         [Required]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         [Display(Name = "End date")]
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }

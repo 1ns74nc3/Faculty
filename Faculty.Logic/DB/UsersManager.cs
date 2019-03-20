@@ -23,7 +23,7 @@ namespace Faculty.Logic.DB
             }
         }
 
-        //Edit course in database
+        //Edit user in database
         public void EditUser(ApplicationUser user, string role)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -46,6 +46,7 @@ namespace Faculty.Logic.DB
             }
         }
 
+        //Get all users with Lector role to display in ViewModel
         public List<string> GetAllLectors(List<string> courses, string currentLector)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -76,7 +77,7 @@ namespace Faculty.Logic.DB
             return courses;
         }
 
-        //return list of users with Lector role, 1st element is null or current lector on the course
+        //return list of users with Lector role, 1st element current role
         public IList<string> GetRolesListWithActiveRole(string userId)
         {
             var currentRole = GetUserRole(userId);
@@ -101,6 +102,7 @@ namespace Faculty.Logic.DB
             return users;
         }
 
+        //Sort data using filters and return users list
         public ICollection<ApplicationUser> GetSortedUsersList(string firstName, string lastName, string role, ICollection<ApplicationUser> users)
         {
             if (firstName != null && firstName != "")
@@ -140,7 +142,7 @@ namespace Faculty.Logic.DB
             return user;
         }
 
-        //Get role for specific user by User ID
+        //Get role name for specific user by User ID
         public string GetUserRole(string userId)
         {
             string result = null;
@@ -152,20 +154,18 @@ namespace Faculty.Logic.DB
             return result;
         }
 
-        //Get list of users with specific role
+        //Get list of users with Lector role to select in EditCourse
         public List<ApplicationUser> GetLectorsForCourseEdit(string userId)
         {
             List<ApplicationUser> result = new List<ApplicationUser>();
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                if (userId != "" && userId != null)
-                {
-                    var currentUser = db.Users.SingleOrDefault(u => u.Id == userId);
-                    result.Add(currentUser);
-                }
+                var currentUser = db.Users.SingleOrDefault(u => u.Id == userId);
+                result.Add(currentUser);
+                  
 
                 var lectorsList = db.Users.Where(u => u.Roles.Any(r => r.RoleId == db.Roles.FirstOrDefault(role => role.Name == "Lector").Id)).ToList();
-                result.Add(null);
+                
                 if (lectorsList.Any())
                 {
                     foreach (var item in lectorsList)
@@ -175,12 +175,15 @@ namespace Faculty.Logic.DB
                     }
                 }
                 
-
+                if(userId!=null && userId != "")
+                {
+                    result.Add(null);
+                }
             }
             return result;
         }
 
-        //delete user, connected journals and if user was lector - remove this lector for courses and update course status to unknown
+        //Delete user, all his journals and if user was lector - remove this lector for courses and update course status to unknown
         public void RemoveUser(string userId)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())
@@ -198,6 +201,7 @@ namespace Faculty.Logic.DB
             }
         }
 
+        //Check if User is blocked or not and return result
         public bool UserIsBlocked(string userName)
         {
             using (ApplicationDbContext db = new ApplicationDbContext())

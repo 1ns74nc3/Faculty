@@ -25,6 +25,7 @@ namespace Faculty.Controllers
             coursesManager = new CoursesManager();
         }
 
+        //Manage journals when course is Ended
         // GET: /Journal/ManageJournal
         public ActionResult ManageJournal(int? courseId, string userFirstNameFilter, string userLastNameFilter, int? page, string statusMessage )
         {
@@ -60,6 +61,7 @@ namespace Faculty.Controllers
             
         }
 
+        //Edit mark
         // GET: /Journal/ManageUserMark
         public ActionResult ManageUserMark(int? journalId, int? courseId)
         {

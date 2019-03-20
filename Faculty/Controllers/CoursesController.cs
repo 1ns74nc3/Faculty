@@ -22,6 +22,7 @@ namespace Faculty.Controllers
             coursesManager = new CoursesManager();
         }
 
+        //Display course information
         // GET: /Courses/CourseInfo
         public ActionResult CourseInfo(int? courseId)
         {
@@ -45,6 +46,7 @@ namespace Faculty.Controllers
             return View(course);
         }
 
+        //Display all courses with filters
         // GET: /Courses/DisplayCourses
         public ActionResult DisplayCourses(string currentFilter, string statusFilter, string themeFilter, string lectorFilter, int? page)
         {
@@ -74,6 +76,7 @@ namespace Faculty.Controllers
             return View(courses.ToPagedList(pageNumber, pageSize));
         }
 
+        //Sign to course or quit the course
         // GET: /Courses/SignOrQuitCourse
         [Authorize]
         public ActionResult SignOrQuitCourse(int? courseId, bool userIsOnCourse = false)

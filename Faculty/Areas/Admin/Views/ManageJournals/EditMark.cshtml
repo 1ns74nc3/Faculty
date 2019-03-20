@@ -6,7 +6,10 @@
 <h2>Manage @Model.Users.First().FirstName @Model.Users.First().LastName mark:</h2>
 
 
-@using (Html.BeginForm("EditMark", "ManageJournals", new { journalId = ViewBag.JournalId }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("EditMark", "ManageJournals", 
+    new { journalId = ViewBag.JournalId , courseId = ViewBag.CourseId }, 
+    FormMethod.Post, 
+    new { @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     <h4>Set mark:</h4>
@@ -16,6 +19,7 @@
         @Html.LabelFor(m => m.Mark, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.EditorFor(m => m.Mark, new { @class = "form-control" })
+            <br />
             @Html.ValidationMessageFor(m => m.Mark, "", new { @class = "text-danger" })
         </div>
     </div>

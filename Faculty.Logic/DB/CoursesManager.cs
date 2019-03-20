@@ -72,7 +72,7 @@ namespace Faculty.Logic.DB
             }
         }
 
-        //Get sorted list of courses
+        //Return sorted list of courses using filters
         public ICollection<Course> GetSortedCourses(string currentFilter, string status, string theme, string lector, string courseName, ICollection<Course> courses)
         {
             if (status != null && status != "" && status != "All")
@@ -215,7 +215,7 @@ namespace Faculty.Logic.DB
             }
         }
 
-        //Unsign user from course
+        //Remove user from course
         public string RemoveUserFromCourse(int? courseId, string userId)
         {
             if (courseId != null)
@@ -239,7 +239,7 @@ namespace Faculty.Logic.DB
             }
         }
 
-        //Check if user is signed to course
+        //Check if user is signed to the course
         public bool UserIsSignedToCourse(int? courseId, string userId)
         {
             if (courseId != null)

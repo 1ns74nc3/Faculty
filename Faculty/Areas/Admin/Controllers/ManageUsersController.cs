@@ -21,6 +21,7 @@ namespace Faculty.Areas.Admin.Controllers
             journalsManager = new JournalsManager();
         }
 
+        //Add new user
         // GET: /Admin/ManageUsers/AddUser
         public ActionResult AddUser()
         {
@@ -55,7 +56,7 @@ namespace Faculty.Areas.Admin.Controllers
         }
 
 
-
+        //Display all users
         // GET: /Admin/ManageUsers/DisplayUsers
         public ActionResult DisplayUsers(string userFirstNameFilter, string userLastNameFilter, string roleFilter, int? page, string statusMessage)
         {
@@ -81,6 +82,7 @@ namespace Faculty.Areas.Admin.Controllers
             return View(users.ToPagedList(pageNumber, pageSize));
         }
 
+        //Edit specific user
         // GET: /Admin/ManageUsers/EditUser
         public ActionResult EditUser(string userId)
         {
@@ -114,6 +116,7 @@ namespace Faculty.Areas.Admin.Controllers
             }
         }
 
+        //Delete specific user
         // GET: /Admin/ManageUsers/RemoveUser
         public ActionResult RemoveUser(string userId)
         {

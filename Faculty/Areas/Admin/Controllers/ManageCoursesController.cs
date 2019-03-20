@@ -21,6 +21,7 @@ namespace Faculty.Areas.Admin.Controllers
             coursesManager = new CoursesManager();
         }
 
+        //Add new course
         // GET: /Admin/ManageCourses/AddCourse
         public ActionResult AddCourse()
         {
@@ -36,7 +37,7 @@ namespace Faculty.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (lector != null)
+                if (lector != null && lector != "")
                 {
                     course.LectorId = lector;
                 }
@@ -51,6 +52,7 @@ namespace Faculty.Areas.Admin.Controllers
             }
         }
 
+        //Display all courses
         // GET: /Admin/ManageCourses/DisplayCourses
         public ActionResult DisplayCourses(string statusFilter, string themeFilter, string lectorFilter, string courseNameFilter, int? page, string statusMessage)
         {
@@ -83,6 +85,7 @@ namespace Faculty.Areas.Admin.Controllers
             return View(courses.ToPagedList(pageNumber, pageSize));
         }
 
+        //Delete specific course
         // GET: /Admin/ManageCourses/DeleteCourse
         public ActionResult DeleteCourse(int? courseId)
         {
@@ -95,6 +98,7 @@ namespace Faculty.Areas.Admin.Controllers
             
         }
 
+        //Edit specific course
         // GET: /Admin/ManageCourses/EditCourse
         public ActionResult EditCourse(int? courseId)
         {
