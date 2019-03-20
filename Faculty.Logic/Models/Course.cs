@@ -12,10 +12,12 @@ namespace Faculty.Logic.Models
         [Required]
         [Display(Name = "Start date")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
         [Required]
         [Display(Name = "End date")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
         [Required]
         public string Theme { get; set; }

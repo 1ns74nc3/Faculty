@@ -2,7 +2,7 @@
 
 
 17/03 
-Сделать что-то с DateTime полями в добавить курс и редактировать курс - https://forums.asp.net/t/1831712.aspx?Datetime+validation+headache+in+MVC+4
+Фиксануть отображение DateTime в Add course & Edit course
 
 Сделать логирование(пункт задания)
 
