@@ -191,9 +191,10 @@ namespace Faculty.Logic.DB
         public string GetLectorInfo(Course course)
         {
             logManager.AddEventLog("CoursesManager => GetLectorInfo method called", "Method");
+            var lectors = usersManager.GetAllLectors();
             if (course.LectorId != null && course.LectorId != "")
             {
-                var lector = usersManager.GetSpecificUser(course.LectorId);
+                var lector = lectors.Where(l => l.Id == course.LectorId).FirstOrDefault();
                 return string.Concat(lector.FirstName, " ", lector.LastName);
             }
             return "There's no lector for this course!";
@@ -203,30 +204,30 @@ namespace Faculty.Logic.DB
         public Course GetSpecificCourse(int courseId)
         {
             logManager.AddEventLog("CoursesManager => GetSpecificCourse method called", "Method");
-                Course course = new Course();
-                using (ApplicationDbContext db = new ApplicationDbContext())
-                {
-                    course = db.Courses.ToList().Where(c => c.Id == courseId).FirstOrDefault();
-                }
-                return course;
+            Course course = new Course();
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                course = db.Courses.ToList().Where(c => c.Id == courseId).FirstOrDefault();
+            }
+            return course;
         }
 
         //Remove user from course
         public string RemoveUserFromCourse(int courseId, string userId)
         {
             logManager.AddEventLog("CoursesManager => RemoveUserFromCourse method called", "Method");
-                using (ApplicationDbContext db = new ApplicationDbContext())
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
+                var user = db.Users.SingleOrDefault(c => c.Id == userId);
+                if (course.Users.Contains(user))
                 {
-                    var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
-                    var user = db.Users.SingleOrDefault(c => c.Id == userId);
-                    if (course.Users.Contains(user))
-                    {
-                        course.Users.Remove(user);
-                        db.SaveChanges();
-                        return "You left the course!";
-                    }
-                    return "You are not registered to this course!";
+                    course.Users.Remove(user);
+                    db.SaveChanges();
+                    return "You left the course!";
                 }
+                return "You are not registered to this course!";
+            }
         }
 
         //Check if user is signed to the course
