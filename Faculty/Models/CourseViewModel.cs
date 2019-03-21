@@ -65,6 +65,7 @@ namespace Faculty.Models
             LogManager logManager = new LogManager();
             logManager.AddEventLog("CourseViewModel => GetCoursesList method called", "Method");
             UsersManager usersManager = new UsersManager();
+            var lectors = usersManager.GetAllLectors();
             List<CourseViewModel> courses = new List<CourseViewModel>();
             switch (constructorType)
             {
@@ -72,7 +73,7 @@ namespace Faculty.Models
                 case 1:
                     foreach (var item in coursesList)
                     {
-                        var lectorData = usersManager.GetSpecificUser(item.LectorId);
+                        var lectorData = lectors.Where(u => u.Id == item.LectorId).FirstOrDefault();
                         var lector = "None";
                         if (lectorData != null)
                             lector = string.Concat(lectorData.FirstName, " ", lectorData.LastName);

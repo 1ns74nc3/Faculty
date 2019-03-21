@@ -82,11 +82,13 @@ namespace Faculty.Models
         {
             LogManager logManager = new LogManager();
             logManager.AddEventLog("JournalViewModel => GetJournalsList 2nd method called", "Method");
+            var courses = coursesManager.GetCourses();
+            var lectors = usersManager.GetAllLectors();
             List<JournalViewModel> result = new List<JournalViewModel>();
             foreach (var item in journals)
             {
-                var course = coursesManager.GetSpecificCourse(item.CourseId);
-                var lectorData = usersManager.GetSpecificUser(course.LectorId);
+                var course = courses.Where(c => c.Id == item.Id).FirstOrDefault();
+                var lectorData = lectors.Where(u => u.Id == course.LectorId).FirstOrDefault();
                 var lector = "None";
                 if (lectorData != null)
                     lector = string.Concat(lectorData.FirstName, " ", lectorData.LastName);

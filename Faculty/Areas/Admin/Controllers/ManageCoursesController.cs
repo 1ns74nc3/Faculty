@@ -76,14 +76,14 @@ namespace Faculty.Areas.Admin.Controllers
                 coursesList = coursesManager.GetSortedCourses(null, statusFilter, themeFilter, lectorFilter, courseNameFilter, coursesList);
                 var coursesPost = CourseViewModel.GetCoursesList(coursesList, 1);
                 
-                ViewBag.Lectors = new SelectList(usersManager.GetAllLectors(
+                ViewBag.Lectors = new SelectList(usersManager.GetAllLectorsString(
                     coursesPost.Select(c => c.Lector).ToList(), lectorFilter), lectorFilter);
                 return View(coursesPost.ToPagedList(pageNumber, pageSize));
             }
 
             coursesList = coursesManager.GetSortedCourses(null, statusFilter, themeFilter, lectorFilter, courseNameFilter, coursesList);
             var courses = CourseViewModel.GetCoursesList(coursesList, 1);
-            ViewBag.Lectors = new SelectList(usersManager.GetAllLectors(
+            ViewBag.Lectors = new SelectList(usersManager.GetAllLectorsString(
                 courses.Select(c => c.Lector).ToList(), lectorFilter), lectorFilter);
 
             return View(courses.ToPagedList(pageNumber, pageSize));

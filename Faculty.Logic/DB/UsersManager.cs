@@ -49,8 +49,16 @@ namespace Faculty.Logic.DB
             }
         }
 
+        public List<ApplicationUser> GetAllLectors()
+        {
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                return db.Users.Where(u => u.Roles.Any(r => r.RoleId == db.Roles.FirstOrDefault(role => role.Name == "Lector").Id)).ToList();
+            }
+        }
+
         //Get all users with Lector role to display in ViewModel
-        public List<string> GetAllLectors(List<string> courses, string currentLector)
+        public List<string> GetAllLectorsString(List<string> courses, string currentLector)
         {
             logManager.AddEventLog("UsersManager => GetAllLectors method called", "Method");
             using (ApplicationDbContext db = new ApplicationDbContext())
