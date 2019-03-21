@@ -29,9 +29,18 @@
         </div>
         <div>
             <h3>@Html.Label("Course Lector"):</h3>
-            <p>
-                @ViewBag.Lector
-            </p>
+            @if (ViewBag.Lector != "There's no lector for this course!")
+            {
+                <p>
+                    @Html.ActionLink((string)ViewBag.Lector, "LectorInfo", "Lector", new { courseId = Model.Id }, null)
+                </p>
+            }
+            else
+            {
+                <p class="text-danger">
+                    @ViewBag.Lector
+                </p>
+            }
         </div>
     </div>
     <div class="course-profile-container">
@@ -76,4 +85,6 @@
         }
     </div>
 </div>
+<br />
+
 

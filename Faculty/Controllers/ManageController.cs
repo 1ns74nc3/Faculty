@@ -22,12 +22,14 @@ namespace Faculty.Controllers
         private UsersManager usersManager;
         private JournalsManager journalsManager;
         private CoursesManager coursesManager;
+        private LogManager logManager;
 
         public ManageController()
         {
             usersManager = new UsersManager();
             journalsManager = new JournalsManager();
             coursesManager = new CoursesManager();
+            logManager = new LogManager();
         }
 
         public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
@@ -37,6 +39,7 @@ namespace Faculty.Controllers
             usersManager = new UsersManager();
             journalsManager = new JournalsManager();
             coursesManager = new CoursesManager();
+            logManager = new LogManager();
         }
 
         public ApplicationSignInManager SignInManager
@@ -67,6 +70,7 @@ namespace Faculty.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
+            logManager.AddEventLog("ManageController => Index ActionResult called(GET)", "ActionResult");
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
@@ -101,6 +105,7 @@ namespace Faculty.Controllers
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
+            logManager.AddEventLog("ManageController => ChangePassword ActionResult called(GET)", "ActionResult");
             return View();
         }
 
@@ -110,6 +115,7 @@ namespace Faculty.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
+            logManager.AddEventLog("ManageController => ChangePassword ActionResult called(POST)", "ActionResult");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -133,6 +139,7 @@ namespace Faculty.Controllers
         [Authorize(Roles = "Lector")]
         public ActionResult DisplayCoursesForLector(string userId, string statusFilter, string themeFilter, string courseNameFilter, int? page)
         {
+            logManager.AddEventLog("ManageController => DisplayCoursesForLector ActionResult called(GET)", "ActionResult");
             if (usersManager.GetUserRole(userId) != "Lector" || userId == null)
                 return View("Error");
             ViewBag.UserId = userId;
@@ -163,7 +170,8 @@ namespace Faculty.Controllers
         // GET: /Manage/DisplayUserCourses
         public ActionResult DisplayUserCourses(string userId, string courseNameFilter, string courseStatusFilter, int? page)
         {
-            if(userId == null)
+            logManager.AddEventLog("ManageController => DisplayUserCourses ActionResult called(GET)", "ActionResult");
+            if (userId == null)
                 return View("Error");
             ViewBag.UserId = userId;
             ViewBag.CourseName = courseNameFilter;
@@ -196,6 +204,7 @@ namespace Faculty.Controllers
         // GET: /Manage/EditUserData
         public ActionResult EditUserData(string userId)
         {
+            logManager.AddEventLog("ManageController => EditUserData ActionResult called(GET)", "ActionResult");
             if (userId == null)
                 return View("Error");
             var user = usersManager.GetSpecificUser(userId);
@@ -209,6 +218,7 @@ namespace Faculty.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditUserData(ApplicationUser user, string role, string userId)
         {
+            logManager.AddEventLog("ManageController => EditUserData ActionResult called(POST)", "ActionResult");
             if (userId == null)
                 return View("Error");
             user.Id = userId;
@@ -228,6 +238,7 @@ namespace Faculty.Controllers
         // GET: /Manage/SetPassword
         public ActionResult SetPassword()
         {
+            logManager.AddEventLog("ManageController => SetPassword ActionResult called(GET)", "ActionResult");
             return View();
         }
 
@@ -237,6 +248,7 @@ namespace Faculty.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
         {
+            logManager.AddEventLog("ManageController => SetPassword ActionResult called(POST)", "ActionResult");
             if (ModelState.IsValid)
             {
                 var result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);

@@ -1,0 +1,51 @@
+﻿@model Faculty.Logic.Models.ApplicationUser
+@{
+    ViewBag.Title = "LectorInfo";
+}
+
+<h2>Lector Information</h2>
+
+<div class="user-profile">
+    <div class="user-profile-container">
+        <div>
+            <img src="~/Content/user.svg" alt="Our courses" width="150" />
+        </div>
+        <div>
+            <h4>@Html.LabelFor(u => u.UserInformation):</h4>
+            <p>
+                @if (Model.UserInformation != null)
+                {
+                    @Html.DisplayFor(u => u.UserInformation)
+                }
+                else
+                {
+                    <span>None</span>
+                }
+
+            </p>
+        </div>
+    </div>
+    <div class="user-profile-container">
+        <div>
+            <h4>@Html.LabelFor(u => u.FirstName):</h4>
+            <p>
+                @Html.DisplayFor(u => u.FirstName)
+            </p>
+        </div>
+        <div>
+            <h4>@Html.LabelFor(u => u.LastName):</h4>
+            <p>
+                @Html.DisplayFor(u => u.LastName)
+            </p>
+        </div>
+        <div>
+            <h4>@Html.LabelFor(u => u.Age):</h4>
+            <p>
+                @Html.DisplayFor(u => u.Age)
+            </p>
+        </div>
+    </div>
+</div>
+<br />
+@Html.ActionLink("Back", "CourseInfo", "Courses", new { courseId = ViewBag.CourseId },
+    new { @class = "custom-links whole-page" })

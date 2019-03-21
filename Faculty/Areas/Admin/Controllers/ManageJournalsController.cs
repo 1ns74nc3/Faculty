@@ -15,18 +15,21 @@ namespace Faculty.Areas.Admin.Controllers
         private UsersManager usersManager;
         private JournalsManager journalsManager;
         private CoursesManager coursesManager;
+        private LogManager logManager;
 
         public ManageJournalsController()
         {
             journalsManager = new JournalsManager();
             usersManager = new UsersManager();
             coursesManager = new CoursesManager();
+            logManager = new LogManager();
         }
 
         //Display all journals
         // GET: /Admin/ManageJournals/DisplayJournals
         public ActionResult DisplayJournals(string userFirstNameFilter, string userLastNameFilter, int? page, string statusMessage)
         {
+            logManager.AddEventLog("ManageJournalsController(Admin area) => DisplayJournals ActionResult called(GET)", "ActionResult");
             ViewBag.StatusMessage = statusMessage;
             ViewBag.FirstNameFilter = userFirstNameFilter;
             ViewBag.LastNameFilter = userLastNameFilter;
@@ -52,6 +55,7 @@ namespace Faculty.Areas.Admin.Controllers
         // GET: /Admin/ManageJournals/EditMark
         public ActionResult EditMark(int? journalId)
         {
+            logManager.AddEventLog("ManageJournalsController(Admin area) => EditMark ActionResult called(GET)", "ActionResult");
             if (journalId == null)
                 return View("Error");
             var journal = journalsManager.GetJournal(journalId);
@@ -66,6 +70,7 @@ namespace Faculty.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditMark(Journal journal, int? journalId, int? courseId)
         {
+            logManager.AddEventLog("ManageJournalsController(Admin area) => EditMark ActionResult called(POST)", "ActionResult");
             if (journalId == null)
                 return View("Error");
             journal.Id = journalId;

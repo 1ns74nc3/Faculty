@@ -17,11 +17,13 @@ namespace Faculty.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private UsersManager usersManager;
+        private LogManager logManager;
 
 
         public AccountController()
         {
             usersManager = new UsersManager();
+            logManager = new LogManager();
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -29,6 +31,7 @@ namespace Faculty.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
             usersManager = new UsersManager();
+            logManager = new LogManager();
         }
 
         public ApplicationSignInManager SignInManager
@@ -60,6 +63,7 @@ namespace Faculty.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+            logManager.AddEventLog("AccountController => Login ActionResult called(GET)", "ActionResult");
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -71,6 +75,7 @@ namespace Faculty.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            logManager.AddEventLog("AccountController => Login ActionResult called(POST)", "ActionResult");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -105,6 +110,7 @@ namespace Faculty.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            logManager.AddEventLog("AccountController => Register ActionResult called(GET)", "ActionResult");
             return View();
         }
 
@@ -115,6 +121,7 @@ namespace Faculty.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            logManager.AddEventLog("AccountController => Register ActionResult called(POST)", "ActionResult");
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser
@@ -156,6 +163,7 @@ namespace Faculty.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
+            logManager.AddEventLog("AccountController => ForgotPassword ActionResult called(GET)", "ActionResult");
             return View();
         }
 
@@ -166,6 +174,7 @@ namespace Faculty.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
+            logManager.AddEventLog("AccountController => ForgotPassword ActionResult called(POST)", "ActionResult");
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
@@ -192,6 +201,7 @@ namespace Faculty.Controllers
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
         {
+            logManager.AddEventLog("AccountController => ForgotPasswordConfirmation ActionResult called(GET)", "ActionResult");
             return View();
         }
 
@@ -200,6 +210,7 @@ namespace Faculty.Controllers
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
         {
+            logManager.AddEventLog("AccountController => ResetPassword ActionResult called(GET)", "ActionResult");
             return code == null ? View("Error") : View();
         }
 
@@ -210,6 +221,7 @@ namespace Faculty.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
+            logManager.AddEventLog("AccountController => ResetPassword ActionResult called(POST)", "ActionResult");
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -234,6 +246,7 @@ namespace Faculty.Controllers
         [AllowAnonymous]
         public ActionResult ResetPasswordConfirmation()
         {
+            logManager.AddEventLog("AccountController => ResetPasswordConfirmation ActionResult called(GET)", "ActionResult");
             return View();
         }
 
@@ -243,6 +256,7 @@ namespace Faculty.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
+            logManager.AddEventLog("AccountController => LogOff ActionResult called(POST)", "ActionResult");
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
@@ -252,6 +266,7 @@ namespace Faculty.Controllers
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()
         {
+            logManager.AddEventLog("AccountController => ExternalLoginFailure ActionResult called(GET)", "ActionResult");
             return View();
         }
 

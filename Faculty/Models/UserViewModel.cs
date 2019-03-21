@@ -40,6 +40,8 @@ namespace Faculty.Models
 
         public static List<UserViewModel> GetUsersList(ICollection<ApplicationUser> usersList, UsersManager usersManager)
         {
+            LogManager logManager = new LogManager();
+            logManager.AddEventLog("UserViewModel => GetUsersList method called", "Method");
             List<UserViewModel> users = new List<UserViewModel>();
             if (usersList != null)
             {

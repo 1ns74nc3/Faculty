@@ -62,6 +62,8 @@ namespace Faculty.Models
         //return typed list to display it in View
         public static List<CourseViewModel> GetCoursesList(ICollection<Course> coursesList, int constructorType)
         {
+            LogManager logManager = new LogManager();
+            logManager.AddEventLog("CourseViewModel => GetCoursesList method called", "Method");
             UsersManager usersManager = new UsersManager();
             List<CourseViewModel> courses = new List<CourseViewModel>();
             switch (constructorType)

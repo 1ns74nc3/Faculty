@@ -14,18 +14,21 @@ namespace Faculty.Controllers
         private UsersManager usersManager;
         private JournalsManager journalsManager;
         private CoursesManager coursesManager;
+        private LogManager logManager;
 
         public CoursesController()
         {
             usersManager = new UsersManager();
             journalsManager = new JournalsManager();
             coursesManager = new CoursesManager();
+            logManager = new LogManager();
         }
 
         //Display course information
         // GET: /Courses/CourseInfo
         public ActionResult CourseInfo(int? courseId)
         {
+            logManager.AddEventLog("CoursesController => CourseInfo ActionResult called(GET)", "ActionResult");
             if (courseId == null)
                 return View("Error");
             var course = coursesManager.GetSpecificCourse(courseId);
@@ -50,6 +53,7 @@ namespace Faculty.Controllers
         // GET: /Courses/DisplayCourses
         public ActionResult DisplayCourses(string currentFilter, string statusFilter, string themeFilter, string lectorFilter, int? page)
         {
+            logManager.AddEventLog("CoursesController => DisplayCourses ActionResult called(GET)", "ActionResult");
             ViewBag.CurrentFilter = currentFilter;
             ViewBag.CurrentStatusFilter = statusFilter;
             ViewBag.CurrentThemeFilter = themeFilter;
@@ -81,6 +85,7 @@ namespace Faculty.Controllers
         [Authorize]
         public ActionResult SignOrQuitCourse(int? courseId, bool userIsOnCourse = false)
         {
+            logManager.AddEventLog("CoursesController => SignOrQuitCourse ActionResult called(GET)", "ActionResult");
             if (courseId == null)
                 return View("Error");
             string currentUserId = User.Identity.GetUserId();

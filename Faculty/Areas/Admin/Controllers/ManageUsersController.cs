@@ -14,17 +14,20 @@ namespace Faculty.Areas.Admin.Controllers
     {
         private UsersManager usersManager;
         private JournalsManager journalsManager;
+        private LogManager logManager;
 
         public ManageUsersController()
         {
             usersManager = new UsersManager();
             journalsManager = new JournalsManager();
+            logManager = new LogManager();
         }
 
         //Add new user
         // GET: /Admin/ManageUsers/AddUser
         public ActionResult AddUser()
         {
+            logManager.AddEventLog("ManageUsersController(Admin area) => AddUser ActionResult called(GET)", "ActionResult");
             ViewBag.Roles = new List<string>{ "Admin", "Lector", "Student" };
             return View();
         }
@@ -34,6 +37,7 @@ namespace Faculty.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddUser(RegisterViewModel user, string role)
         {
+            logManager.AddEventLog("ManageUsersController(Admin area) => AddUser ActionResult called(POST)", "ActionResult");
             if (ModelState.IsValid)
             {
                 var newUser = new ApplicationUser
@@ -60,6 +64,7 @@ namespace Faculty.Areas.Admin.Controllers
         // GET: /Admin/ManageUsers/DisplayUsers
         public ActionResult DisplayUsers(string userFirstNameFilter, string userLastNameFilter, string roleFilter, int? page, string statusMessage)
         {
+            logManager.AddEventLog("ManageUsersController(Admin area) => DisplayUsers ActionResult called(GET)", "ActionResult");
             ViewBag.StatusMessage = statusMessage;
             ViewBag.FirstNameFilter = userFirstNameFilter;
             ViewBag.LastNameFilter = userLastNameFilter;
@@ -86,6 +91,7 @@ namespace Faculty.Areas.Admin.Controllers
         // GET: /Admin/ManageUsers/EditUser
         public ActionResult EditUser(string userId)
         {
+            logManager.AddEventLog("ManageUsersController(Admin area) => EditUser ActionResult called(GET)", "ActionResult");
             if (userId == null)
                 return View("Error");
             var user = usersManager.GetSpecificUser(userId);
@@ -100,6 +106,7 @@ namespace Faculty.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditUser(ApplicationUser user, string role, string userId)
         {
+            logManager.AddEventLog("ManageUsersController(Admin area) => EditUser ActionResult called(POST)", "ActionResult");
             if (userId == null)
                 return View("Error");
             user.Id = userId;
@@ -120,6 +127,7 @@ namespace Faculty.Areas.Admin.Controllers
         // GET: /Admin/ManageUsers/RemoveUser
         public ActionResult RemoveUser(string userId)
         {
+            logManager.AddEventLog("ManageUsersController(Admin area) => RemoveUser ActionResult called(GET)", "ActionResult");
             if (userId == null)
                 return View("Error");
             ViewBag.Username = usersManager.GetSpecificUser(userId).UserName;

@@ -14,18 +14,20 @@ namespace Faculty.Areas.Admin.Controllers
     {
         private UsersManager usersManager;
         private CoursesManager coursesManager;
+        private LogManager logManager;
 
         public ManageCoursesController()
         {
             usersManager = new UsersManager();
             coursesManager = new CoursesManager();
+            logManager = new LogManager();
         }
 
         //Add new course
         // GET: /Admin/ManageCourses/AddCourse
         public ActionResult AddCourse()
         {
-
+            logManager.AddEventLog("ManageCoursesController(Admin area) => AddCourse ActionResult called(GET)", "ActionResult");
             ViewBag.LectorsList = new SelectList(usersManager.GetLectorsForCourseEdit(null), "Id", "LastName");
             return View();
         }
@@ -35,6 +37,7 @@ namespace Faculty.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddCourse(Course course, string lector)
         {
+            logManager.AddEventLog("ManageCoursesController(Admin area) => AddCourse ActionResult called(POST)", "ActionResult");
             if (ModelState.IsValid)
             {
                 if (lector != null && lector != "")
@@ -56,6 +59,7 @@ namespace Faculty.Areas.Admin.Controllers
         // GET: /Admin/ManageCourses/DisplayCourses
         public ActionResult DisplayCourses(string statusFilter, string themeFilter, string lectorFilter, string courseNameFilter, int? page, string statusMessage)
         {
+            logManager.AddEventLog("ManageCoursesController(Admin area) => DisplayCourses ActionResult called(GET)", "ActionResult");
             ViewBag.StatusMessage = statusMessage;
             ViewBag.CurrentStatusFilter = statusFilter;
             ViewBag.CurrentThemeFilter = themeFilter;
@@ -89,7 +93,8 @@ namespace Faculty.Areas.Admin.Controllers
         // GET: /Admin/ManageCourses/DeleteCourse
         public ActionResult DeleteCourse(int? courseId)
         {
-            if(courseId == null)
+            logManager.AddEventLog("ManageCoursesController(Admin area) => DeleteCourse ActionResult called(GET)", "ActionResult");
+            if (courseId == null)
                 return View("Error");
 
             ViewBag.Course = coursesManager.GetSpecificCourse(courseId).CourseName;
@@ -102,6 +107,7 @@ namespace Faculty.Areas.Admin.Controllers
         // GET: /Admin/ManageCourses/EditCourse
         public ActionResult EditCourse(int? courseId)
         {
+            logManager.AddEventLog("ManageCoursesController(Admin area) => EditCourse ActionResult called(GET)", "ActionResult");
             if (courseId == null)
                 return View("Error");
 
@@ -116,6 +122,7 @@ namespace Faculty.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditCourse(Course course, string lector, int? courseId)
         {
+            logManager.AddEventLog("ManageCoursesController(Admin area) => EditCourse ActionResult called(POST)", "ActionResult");
             if (courseId == null)
                 return View("Error");
 

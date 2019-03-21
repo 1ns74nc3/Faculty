@@ -204,6 +204,7 @@
     <Compile Include="Controllers\ErrorHandlerController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JournalController.cs" />
+    <Compile Include="Controllers\LectorController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Areas\Admin\Controllers\ManageUsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -302,6 +303,7 @@
     <Content Include="Views\ErrorHandler\AccountBanned.cshtml" />
     <Content Include="Views\ErrorHandler\AuthorizationError.cshtml" />
     <Content Include="Views\Manage\EditUserData.cshtml" />
+    <Content Include="Views\Lector\LectorInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

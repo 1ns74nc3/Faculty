@@ -17,18 +17,21 @@ namespace Faculty.Controllers
         private UsersManager usersManager;
         private JournalsManager journalsManager;
         private CoursesManager coursesManager;
+        private LogManager logManager;
 
         public JournalController()
         {
             usersManager = new UsersManager();
             journalsManager = new JournalsManager();
             coursesManager = new CoursesManager();
+            logManager = new LogManager();
         }
 
         //Manage journals when course is Ended
         // GET: /Journal/ManageJournal
         public ActionResult ManageJournal(int? courseId, string userFirstNameFilter, string userLastNameFilter, int? page, string statusMessage )
         {
+            logManager.AddEventLog("JournalController => ManageJournal ActionResult called(GET)", "ActionResult");
             if (courseId == null)
                 return View("Error");
             ViewBag.StatusMessage = statusMessage;
@@ -65,6 +68,7 @@ namespace Faculty.Controllers
         // GET: /Journal/ManageUserMark
         public ActionResult ManageUserMark(int? journalId, int? courseId)
         {
+            logManager.AddEventLog("JournalController => ManageUserMark ActionResult called(GET)", "ActionResult");
             if (courseId == null || journalId == null)
                 return View("Error");
             var course = coursesManager.GetSpecificCourse(courseId);
@@ -86,6 +90,7 @@ namespace Faculty.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ManageUserMark(Journal journal, int? courseId, int? journalId)
         {
+            logManager.AddEventLog("JournalController => ManageUserMark ActionResult called(POST)", "ActionResult");
             if (courseId == null || journalId == null)
                 return View("Error");
             journal.Id = journalId;

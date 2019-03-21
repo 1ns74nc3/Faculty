@@ -61,6 +61,8 @@ namespace Faculty.Models
 
         public static List<JournalViewModel> GetJournalsList(ICollection<ApplicationUser> users, Course course)
         {
+            LogManager logManager = new LogManager();
+            logManager.AddEventLog("JournalViewModel => GetJournalsList 1st method called", "Method");
             List<JournalViewModel> result = new List<JournalViewModel>();
             foreach (var item in users)
             {
@@ -78,6 +80,8 @@ namespace Faculty.Models
 
         public static List<JournalViewModel> GetJournalsList(ICollection<Journal> journals, UsersManager usersManager, CoursesManager coursesManager)
         {
+            LogManager logManager = new LogManager();
+            logManager.AddEventLog("JournalViewModel => GetJournalsList 2nd method called", "Method");
             List<JournalViewModel> result = new List<JournalViewModel>();
             foreach (var item in journals)
             {
@@ -104,6 +108,8 @@ namespace Faculty.Models
         //get sorted viewmodel list based on filters
         public static List<JournalViewModel> GerSortedJournalsList(string courseName, string courseStatus, List<JournalViewModel> journals)
         {
+            LogManager logManager = new LogManager();
+            logManager.AddEventLog("JournalViewModel => GerSortedJournalsList method called", "Method");
             if (courseName != null && courseName != "")
             {
                 journals = journals

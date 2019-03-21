@@ -11,16 +11,20 @@ namespace Faculty.Logic.DB
     {
         private UsersManager usersManager = new UsersManager();
         private JournalsManager journalsManager = new JournalsManager();
+        private LogManager logManager = new LogManager();
 
         //Add new course to database
         public void AddCourse(Course course)
         {
+            logManager.AddEventLog("CoursesManager => AddCourse method called", "Method");
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 if (course != null)
                 {
                     Course tempCourse = new Course(course.CourseName, course.StartDate, course.EndDate, course.Theme);
+                    tempCourse.LectorId = course.LectorId;
                     tempCourse.CourseDescription = course.CourseDescription;
+                    tempCourse.SetStatus();
                     db.Courses.Add(tempCourse);
                     db.SaveChanges();
                 }
@@ -30,6 +34,7 @@ namespace Faculty.Logic.DB
         //Sign user to specific course
         public string AddUserToCourse(int? courseId, string userId)
         {
+            logManager.AddEventLog("CoursesManager => AddUserToCourse method called", "Method");
             if (courseId != null)
             {
                 using (ApplicationDbContext db = new ApplicationDbContext())
@@ -54,6 +59,7 @@ namespace Faculty.Logic.DB
         //Get list of all themes
         public List<string> GetAllThemes(string currentTheme)
         {
+            logManager.AddEventLog("CoursesManager => GetAllThemes method called", "Method");
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 List<string> result = new List<string> { currentTheme };
@@ -75,6 +81,7 @@ namespace Faculty.Logic.DB
         //Return sorted list of courses using filters
         public ICollection<Course> GetSortedCourses(string currentFilter, string status, string theme, string lector, string courseName, ICollection<Course> courses)
         {
+            logManager.AddEventLog("CoursesManager => GetSortedCourses method called", "Method");
             if (status != null && status != "" && status != "All")
             {
                 courses = courses
@@ -133,6 +140,7 @@ namespace Faculty.Logic.DB
         //Delete course and all related journals from database
         public void DeleteCourse(int? courseId)
         {
+            logManager.AddEventLog("CoursesManager => DeleteCourse method called", "Method");
             if (courseId != null)
             {
                 using (ApplicationDbContext db = new ApplicationDbContext())
@@ -149,6 +157,7 @@ namespace Faculty.Logic.DB
         //Edit course in database
         public void EditCourse(Course course)
         {
+            logManager.AddEventLog("CoursesManager => EditCourse method called", "Method");
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 var currentCourse = db.Courses.SingleOrDefault(c => c.Id == course.Id);
@@ -167,6 +176,7 @@ namespace Faculty.Logic.DB
         //Get list of all courses
         public ICollection<Course> GetCourses()
         {
+            logManager.AddEventLog("CoursesManager => GetCourses method called", "Method");
             List<Course> courses = new List<Course>();
             using(ApplicationDbContext db = new ApplicationDbContext())
             {
@@ -178,6 +188,7 @@ namespace Faculty.Logic.DB
         //Get list of all courses for specific lector
         public ICollection<Course> GetCoursesForLector(string userId)
         {
+            logManager.AddEventLog("CoursesManager => GetCoursesForLector method called", "Method");
             List<Course> courses = new List<Course>();
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
@@ -189,17 +200,19 @@ namespace Faculty.Logic.DB
         //Get information about Lector of the course
         public string GetLectorInfo(Course course)
         {
+            logManager.AddEventLog("CoursesManager => GetLectorInfo method called", "Method");
             if (course.LectorId != null && course.LectorId != "")
             {
                 var lector = usersManager.GetSpecificUser(course.LectorId);
                 return string.Concat(lector.FirstName, " ", lector.LastName);
             }
-            return "There's no lector for this course.";
+            return "There's no lector for this course!";
         }
 
         //Get specific course by Course ID
         public Course GetSpecificCourse(int? courseId)
         {
+            logManager.AddEventLog("CoursesManager => GetSpecificCourse method called", "Method");
             if (courseId != null)
             {
                 Course course = new Course();
@@ -218,6 +231,7 @@ namespace Faculty.Logic.DB
         //Remove user from course
         public string RemoveUserFromCourse(int? courseId, string userId)
         {
+            logManager.AddEventLog("CoursesManager => RemoveUserFromCourse method called", "Method");
             if (courseId != null)
             {
                 using (ApplicationDbContext db = new ApplicationDbContext())
@@ -242,6 +256,7 @@ namespace Faculty.Logic.DB
         //Check if user is signed to the course
         public bool UserIsSignedToCourse(int? courseId, string userId)
         {
+            logManager.AddEventLog("CoursesManager => UserIsSignedToCourse method called", "Method");
             if (courseId != null)
             {
                 using (ApplicationDbContext db = new ApplicationDbContext())
