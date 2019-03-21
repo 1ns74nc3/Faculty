@@ -32,6 +32,8 @@ namespace Faculty.Models
 
         public string Lector { get; set; }
 
+        public string LectorId { get; set; }
+
         public CourseViewModel()
         {
 
@@ -45,9 +47,10 @@ namespace Faculty.Models
             Theme = theme;
             CourseStatus = courseStatus;
             StudentsCount = studentsCount;
+            
         }
 
-        public CourseViewModel(int id, string courseName, string startDate, string endDate, string theme, string courseStatus, int studentsCount, string lector)
+        public CourseViewModel(int id, string courseName, string startDate, string endDate, string theme, string courseStatus, int studentsCount, string lector, string lectorId)
         {
             Id = id;
             CourseName = courseName;
@@ -57,6 +60,7 @@ namespace Faculty.Models
             CourseStatus = courseStatus;
             StudentsCount = studentsCount;
             Lector = lector;
+            LectorId = lectorId;
         }
 
         //return typed list to display it in View
@@ -85,7 +89,8 @@ namespace Faculty.Models
                             item.Theme, 
                             item.CourseStatus.ToString(), 
                             item.Users.Count, 
-                            lector));
+                            lector,
+                            item.LectorId));
                     }
                     break;
                 //Display courses for lector

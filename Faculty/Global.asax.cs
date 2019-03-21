@@ -23,8 +23,17 @@ namespace Faculty
             Exception exception = Server.GetLastError();
             if (exception != null)
             {
-                logManager.AddExcaptionLog(exception.Message);
-                Response.Redirect("/ErrorHandler/Error");
+                if(exception.GetType() == typeof(ArgumentException))
+                {
+                    logManager.AddExcaptionLog(exception.Message);
+                    Response.Redirect("/ErrorHandler/Error404");
+                }
+                else
+                {
+                    logManager.AddExcaptionLog(exception.Message);
+                    Response.Redirect("/ErrorHandler/Error");
+                }
+                
             }
         }
     }

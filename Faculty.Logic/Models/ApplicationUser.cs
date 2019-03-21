@@ -24,7 +24,7 @@ namespace Faculty.Logic.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
         [Required]
-        [Range(0,120)]
+        [Range(18,120)]
         public int Age { get; set; }
         [Required]
         [Display(Name = "User status")]

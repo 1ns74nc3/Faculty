@@ -1,4 +1,5 @@
 ﻿using Faculty.Logic.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -88,6 +89,10 @@ namespace Faculty.Logic.DB
                 var result = db.Journals.Where(j => j.Users.FirstOrDefault(user => user.Id == userId).Id == userId)
                     .Include(j => j.Users)
                     .ToList();
+                if (result == null)
+                {
+                    throw new ArgumentException();
+                }
                 return result;
             }
         }
@@ -137,6 +142,10 @@ namespace Faculty.Logic.DB
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 var journal = db.Journals.Where(j=>j.Users.Select(u=>u.Id).FirstOrDefault() == userId).FirstOrDefault();
+                if (journal == null)
+                {
+                    throw new ArgumentException();
+                }
                 if (journal != null) { 
                     db.Journals.Remove(journal);
                     db.SaveChanges();

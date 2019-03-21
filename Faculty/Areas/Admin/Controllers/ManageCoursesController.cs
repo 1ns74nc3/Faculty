@@ -69,13 +69,16 @@ namespace Faculty.Areas.Admin.Controllers
             ViewBag.Status = new SelectList(new List<string> { "All", "Unknown", "Upcoming", "Active", "Ended" });
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-            var coursesList = coursesManager.GetCourses();
+            var coursesList = coursesManager.GetCoursesForAdmin();
 
             if (Request.HttpMethod == "POST")
             {
                 coursesList = coursesManager.GetSortedCourses(null, statusFilter, themeFilter, lectorFilter, courseNameFilter, coursesList);
                 var coursesPost = CourseViewModel.GetCoursesList(coursesList, 1);
-                
+                ViewBag.CurrentStatusFilter = statusFilter;
+                ViewBag.CurrentThemeFilter = themeFilter;
+                ViewBag.CurrentLectorFilter = lectorFilter;
+                ViewBag.CourseNameFilter = courseNameFilter;
                 ViewBag.Lectors = new SelectList(usersManager.GetAllLectorsString(
                     coursesPost.Select(c => c.Lector).ToList(), lectorFilter), lectorFilter);
                 return View(coursesPost.ToPagedList(pageNumber, pageSize));
@@ -102,19 +105,23 @@ namespace Faculty.Areas.Admin.Controllers
 
         //Edit specific course
         // GET: /Admin/ManageCourses/EditCourse
-        public ActionResult EditCourse(int courseId)
+        public ActionResult EditCourse(int courseId, string statusFilter, string themeFilter, string lectorFilter, string courseNameFilter)
         {
             logManager.AddEventLog("ManageCoursesController(Admin area) => EditCourse ActionResult called(GET)", "ActionResult");
             var course = coursesManager.GetSpecificCourse(courseId);
             ViewBag.CurrentLector = coursesManager.GetLectorInfo(course);
             ViewBag.LectorsList = new SelectList(usersManager.GetLectorsForCourseEdit(course.LectorId), "Id", "LastName");
+            ViewBag.CurrentStatusFilter = statusFilter;
+            ViewBag.CurrentThemeFilter = themeFilter;
+            ViewBag.CurrentLectorFilter = lectorFilter;
+            ViewBag.CourseNameFilter = courseNameFilter;
             return View(course);
         }
 
         // POST: /Admin/ManageCourses/EditCourse
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditCourse(Course course, string lector, int courseId)
+        public ActionResult EditCourse(Course course, string lector, int courseId, string statusF, string themeF, string lectorF, string courseNameF)
         {
             logManager.AddEventLog("ManageCoursesController(Admin area) => EditCourse ActionResult called(POST)", "ActionResult");
             course.Id = courseId;
@@ -126,7 +133,7 @@ namespace Faculty.Areas.Admin.Controllers
                     coursesManager.EditCourse(course);
                 }
 
-                return RedirectToAction("DisplayCourses", new { statusMessage = "You succesfully edited " + course.CourseName+" course!"});
+                return RedirectToAction("DisplayCourses", new { statusMessage = "You succesfully edited " + course.CourseName + " course!", statusFilter = statusF, themeFilter = themeF, lectorFilter = lectorF, courseNameFilter = courseNameF});
             }
             else
             {

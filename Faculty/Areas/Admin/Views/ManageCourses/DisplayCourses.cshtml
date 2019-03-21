@@ -62,7 +62,13 @@
                 <td>@Html.DisplayFor(modelItem => item.Theme)</td>
                 <td>@Html.DisplayFor(modelItem => item.StudentsCount)</td>
                 <td>@Html.DisplayFor(modelItem => item.Lector)</td>
-                <td>@Html.ActionLink("Edit", "EditCourse", new { Area = "Admin", courseId = item.Id }) </td>
+                <td>@Html.ActionLink("Edit", "EditCourse", new { Area = "Admin",
+                   courseId = item.Id,
+                       statusFilter = ViewBag.CurrentStatusFilter,
+                       themeFilter = ViewBag.CurrentThemeFilter,
+                       lectorFilter = ViewBag.CurrentLectorFilter,
+                       courseNameFilter = ViewBag.CourseNameFilter
+               }) </td>
                 <td>@Html.ActionLink("Delete", "DeleteCourse", new { Area = "Admin", courseId = item.Id }) </td>
             </tr>
         }

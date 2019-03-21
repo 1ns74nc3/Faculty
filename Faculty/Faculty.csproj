@@ -304,6 +304,7 @@
     <Content Include="Views\ErrorHandler\AuthorizationError.cshtml" />
     <Content Include="Views\Manage\EditUserData.cshtml" />
     <Content Include="Views\Lector\LectorInfo.cshtml" />
+    <Content Include="Views\ErrorHandler\Error404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

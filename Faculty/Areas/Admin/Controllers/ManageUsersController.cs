@@ -111,7 +111,7 @@ namespace Faculty.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 usersManager.EditUser(user, role);
-                return RedirectToAction("DisplayUsers", new { statusMessage = "You succesfully edited"+user.FirstName+" "+user.LastName+"user!" });
+                return RedirectToAction("DisplayUsers", new { statusMessage = "You succesfully edited "+user.FirstName+" "+user.LastName+"user!" });
             }
             else
             {

@@ -1,5 +1,6 @@
 ﻿using Faculty.Logic.Models;
 using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -35,18 +36,18 @@ namespace Faculty.Logic.DB
         public string AddUserToCourse(int courseId, string userId)
         {
             logManager.AddEventLog("CoursesManager => AddUserToCourse method called", "Method");
-                using (ApplicationDbContext db = new ApplicationDbContext())
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
+                var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
+                var user = db.Users.SingleOrDefault(c => c.Id == userId);
+                if (!course.Users.Contains(user))
                 {
-                    var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
-                    var user = db.Users.SingleOrDefault(c => c.Id == userId);
-                    if (!course.Users.Contains(user))
-                    {
-                        course.Users.Add(user);
-                        db.SaveChanges();
-                        return "Congratulations! You signed to the course!";
-                    }
-                    return "You already signed to this course!";
+                    course.Users.Add(user);
+                    db.SaveChanges();
+                    return "Congratulations! You signed to the course!";
                 }
+                return "You already signed to this course!";
+            }
         }
 
         //Get list of all themes
@@ -170,6 +171,18 @@ namespace Faculty.Logic.DB
             List<Course> courses = new List<Course>();
             using(ApplicationDbContext db = new ApplicationDbContext())
             {
+                courses = db.Courses.Where(c => c.CourseStatus!=Course.Status.Unknown).Include(u => u.Users).ToList();
+            }
+            return courses;
+        }
+
+        //Get list of all courses
+        public ICollection<Course> GetCoursesForAdmin()
+        {
+            logManager.AddEventLog("CoursesManager => GetCourses method called", "Method");
+            List<Course> courses = new List<Course>();
+            using (ApplicationDbContext db = new ApplicationDbContext())
+            {
                 courses = db.Courses.Include(u => u.Users).ToList();
             }
             return courses;
@@ -208,6 +221,10 @@ namespace Faculty.Logic.DB
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 course = db.Courses.ToList().Where(c => c.Id == courseId).FirstOrDefault();
+            }
+            if (course == null)
+            {
+                throw new ArgumentException();
             }
             return course;
         }

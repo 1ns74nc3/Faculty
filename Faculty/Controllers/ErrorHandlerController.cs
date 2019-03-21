@@ -13,5 +13,11 @@ namespace Faculty.Controllers
         {
             return View();
         }
+
+        // GET: ErrorHandler
+        public ActionResult Error404()
+        {
+            return View();
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Faculty.Logic.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -155,6 +156,10 @@ namespace Faculty.Logic.DB
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 user = db.Users.Where(u => u.Id == userId).Include(u => u.Roles).SingleOrDefault();
+            }
+            if (user == null)
+            {
+                throw new ArgumentException();
             }
             return user;
         }

@@ -8,7 +8,13 @@
 <hr />
 <div class="row">
     <div class="col-md-8">
-        @using (Html.BeginForm("EditCourse", "ManageCourses", new { Area = "Admin", courseId = Model.Id }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("EditCourse", "ManageCourses", new { Area = "Admin",
+                    courseId = Model.Id,
+                    statusF = ViewBag.CurrentStatusFilter,
+                    themeF = ViewBag.CurrentThemeFilter,
+                    lectorF = ViewBag.CurrentLectorFilter,
+                    courseNameF = ViewBag.CourseNameFilter
+            }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
