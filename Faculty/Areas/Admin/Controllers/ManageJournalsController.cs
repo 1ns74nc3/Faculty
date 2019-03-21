@@ -34,7 +34,7 @@ namespace Faculty.Areas.Admin.Controllers
             ViewBag.FirstNameFilter = userFirstNameFilter;
             ViewBag.LastNameFilter = userLastNameFilter;
             
-            int pageSize = 5;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             
             var journalsList = journalsManager.GetAllJournals();

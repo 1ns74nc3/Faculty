@@ -67,7 +67,7 @@ namespace Faculty.Areas.Admin.Controllers
             ViewBag.CourseNameFilter = courseNameFilter;
             ViewBag.Themes = new SelectList(coursesManager.GetAllThemes(themeFilter));
             ViewBag.Status = new SelectList(new List<string> { "All", "Unknown", "Upcoming", "Active", "Ended" });
-            int pageSize = 5;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             var coursesList = coursesManager.GetCourses();
 

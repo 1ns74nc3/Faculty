@@ -58,7 +58,7 @@
         
     </div>
      <div class="course-profile-container">
-         @if (!ViewBag.UserIsLectorOfThisCourse)
+         @if (!ViewBag.UserIsLectorOfThisCourse && Model.CourseStatus.ToString()!="Ended" && Model.CourseStatus.ToString() != "Unknown")
          {
          <div>
              @if (ViewBag.UserIsSignedToCourse)
