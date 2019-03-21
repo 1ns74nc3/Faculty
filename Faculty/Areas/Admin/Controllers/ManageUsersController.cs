@@ -70,7 +70,7 @@ namespace Faculty.Areas.Admin.Controllers
             ViewBag.LastNameFilter = userLastNameFilter;
             ViewBag.RoleFilter = roleFilter;
             ViewBag.Roles = new SelectList(new List<string> { "All", "Admin", "Lector", "Student" });
-            int pageSize = 5;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             var usersList = usersManager.GetUsers();
             if (Request.HttpMethod == "POST")

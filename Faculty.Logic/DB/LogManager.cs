@@ -36,7 +36,7 @@ namespace Faculty.Logic.DB
             using (ApplicationDbContext db = new ApplicationDbContext())
             {
                 var logs = db.Logs.ToList();
-                string path = @"D:\FacultyLogs.txt";
+                string path = @"C:\Users\Андрей\Documents\Dima\FacultyLogs.txt";
                 if (File.Exists(path))
                 {
                     File.Delete(path);
