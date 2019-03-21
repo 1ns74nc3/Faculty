@@ -140,9 +140,7 @@ namespace Faculty.Controllers
         public ActionResult DisplayCoursesForLector(string userId, string statusFilter, string themeFilter, string courseNameFilter, int? page)
         {
             logManager.AddEventLog("ManageController => DisplayCoursesForLector ActionResult called(GET)", "ActionResult");
-            if (usersManager.GetUserRole(userId) != "Lector" || userId == null)
-                return View("Error");
-            ViewBag.UserId = userId;
+            ViewBag.UserId = userId ?? throw new ArgumentNullException();
             ViewBag.CurrentStatusFilter = statusFilter;
             ViewBag.CurrentThemeFilter = themeFilter;
             ViewBag.CourseNameFilter = courseNameFilter;
@@ -171,9 +169,7 @@ namespace Faculty.Controllers
         public ActionResult DisplayUserCourses(string userId, string courseNameFilter, string courseStatusFilter, int? page)
         {
             logManager.AddEventLog("ManageController => DisplayUserCourses ActionResult called(GET)", "ActionResult");
-            if (userId == null)
-                return View("Error");
-            ViewBag.UserId = userId;
+            ViewBag.UserId = userId ?? throw new ArgumentNullException();
             ViewBag.CourseName = courseNameFilter;
             ViewBag.CourseStatus = courseStatusFilter;
             ViewBag.Status = new SelectList(new List<string> { "All", "Unknown", "Upcoming", "Active", "Ended" });
@@ -205,11 +201,9 @@ namespace Faculty.Controllers
         public ActionResult EditUserData(string userId)
         {
             logManager.AddEventLog("ManageController => EditUserData ActionResult called(GET)", "ActionResult");
-            if (userId == null)
-                return View("Error");
+            ViewBag.UserId = userId ?? throw new ArgumentNullException();
             var user = usersManager.GetSpecificUser(userId);
-            ViewBag.UserId = userId;
-
+            
             return View(user);
         }
 
@@ -219,9 +213,7 @@ namespace Faculty.Controllers
         public ActionResult EditUserData(ApplicationUser user, string role, string userId)
         {
             logManager.AddEventLog("ManageController => EditUserData ActionResult called(POST)", "ActionResult");
-            if (userId == null)
-                return View("Error");
-            user.Id = userId;
+            user.Id = userId ?? throw new ArgumentNullException();
             if (ModelState.IsValid)
             {
                 usersManager.EditUser(user, null);

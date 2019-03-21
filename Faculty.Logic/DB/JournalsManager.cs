@@ -11,10 +11,10 @@ namespace Faculty.Logic.DB
         private LogManager logManager = new LogManager();
 
         //Adding journal for user when signing to the course
-        public void AddJournalForUser(int? courseId, string userId)
+        public void AddJournalForUser(int courseId, string userId)
         {
             logManager.AddEventLog("JournalsManager => AddJournalForUser method called", "Method");
-            if (courseId != null && userId !=null)
+            if (userId !=null)
             {
                 using (ApplicationDbContext db = new ApplicationDbContext())
                 {
@@ -29,20 +29,17 @@ namespace Faculty.Logic.DB
         }
 
         //Delete all journals connected to the course when course was removed by admin
-        public void DeleteJournalsWhenRemovingCourse(int? courseId)
+        public void DeleteJournalsWhenRemovingCourse(int courseId)
         {
             logManager.AddEventLog("JournalsManager => DeleteJournalsWhenRemovingCourse method called", "Method");
-            if (courseId != null)
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                using (ApplicationDbContext db = new ApplicationDbContext())
+                var journals = db.Journals.Where(j => j.CourseId == courseId).ToList();
+                foreach (var item in journals)
                 {
-                    var journals = db.Journals.Where(j => j.CourseId == courseId).ToList();
-                    foreach (var item in journals)
-                    {
-                        db.Journals.Remove(item);
-                    }
-                    db.SaveChanges();
+                    db.Journals.Remove(item);
                 }
+                db.SaveChanges();
             }
         }
 
@@ -58,22 +55,16 @@ namespace Faculty.Logic.DB
         }
 
         //Get specific journal by ID
-        public Journal GetJournal(int? journalId)
+        public Journal GetJournal(int journalId)
         {
             logManager.AddEventLog("JournalsManager => GetJournal method called", "Method");
-            if (journalId != null)
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                using (ApplicationDbContext db = new ApplicationDbContext())
-                {
-                    var result = db.Journals.Where(j => j.Id == journalId).Include("Users").SingleOrDefault();
+                var result = db.Journals.Where(j => j.Id == journalId).Include("Users").SingleOrDefault();
 
-                    return result;
-                }
+                return result;
             }
-            else
-            {
-                return null;
-            }
+
         }
 
         //Get list of all Journals
@@ -103,23 +94,16 @@ namespace Faculty.Logic.DB
 
 
         //Get all marks related to course and users 
-        public ICollection<ApplicationUser> GetMarksForUsers(int? courseId)
+        public ICollection<ApplicationUser> GetMarksForUsers(int courseId)
         {
             logManager.AddEventLog("JournalsManager => GetMarksForUsers method called", "Method");
-            if (courseId != null)
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                using (ApplicationDbContext db = new ApplicationDbContext())
-                {
-                    var result = db.Users.Where(u => u.Courses.FirstOrDefault(c => c.Id == courseId).Id == courseId)
-                        .Include(j => j.Journals)
-                        .ToList();
+                var result = db.Users.Where(u => u.Courses.FirstOrDefault(c => c.Id == courseId).Id == courseId)
+                    .Include(j => j.Journals)
+                    .ToList();
 
-                    return result;
-                }
-            }
-            else
-            {
-                return null;
+                return result;
             }
         }
 

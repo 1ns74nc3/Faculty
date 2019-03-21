@@ -10,7 +10,7 @@ namespace Faculty.Logic.Models
         public byte Mark { get; set; }
 
         [Required]
-        public int? CourseId { get; set; }
+        public int CourseId { get; set; }
 
         public virtual ICollection<ApplicationUser> Users { get; set; }
 
@@ -20,7 +20,7 @@ namespace Faculty.Logic.Models
         }
 
         //create journal with default mark value and connected course
-        public Journal(int? courseId)
+        public Journal(int courseId)
         {
             Mark = 0;
             CourseId = courseId;

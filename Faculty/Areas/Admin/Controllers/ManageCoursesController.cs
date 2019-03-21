@@ -91,12 +91,9 @@ namespace Faculty.Areas.Admin.Controllers
 
         //Delete specific course
         // GET: /Admin/ManageCourses/DeleteCourse
-        public ActionResult DeleteCourse(int? courseId)
+        public ActionResult DeleteCourse(int courseId)
         {
             logManager.AddEventLog("ManageCoursesController(Admin area) => DeleteCourse ActionResult called(GET)", "ActionResult");
-            if (courseId == null)
-                return View("Error");
-
             ViewBag.Course = coursesManager.GetSpecificCourse(courseId).CourseName;
             coursesManager.DeleteCourse(courseId);
             return View();
@@ -105,12 +102,9 @@ namespace Faculty.Areas.Admin.Controllers
 
         //Edit specific course
         // GET: /Admin/ManageCourses/EditCourse
-        public ActionResult EditCourse(int? courseId)
+        public ActionResult EditCourse(int courseId)
         {
             logManager.AddEventLog("ManageCoursesController(Admin area) => EditCourse ActionResult called(GET)", "ActionResult");
-            if (courseId == null)
-                return View("Error");
-
             var course = coursesManager.GetSpecificCourse(courseId);
             ViewBag.CurrentLector = coursesManager.GetLectorInfo(course);
             ViewBag.LectorsList = new SelectList(usersManager.GetLectorsForCourseEdit(course.LectorId), "Id", "LastName");
@@ -120,12 +114,9 @@ namespace Faculty.Areas.Admin.Controllers
         // POST: /Admin/ManageCourses/EditCourse
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditCourse(Course course, string lector, int? courseId)
+        public ActionResult EditCourse(Course course, string lector, int courseId)
         {
             logManager.AddEventLog("ManageCoursesController(Admin area) => EditCourse ActionResult called(POST)", "ActionResult");
-            if (courseId == null)
-                return View("Error");
-
             course.Id = courseId;
             if (ModelState.IsValid)
             {

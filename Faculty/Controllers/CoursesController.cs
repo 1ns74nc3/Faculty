@@ -26,11 +26,9 @@ namespace Faculty.Controllers
 
         //Display course information
         // GET: /Courses/CourseInfo
-        public ActionResult CourseInfo(int? courseId)
+        public ActionResult CourseInfo(int courseId)
         {
             logManager.AddEventLog("CoursesController => CourseInfo ActionResult called(GET)", "ActionResult");
-            if (courseId == null)
-                return View("Error");
             var course = coursesManager.GetSpecificCourse(courseId);
             ViewBag.Lector = coursesManager.GetLectorInfo(course);
             string currentUserId = User.Identity.GetUserId();
@@ -83,11 +81,9 @@ namespace Faculty.Controllers
         //Sign to course or quit the course
         // GET: /Courses/SignOrQuitCourse
         [Authorize]
-        public ActionResult SignOrQuitCourse(int? courseId, bool userIsOnCourse = false)
+        public ActionResult SignOrQuitCourse(int courseId, bool userIsOnCourse = false)
         {
             logManager.AddEventLog("CoursesController => SignOrQuitCourse ActionResult called(GET)", "ActionResult");
-            if (courseId == null)
-                return View("Error");
             string currentUserId = User.Identity.GetUserId();
             ViewBag.RegistrationResult = "";
             

@@ -17,7 +17,7 @@ namespace Faculty.Controllers
         }
 
         // GET: Lector
-        public ActionResult LectorInfo(int? courseId)
+        public ActionResult LectorInfo(int courseId)
         {
             logManager.AddEventLog("LectorController => LectorInfo ActionResult called(GET)", "ActionResult");
             if(courseId==null)

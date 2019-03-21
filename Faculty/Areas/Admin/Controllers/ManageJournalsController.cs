@@ -53,11 +53,9 @@ namespace Faculty.Areas.Admin.Controllers
 
         //Edit specific mark
         // GET: /Admin/ManageJournals/EditMark
-        public ActionResult EditMark(int? journalId)
+        public ActionResult EditMark(int journalId)
         {
             logManager.AddEventLog("ManageJournalsController(Admin area) => EditMark ActionResult called(GET)", "ActionResult");
-            if (journalId == null)
-                return View("Error");
             var journal = journalsManager.GetJournal(journalId);
             ViewBag.CourseId = journal.CourseId;
             ViewBag.JournalId = journalId;
@@ -68,11 +66,9 @@ namespace Faculty.Areas.Admin.Controllers
         // POST: /Admin/ManageJournals/EditMark
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditMark(Journal journal, int? journalId, int? courseId)
+        public ActionResult EditMark(Journal journal, int journalId, int courseId)
         {
             logManager.AddEventLog("ManageJournalsController(Admin area) => EditMark ActionResult called(POST)", "ActionResult");
-            if (journalId == null)
-                return View("Error");
             journal.Id = journalId;
             if (ModelState.IsValid)
             {

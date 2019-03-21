@@ -2,6 +2,7 @@
 using Faculty.Logic.Models;
 using Faculty.Models;
 using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -92,11 +93,10 @@ namespace Faculty.Areas.Admin.Controllers
         public ActionResult EditUser(string userId)
         {
             logManager.AddEventLog("ManageUsersController(Admin area) => EditUser ActionResult called(GET)", "ActionResult");
-            if (userId == null)
-                return View("Error");
+            ViewBag.UserId = userId ?? throw new ArgumentNullException();
             var user = usersManager.GetSpecificUser(userId);
             ViewBag.Roles = usersManager.GetRolesListWithActiveRole(userId);
-            ViewBag.UserId = userId;
+            
 
             return View(user);
         }
@@ -107,9 +107,7 @@ namespace Faculty.Areas.Admin.Controllers
         public ActionResult EditUser(ApplicationUser user, string role, string userId)
         {
             logManager.AddEventLog("ManageUsersController(Admin area) => EditUser ActionResult called(POST)", "ActionResult");
-            if (userId == null)
-                return View("Error");
-            user.Id = userId;
+            user.Id = userId ?? throw new ArgumentNullException();
             if (ModelState.IsValid)
             {
                 usersManager.EditUser(user, role);
@@ -129,7 +127,7 @@ namespace Faculty.Areas.Admin.Controllers
         {
             logManager.AddEventLog("ManageUsersController(Admin area) => RemoveUser ActionResult called(GET)", "ActionResult");
             if (userId == null)
-                return View("Error");
+                throw new ArgumentNullException();
             ViewBag.Username = usersManager.GetSpecificUser(userId).UserName;
             journalsManager.RemoveJournalForUser(userId);
             usersManager.RemoveUser(userId);

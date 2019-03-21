@@ -11,7 +11,7 @@ namespace Faculty.Models
 {
     public class CourseViewModel
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "Course")]
         public string CourseName { get; set; }
@@ -37,7 +37,7 @@ namespace Faculty.Models
 
         }
 
-        public CourseViewModel(int? id, string courseName, string startDate, string endDate, string theme, string courseStatus, int studentsCount) { 
+        public CourseViewModel(int id, string courseName, string startDate, string endDate, string theme, string courseStatus, int studentsCount) { 
             Id = id;
             CourseName = courseName;
             StartDate = startDate;
@@ -47,7 +47,7 @@ namespace Faculty.Models
             StudentsCount = studentsCount;
         }
 
-        public CourseViewModel(int? id, string courseName, string startDate, string endDate, string theme, string courseStatus, int studentsCount, string lector)
+        public CourseViewModel(int id, string courseName, string startDate, string endDate, string theme, string courseStatus, int studentsCount, string lector)
         {
             Id = id;
             CourseName = courseName;

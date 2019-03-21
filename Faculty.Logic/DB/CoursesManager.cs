@@ -32,11 +32,9 @@ namespace Faculty.Logic.DB
         }
 
         //Sign user to specific course
-        public string AddUserToCourse(int? courseId, string userId)
+        public string AddUserToCourse(int courseId, string userId)
         {
             logManager.AddEventLog("CoursesManager => AddUserToCourse method called", "Method");
-            if (courseId != null)
-            {
                 using (ApplicationDbContext db = new ApplicationDbContext())
                 {
                     var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
@@ -49,11 +47,6 @@ namespace Faculty.Logic.DB
                     }
                     return "You already signed to this course!";
                 }
-            }
-            else
-            {
-                return null;
-            }
         }
 
         //Get list of all themes
@@ -138,11 +131,9 @@ namespace Faculty.Logic.DB
         }
 
         //Delete course and all related journals from database
-        public void DeleteCourse(int? courseId)
+        public void DeleteCourse(int courseId)
         {
             logManager.AddEventLog("CoursesManager => DeleteCourse method called", "Method");
-            if (courseId != null)
-            {
                 using (ApplicationDbContext db = new ApplicationDbContext())
                 {
                     var course = db.Courses.FirstOrDefault(c => c.Id == courseId);
@@ -150,7 +141,6 @@ namespace Faculty.Logic.DB
                     db.Courses.Remove(course);
                     db.SaveChanges();
                 }
-            }
 
         }
 
@@ -210,30 +200,21 @@ namespace Faculty.Logic.DB
         }
 
         //Get specific course by Course ID
-        public Course GetSpecificCourse(int? courseId)
+        public Course GetSpecificCourse(int courseId)
         {
             logManager.AddEventLog("CoursesManager => GetSpecificCourse method called", "Method");
-            if (courseId != null)
-            {
                 Course course = new Course();
                 using (ApplicationDbContext db = new ApplicationDbContext())
                 {
                     course = db.Courses.ToList().Where(c => c.Id == courseId).FirstOrDefault();
                 }
                 return course;
-            }
-            else
-            {
-                return null;
-            }
         }
 
         //Remove user from course
-        public string RemoveUserFromCourse(int? courseId, string userId)
+        public string RemoveUserFromCourse(int courseId, string userId)
         {
             logManager.AddEventLog("CoursesManager => RemoveUserFromCourse method called", "Method");
-            if (courseId != null)
-            {
                 using (ApplicationDbContext db = new ApplicationDbContext())
                 {
                     var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
@@ -246,30 +227,18 @@ namespace Faculty.Logic.DB
                     }
                     return "You are not registered to this course!";
                 }
-            }
-            else
-            {
-                return null;
-            }
         }
 
         //Check if user is signed to the course
-        public bool UserIsSignedToCourse(int? courseId, string userId)
+        public bool UserIsSignedToCourse(int courseId, string userId)
         {
             logManager.AddEventLog("CoursesManager => UserIsSignedToCourse method called", "Method");
-            if (courseId != null)
+            using (ApplicationDbContext db = new ApplicationDbContext())
             {
-                using (ApplicationDbContext db = new ApplicationDbContext())
-                {
                     var course = db.Courses.SingleOrDefault(c => c.Id == courseId);
                     var user = db.Users.SingleOrDefault(c => c.Id == userId);
                     return course.Users.Contains(user);
-                }
-            }
-            else
-            {
-                return false;
-            }
+             }
         }
     }
 }
